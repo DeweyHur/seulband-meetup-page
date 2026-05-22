@@ -273,10 +273,10 @@
     }
 
     function rolePills(song) {
-      return roles.map(role => {
+      return roles.filter(role => isFilled(song[role]) || isOpen(song[role])).map(role => {
         const value = song[role] || "";
         const cls = isFilled(value) ? "filled" : isOpen(value) ? "open" : "";
-        const label = isFilled(value) ? value : isOpen(value) ? "모집" : "-";
+        const label = isFilled(value) ? value : "모집";
         return `<span class="role-pill ${cls} rounded-md px-2.5 py-1 text-[11px] font-bold">${roleEmoji[role] || ""} ${role}: ${label}</span>`;
       }).join("");
     }
