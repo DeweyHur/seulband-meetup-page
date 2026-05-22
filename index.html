@@ -121,17 +121,52 @@
   <script>
     const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&gid=0";
     const roles = ["Vocal", "Guitar", "Bass", "Keyboard", "Drum"];
-    const fallbackSongs = [{
-      "제목": "Saving All My Love For You",
-      "가수": "백예린",
-      "Vocal": "",
-      "Guitar": "",
-      "Bass": "",
-      "Keyboard": "",
-      "Drum": "",
-      "영상": "251026 백예린 Yerin Baek - Saving All My Love For You | Flash and Core 2025 단독 콘서트",
-      "악보": ""
-    }];
+    const fallbackSongs = [
+      {
+        "제목": "Saving All My Love For You",
+        "가수": "백예린",
+        "Vocal": "",
+        "Guitar": "지미",
+        "Bass": "",
+        "Keyboard": "",
+        "Drum": "",
+        "영상": "https://www.youtube.com/watch?v=uJtw9cEiq7g",
+        "악보": ""
+      },
+      {
+        "제목": "취중진담",
+        "가수": "김동률",
+        "Vocal": "조셉",
+        "Guitar": "",
+        "Bass": "",
+        "Keyboard": "",
+        "Drum": "",
+        "영상": "https://www.youtube.com/watch?v=S0G-sVyabT0",
+        "악보": ""
+      },
+      {
+        "제목": "After The Love Has Gone",
+        "가수": "크러쉬",
+        "Vocal": "",
+        "Guitar": "",
+        "Bass": "",
+        "Keyboard": "제이",
+        "Drum": "그루브",
+        "영상": "https://www.youtube.com/watch?v=1eiRyohWBWQ",
+        "악보": ""
+      },
+      {
+        "제목": "영원",
+        "가수": "SKY",
+        "Vocal": "춘식",
+        "Guitar": "",
+        "Bass": "",
+        "Keyboard": "듀이",
+        "Drum": "",
+        "영상": "https://www.youtube.com/watch?v=U6F26ZlVtio",
+        "악보": ""
+      }
+    ];
     let songs = [];
 
     function parseCsv(text) {
@@ -286,10 +321,19 @@
     document.getElementById("search-input").addEventListener("input", renderSongs);
     document.getElementById("status-filter").addEventListener("change", renderSongs);
 
+    songs = fallbackSongs;
+    renderAll();
+
     fetch(sheetCsvUrl)
       .then(response => response.ok ? response.text() : Promise.reject(new Error("sheet fetch failed")))
-      .then(text => { songs = parseCsv(text).filter(song => song["제목"]); renderAll(); })
-      .catch(() => { songs = fallbackSongs; renderAll(); });
+      .then(text => {
+        const sheetSongs = parseCsv(text).filter(song => song["제목"]);
+        if (sheetSongs.length > fallbackSongs.length) {
+          songs = sheetSongs;
+          renderAll();
+        }
+      })
+      .catch(() => {});
   </script>
 </body>
 </html>
