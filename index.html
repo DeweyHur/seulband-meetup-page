@@ -120,16 +120,17 @@
 
   <script>
     const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&gid=0";
-    const roles = ["Vocal", "Guitar", "Bass", "Keyboard", "Drum"];
+    const roles = ["Vocal", "Guitar 1", "Guitar 2", "Bass", "Keyboard", "Drum"];
     const fallbackSongs = [
       {
         "제목": "Saving All My Love For You",
         "가수": "백예린",
-        "Vocal": "",
-        "Guitar": "지미",
-        "Bass": "",
-        "Keyboard": "",
-        "Drum": "",
+        "Vocal": "<open>",
+        "Guitar 1": "지미",
+        "Guitar 2": "",
+        "Bass": "<open>",
+        "Keyboard": "<open>",
+        "Drum": "<open>",
         "영상": "https://www.youtube.com/watch?v=uJtw9cEiq7g",
         "악보": ""
       },
@@ -137,19 +138,21 @@
         "제목": "취중진담",
         "가수": "김동률",
         "Vocal": "조셉",
-        "Guitar": "",
-        "Bass": "",
-        "Keyboard": "",
-        "Drum": "",
+        "Guitar 1": "<open>",
+        "Guitar 2": "",
+        "Bass": "<open>",
+        "Keyboard": "<open>",
+        "Drum": "<open>",
         "영상": "https://www.youtube.com/watch?v=S0G-sVyabT0",
         "악보": ""
       },
       {
         "제목": "After The Love Has Gone",
         "가수": "크러쉬",
-        "Vocal": "",
-        "Guitar": "",
-        "Bass": "",
+        "Vocal": "<open>",
+        "Guitar 1": "<open>",
+        "Guitar 2": "",
+        "Bass": "<open>",
         "Keyboard": "제이",
         "Drum": "그루브",
         "영상": "https://www.youtube.com/watch?v=1eiRyohWBWQ",
@@ -159,22 +162,24 @@
         "제목": "영원",
         "가수": "SKY",
         "Vocal": "춘식",
-        "Guitar": "",
-        "Bass": "",
+        "Guitar 1": "준",
+        "Guitar 2": "",
+        "Bass": "<open>",
         "Keyboard": "듀이",
-        "Drum": "",
+        "Drum": "<open>",
         "영상": "https://www.youtube.com/watch?v=U6F26ZlVtio",
         "악보": ""
       },
       {
         "제목": "단발머리",
         "가수": "데이브레이크",
-        "Vocal": "",
-        "Guitar": "준",
-        "Bass": "",
-        "Keyboard": "",
+        "Vocal": "조셉",
+        "Guitar 1": "준",
+        "Guitar 2": "",
+        "Bass": "<open>",
+        "Keyboard": "<open>",
         "Drum": "듀이",
-        "영상": "https://www.youtube.com/watch?v=0fRpxsBo4CU&list=RD0fRpxsBo4CU",
+        "영상": "https://www.youtube.com/watch?v=0fRpxsBo4CU",
         "악보": ""
       }
     ];
@@ -209,11 +214,16 @@
 
     function isFilled(value) {
       const text = (value || "").trim().toLowerCase();
-      return text && !["-", "x", "open", "빈자리", "모집", "tbd", "미정"].includes(text);
+      return text && !["-", "x", "open", "<open>", "빈자리", "모집", "tbd", "미정"].includes(text);
+    }
+
+    function isOpen(value) {
+      const text = (value || "").trim().toLowerCase();
+      return ["open", "<open>", "빈자리", "모집"].includes(text);
     }
 
     function openRoles(song) {
-      return roles.filter(role => !isFilled(song[role]));
+      return roles.filter(role => isOpen(song[role]));
     }
 
     function ready(song) {
@@ -234,8 +244,9 @@
     function rolePills(song) {
       return roles.map(role => {
         const value = song[role] || "";
-        const cls = isFilled(value) ? "filled" : "open";
-        return `<span class="role-pill ${cls} rounded-md px-2.5 py-1 text-[11px] font-bold">${role}: ${isFilled(value) ? value : "모집"}</span>`;
+        const cls = isFilled(value) ? "filled" : isOpen(value) ? "open" : "";
+        const label = isFilled(value) ? value : isOpen(value) ? "모집" : "-";
+        return `<span class="role-pill ${cls} rounded-md px-2.5 py-1 text-[11px] font-bold">${role}: ${label}</span>`;
       }).join("");
     }
 
