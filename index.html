@@ -386,6 +386,50 @@
     document.getElementById("search-input").addEventListener("input", renderSongs);
     document.getElementById("status-filter").addEventListener("change", renderSongs);
 
+    // --- New: Play All button and helper to open YouTube embed playlist ---
+    // We'll add a simple button to the Songs panel header dynamically and implement playAll()
+    function extractYouTubeId(url) {
+      if (!url) return null;
+      try {
+        const u = new URL(url, window.location.href);
+        if (u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+        if (u.hostname.includes('youtube.com')) {
+          if (u.searchParams.get('v')) return u.searchParams.get('v');
+          const parts = u.pathname.split('/');
+          const idx = parts.indexOf('embed');
+          if (idx !== -1 && parts[idx+1]) return parts[idx+1];
+        }
+      } catch (e) { return null; }
+      return null;
+    }
+
+    function playAll() {
+      const ids = songs.map(s => extractYouTubeId(s['영상'] || '')).filter(Boolean);
+      if (!ids.length) {
+        alert('플레이할 유튜브 영상이 없습니다.');
+        return;
+      }
+      const firstId = ids[0];
+      const rest = ids.slice(1).join(',');
+      const embedSrc = `https://www.youtube.com/embed/${firstId}?autoplay=1&rel=0${rest?`&playlist=${rest}`:''}`;
+      const w = window.open(embedSrc, '_blank');
+      if (!w) {
+        alert('팝업이 차단됐습니다. 브라우저에서 팝업 허용 후 다시 시도해주세요.');
+      }
+    }
+
+    // add button to Songs panel controls
+    (function addPlayAllButton(){
+      const container = document.querySelector('#panel-songs > .grid');
+      if (!container) return;
+      const btn = document.createElement('button');
+      btn.textContent = '전체 재생';
+      btn.className = 'rounded-lg bg-amber-300 px-4 py-3 text-sm font-black text-slate-950 hover:bg-amber-200';
+      btn.style.marginLeft = '8px';
+      btn.addEventListener('click', playAll);
+      container.appendChild(btn);
+    })();
+
     songs = fallbackSongs;
     renderAll();
 
@@ -393,7 +437,7 @@
       .then(response => response.ok ? response.text() : Promise.reject(new Error("sheet fetch failed")))
       .then(text => {
         const sheetSongs = parseCsv(text).filter(song => song["제목"]);
-        if (sheetSongs.length > fallbackSongs.length) {
+        if (sheetSongs.length) {
           songs = sheetSongs;
           renderAll();
         }
