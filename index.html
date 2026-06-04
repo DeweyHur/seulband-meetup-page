@@ -32,7 +32,7 @@
         <p class="text-sm font-black tracking-tight text-white">슬기로운 밴드생활 정모</p>
         <p class="text-xs font-medium text-slate-400">Biweekly meetup · setlist status</p>
       </div>
-      <a class="rounded-lg border border-[#2b3955] bg-[#111a2d] px-3 py-2 text-xs font-bold text-slate-100 hover:bg-[#18233a]" href="https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/edit?gid=0#gid=0" target="_blank" rel="noreferrer">스프레드시트</a>
+      <a class="rounded-lg border border-[#2b3955] bg-[#111a2d] px-3 py-2 text-xs font-bold text-slate-100 hover:bg-[#18233a]" href="https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/edit?gid=1965822470#gid=1965822470" target="_blank" rel="noreferrer">스프레드시트</a>
     </div>
   </nav>
 
@@ -42,10 +42,10 @@
     <div class="relative mx-auto max-w-5xl px-5 pb-20 pt-14">
       <span class="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-200">Biweekly Band Meetup</span>
       <h1 class="mt-5 max-w-3xl text-4xl font-black tracking-tight text-white md:text-6xl">슬기로운 밴드생활 정모</h1>
-      <p class="mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-200">격주로 모여 합주할 곡과 파트 현황을 한눈에 보는 페이지입니다. 다음 정모는 6월 3일 저녁 7시 30분부터 10시까지 진행합니다.</p>
+      <p class="mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-200">격주로 모여 합주할 곡과 파트 현황을 한눈에 보는 페이지입니다. 다음 정모는 6월 17일 저녁 7시 30분부터 10시까지 진행합니다. 현재 준비된 곡은 없습니다 — 스프레드시트에 새로 곡 7곡 정도를 등록해 주세요.</p>
       <div class="mt-6 flex flex-wrap gap-2">
         <button class="rounded-xl bg-amber-300 px-5 py-3 text-sm font-black text-slate-950 hover:bg-amber-200" onclick="switchPanel('songs')">곡 현황 보기</button>
-        <a class="rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/15" href="https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/edit?gid=0#gid=0" target="_blank" rel="noreferrer">참여 정보 수정</a>
+        <a class="rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/15" href="https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/edit?gid=1965822470#gid=1965822470" target="_blank" rel="noreferrer">참여 정보 수정</a>
       </div>
     </div>
   </header>
@@ -82,13 +82,14 @@
         <div class="mt-3 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <div class="inline-flex flex-wrap items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-4 py-3">
-              <span class="text-3xl font-black text-white">6월 3일 수요일</span>
+              <span class="text-3xl font-black text-white">6월 17일 수요일</span>
               <span class="rounded-md bg-amber-300 px-2.5 py-1 text-sm font-black text-slate-950">7:30 PM - 10:00 PM</span>
             </div>
             <ul class="mt-3 max-w-2xl space-y-2 text-sm leading-6 text-slate-300">
               <li>📍 422 S Western Ave, Los Angeles, CA 90020에서 만나요.</li>
               <li>🥤 간단한 다과는 좋아요. 같이 나눌 음료나 간식이 있으면 편하게 가져와주세요.</li>
               <li>🎸 악기는 개인 악기 사용이 우선입니다. 준비가 어렵다면 미리 문의해주세요.</li>
+              <li>💵 입장료: $10 — 사인업하신 분들이나 오실 분들은 모두 입장료를 송금해 주세요. (벤모, 젤 계정이 static에 추가되어 있습니다.)</li>
             </ul>
           </div>
           <div class="flex flex-wrap gap-2 md:justify-end">
@@ -97,6 +98,26 @@
           </div>
         </div>
         <img class="mt-5 aspect-[1500/979] w-full rounded-lg border border-[#253149] object-cover" src="static/venue.png" alt="정모 장소 안내 이미지">
+        <div class="mt-5 grid gap-4 md:grid-cols-2">
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-4 text-center">
+            <h3 class="text-sm font-black text-white">Venmo</h3>
+            <p class="mt-1 text-xs font-medium text-slate-400">@joonpark80</p>
+            <a href="https://venmo.com/joonpark80?txn=pay&amount=10&note=Meetup%20entry" target="_blank" rel="noreferrer" class="mt-3 inline-block rounded-lg bg-amber-300 px-4 py-2 text-sm font-black text-slate-950 hover:bg-amber-200">Pay $10 via Venmo</a>
+            <div class="mt-3">
+              <a href="static/venmo.jpeg" target="_blank" rel="noreferrer"><img class="mx-auto max-h-36 rounded-md border border-[#253149]" src="static/venmo.jpeg" alt="Venmo QR"></a>
+            </div>
+            <button onclick="copyText('joonpark80')" class="mt-3 rounded-md border border-[#33415f] px-3 py-2 text-xs font-bold text-slate-200">Copy Venmo username</button>
+          </div>
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-4 text-center">
+            <h3 class="text-sm font-black text-white">Zelle</h3>
+            <p class="mt-1 text-xs font-medium text-slate-400">HYUNG PARK</p>
+            <div class="mt-3">
+              <a href="static/zelle.jpeg" target="_blank" rel="noreferrer"><img class="mx-auto max-h-36 rounded-md border border-[#253149]" src="static/zelle.jpeg" alt="Zelle QR"></a>
+            </div>
+            <p class="mt-2 text-xs text-slate-400">(QR을 스캔하거나 수신자 정보로 Zelle에서 $10 송금)</p>
+            <button onclick="copyText('HYUNG PARK')" class="mt-3 rounded-md border border-[#33415f] px-3 py-2 text-xs font-bold text-slate-200">Copy Zelle recipient</button>
+          </div>
+        </div>
       </div>
 
       <div class="rounded-lg border border-[#253149] bg-[#10182a] p-6">
@@ -130,7 +151,7 @@
   </main>
 
   <script>
-    const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&gid=0";
+    const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&gid=1965822470";
     const roles = ["Vocal", "Guitar 1", "Guitar 2", "Bass", "Keyboard", "Drum"];
     const roleEmoji = {
       "Vocal": "🎤",
@@ -140,92 +161,7 @@
       "Keyboard": "🎹",
       "Drum": "🥁"
     };
-    const fallbackSongs = [
-      {
-        "제목": "Saving All My Love For You",
-        "가수": "백예린",
-        "Vocal": "호로옥",
-        "Guitar 1": "지미",
-        "Guitar 2": "",
-        "Bass": "듀이",
-        "Keyboard": "제이",
-        "Drum": "그루브",
-        "영상": "https://www.youtube.com/watch?v=uJtw9cEiq7g",
-        "악보": ""
-      },
-      {
-        "제목": "취중진담",
-        "가수": "김동률",
-        "Vocal": "조셉",
-        "Guitar 1": "Robben",
-        "Guitar 2": "",
-        "Bass": "스티브",
-        "Keyboard": "제이",
-        "Drum": "듀이",
-        "영상": "https://www.youtube.com/watch?v=S0G-sVyabT0",
-        "악보": ""
-      },
-      {
-        "제목": "After The Love Has Gone",
-        "가수": "크러쉬",
-        "Vocal": "조셉",
-        "Guitar 1": "Robben",
-        "Guitar 2": "",
-        "Bass": "듀이",
-        "Keyboard": "제이",
-        "Drum": "그루브",
-        "영상": "https://www.youtube.com/watch?v=1eiRyohWBWQ",
-        "악보": ""
-      },
-      {
-        "제목": "영원",
-        "가수": "SKY",
-        "Vocal": "춘식",
-        "Guitar 1": "준",
-        "Guitar 2": "",
-        "Bass": "스티브",
-        "Keyboard": "듀이",
-        "Drum": "그루브",
-        "영상": "https://www.youtube.com/watch?v=U6F26ZlVtio",
-        "악보": ""
-      },
-      {
-        "제목": "단발머리",
-        "가수": "데이브레이크",
-        "Vocal": "조셉",
-        "Guitar 1": "준",
-        "Guitar 2": "",
-        "Bass": "스티브",
-        "Keyboard": "제이",
-        "Drum": "듀이",
-        "영상": "https://www.youtube.com/watch?v=0fRpxsBo4CU",
-        "악보": ""
-      },
-      {
-        "제목": "사람이 꽃보다 아름다워",
-        "가수": "안치환",
-        "Vocal": "조셉",
-        "Guitar 1": "지미",
-        "Guitar 2": "",
-        "Bass": "스티브",
-        "Keyboard": "제이",
-        "Drum": "그루브",
-        "영상": "https://www.youtube.com/watch?v=6JKo5VVgS-0",
-        "악보": ""
-      },
-      {
-        "제목": "너를 위해",
-        "가수": "임재범",
-        "Vocal": "제이",
-        "Guitar 1": "준",
-        "Guitar 2": "",
-        "Bass": "스티브",
-        "Keyboard": "듀이",
-        "Drum": "그루브",
-        "영상": "https://www.youtube.com/watch?v=SgmJ5Yk89-0",
-        "악보": ""
-      }
-    ];
+    const fallbackSongs = [];
     let songs = [];
 
     function parseCsv(text) {
@@ -381,6 +317,20 @@
       document.querySelectorAll(".panel").forEach(panel => panel.classList.remove("active"));
       document.querySelectorAll(".tab-button").forEach(button => button.classList.toggle("active", button.dataset.panel === id));
       document.getElementById(`panel-${id}`).classList.add("active");
+    }
+
+    function copyText(text) {
+      if (!navigator.clipboard) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        alert('Copied: ' + text);
+        return;
+      }
+      navigator.clipboard.writeText(text).then(() => alert('Copied: ' + text)).catch(() => alert('Failed to copy'));
     }
 
     document.getElementById("search-input").addEventListener("input", renderSongs);
