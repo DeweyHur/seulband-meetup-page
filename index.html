@@ -42,7 +42,7 @@
     <div class="relative mx-auto max-w-5xl px-5 pb-20 pt-14">
       <span class="inline-flex rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.18em] text-amber-200">Biweekly Band Meetup</span>
       <h1 class="mt-5 max-w-3xl text-4xl font-black tracking-tight text-white md:text-6xl">슬기로운 밴드생활 정모</h1>
-      <p class="mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-200">격주로 모여 합주할 곡과 파트 현황을 한눈에 보는 페이지입니다. 다음 정모는 7월 1일 저녁 7시 30분부터 10시까지 진행합니다. 현재 준비된 곡은 없습니다 — 스프레드시트에 새로 곡 7곡 정도를 등록해 주세요.</p>
+      <p id="hero-description" class="mt-4 max-w-2xl text-sm font-medium leading-6 text-slate-200">격주로 모여 합주할 곡과 파트 현황을 한눈에 보는 페이지입니다. 다음 정모는 6월 3일 저녁 7시 30분부터 10시까지 진행합니다.</p>
       <div class="mt-6 flex flex-wrap gap-2">
         <button class="rounded-xl bg-amber-300 px-5 py-3 text-sm font-black text-slate-950 hover:bg-amber-200" onclick="switchPanel('songs')">곡 현황 보기</button>
         <a class="rounded-xl border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white hover:bg-white/15" href="https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/edit#gid=272845446" target="_blank" rel="noreferrer">참여 정보 수정</a>
@@ -82,18 +82,19 @@
         <div class="mt-3 grid gap-4 md:grid-cols-[1fr_auto] md:items-end">
           <div>
             <div class="inline-flex flex-wrap items-center gap-2 rounded-lg border border-amber-300/30 bg-amber-300/10 px-4 py-3">
-              <span class="text-3xl font-black text-white">7월 1일 수요일</span>
-              <span class="rounded-md bg-amber-300 px-2.5 py-1 text-sm font-black text-slate-950">7:30 PM - 11:00 PM</span>
+              <span id="meetup-date-label" class="text-3xl font-black text-white">6월 3일 수요일</span>
+              <span id="meetup-time-label" class="rounded-md bg-amber-300 px-2.5 py-1 text-sm font-black text-slate-950">7:30 PM - 10:00 PM</span>
             </div>
             <ul class="mt-3 max-w-2xl space-y-2 text-sm leading-6 text-slate-300">
               <li>📍 422 S Western Ave, Los Angeles, CA 90020에서 만나요.</li>
               <li>🥤 간단한 다과는 좋아요. 같이 나눌 음료나 간식이 있으면 편하게 가져와주세요.</li>
               <li>🎸 악기는 개인 악기 사용이 우선입니다. 준비가 어렵다면 미리 문의해주세요.</li>
               <li>💵 입장료: $10 — 사인업하신 분들이나 오실 분들은 모두 입장료를 송금해 주세요. (벤모, 젤 계정이 static에 추가되어 있습니다.)</li>
+              <li>🎬 모든 곡들은 첨부된 영상 기준입니다. 송폼은 영상을 기준으로 맞춰주세요.</li>
             </ul>
           </div>
           <div class="flex flex-wrap gap-2 md:justify-end">
-            <a class="rounded-lg bg-amber-300 px-4 py-3 text-xs font-black text-slate-950 hover:bg-amber-200" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%EC%8A%AC%EA%B8%B0%EB%A1%9C%EC%9A%B4%20%EB%B0%B4%EB%93%9C%EC%83%9D%ED%99%9C%20%EC%A0%95%EB%AA%A8&dates=20260604T023000Z/20260604T050000Z&details=%EA%B0%84%EB%8B%A8%ED%95%9C%20%EB%8B%A4%EA%B3%BC%EB%8A%94%20%EA%B0%80%EB%8A%A5%ED%95%98%EB%8B%88%20%EB%A7%88%EC%8B%A4%20%EA%B2%83%EC%9D%B4%EB%82%98%20%EB%A8%B9%EC%9D%84%20%EA%B2%83%EC%9D%80%20%EC%9E%90%EC%9C%A0%EB%A1%AD%EA%B2%8C%20%EB%93%A4%EA%B3%A0%20%EC%99%80%EC%A3%BC%EC%84%B8%EC%9A%94.%20%EC%95%85%EA%B8%B0%EB%8A%94%20%EB%B3%B8%EC%9D%B8%20%EA%B2%83%EC%9D%84%20%EC%82%AC%EC%9A%A9%ED%95%98%EB%8A%94%20%EA%B2%83%EC%9D%B4%20%EC%9A%B0%EC%84%A0%EC%9D%B4%EB%A9%B0%2C%20%EC%95%85%EA%B8%B0%EA%B0%80%20%EC%97%86%EB%8B%A4%EB%A9%B4%20%EB%AC%B8%EC%9D%98%20%EB%B6%80%ED%83%81%EB%93%9C%EB%A6%BD%EB%8B%88%EB%8B%A4.&location=422%20S%20Western%20Ave%2C%20Los%20Angeles%2C%20CA%2090020" target="_blank" rel="noreferrer">📅 일정에 추가</a>
+            <a id="calendar-link" class="rounded-lg bg-amber-300 px-4 py-3 text-xs font-black text-slate-950 hover:bg-amber-200" href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=%EC%8A%AC%EA%B8%B0%EB%A1%9C%EC%9A%B4%20%EB%B0%B4%EB%93%9C%EC%83%9D%ED%99%9C%20%EC%A0%95%EB%AA%A8&dates=20260604T023000Z/20260604T050000Z&details=%EA%B0%84%EB%8B%A8%ED%95%9C%20%EB%8B%A4%EA%B3%BC%EB%8A%94%20%EC%A2%8B%EC%95%84%EC%9A%94.%20%EA%B0%99%EC%9D%B4%20%EB%82%98%EB%88%8C%20%EC%9D%8C%EB%A3%8C%EB%82%98%20%EA%B0%84%EC%8B%9D%EC%9D%B4%20%EC%9E%88%EC%9C%BC%EB%A9%B4%20%ED%8E%B8%ED%95%98%EA%B2%8C%20%EA%B0%80%EC%A0%B8%EC%99%80%EC%A3%BC%EC%84%B8%EC%9A%94.%20%EC%95%85%EA%B8%B0%EB%8A%94%20%EA%B0%9C%EC%9D%B8%20%EC%95%85%EA%B8%B0%20%EC%82%AC%EC%9A%A9%EC%9D%B4%20%EC%9A%B0%EC%84%A0%EC%9E%85%EB%8B%88%EB%8B%A4.%20%EC%A4%80%EB%B9%84%EA%B0%80%20%EC%96%B4%EB%A0%B5%EB%8B%A4%EB%A9%B4%20%EB%AF%B8%EB%A6%AC%20%EB%AC%B8%EC%9D%98%ED%95%B4%EC%A3%BC%EC%84%B8%EC%9A%94.%20%EB%AA%A8%EB%93%A0%20%EA%B3%A1%EB%93%A4%EC%9D%80%20%EC%B2%A8%EB%B6%80%EB%90%9C%20%EC%98%81%EC%83%81%20%EA%B8%B0%EC%A4%80%EC%9E%85%EB%8B%88%EB%8B%A4.%20%EC%86%A1%ED%8F%BC%EC%9D%80%20%EC%98%81%EC%83%81%EC%9D%84%20%EA%B8%B0%EC%A4%80%EC%9C%BC%EB%A1%9C%20%EB%A7%9E%EC%B6%B0%EC%A3%BC%EC%84%B8%EC%9A%94.&location=422%20S%20Western%20Ave%2C%20Los%20Angeles%2C%20CA%2090020" target="_blank" rel="noreferrer">📅 일정에 추가</a>
             <a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-4 py-3 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="https://www.google.com/maps/search/?api=1&query=422%20S%20Western%20Ave%2C%20Los%20Angeles%2C%20CA%2090020" target="_blank" rel="noreferrer">🗺️ 지도 열기</a>
           </div>
         </div>
@@ -151,10 +152,18 @@
   </main>
 
   <script>
-    const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&gid=272845446";
-    const roles = ["Vocal", "Guitar 1", "Guitar 2", "Bass", "Keyboard", "Drum"];
+    const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&sheet=Signup_3&headers=0";
+    const meetupDefaults = {
+      date: "2026-06-03",
+      startTime: "19:30",
+      endTime: "22:00",
+      location: "422 S Western Ave, Los Angeles, CA 90020"
+    };
+    let meetupInfo = { ...meetupDefaults };
+    const roles = ["Vocal 1", "Vocal 2", "Guitar 1", "Guitar 2", "Bass", "Keyboard", "Drum"];
     const roleEmoji = {
-      "Vocal": "🎤",
+      "Vocal 1": "🎤",
+      "Vocal 2": "🎤",
       "Guitar 1": "🎸",
       "Guitar 2": "🎸",
       "Bass": "🎸",
@@ -164,7 +173,7 @@
     const fallbackSongs = [];
     let songs = [];
 
-    function parseCsv(text) {
+    function parseCsvRows(text) {
       const rows = [];
       let row = [], cell = "", quoted = false;
       for (let i = 0; i < text.length; i++) {
@@ -183,8 +192,41 @@
       }
       row.push(cell);
       if (row.some(value => value.trim())) rows.push(row);
-      const headers = rows.shift() || [];
-      return rows.map(values => Object.fromEntries(headers.map((header, index) => [header.trim(), (values[index] || "").trim()])));
+      return rows;
+    }
+
+    function parseCsv(text) {
+      return parseSongRows(parseCsvRows(text));
+    }
+
+    function parseSongRows(rows) {
+      const headerIndex = rows.findIndex(row => row.some(value => value.trim() === "제목"));
+      const headers = headerIndex >= 0 ? rows[headerIndex] : rows.shift() || [];
+      const dataRows = headerIndex >= 0 ? rows.slice(headerIndex + 1) : rows;
+      return dataRows.map(values => Object.fromEntries(headers.map((header, index) => [header.trim(), (values[index] || "").trim()])));
+    }
+
+    function parseSheet(text) {
+      const rows = parseCsvRows(text);
+      const headerIndex = rows.findIndex(row => row.some(value => value.trim() === "제목"));
+      const metaRows = headerIndex > 0 ? rows.slice(0, headerIndex) : [];
+      return {
+        songs: parseSongRows(rows).filter(song => song["제목"]),
+        meetupInfo: parseMeetupInfo(metaRows)
+      };
+    }
+
+    function parseMeetupInfo(rows) {
+      const info = {};
+      rows.forEach(row => {
+        const key = (row[0] || "").trim().toLowerCase();
+        const value = (row[1] || "").trim();
+        if (!key || !value) return;
+        if (["날짜", "date", "meetup date", "next meetup"].includes(key)) info.date = value;
+        if (["시작", "시작시간", "start", "start time"].includes(key)) info.startTime = value;
+        if (["종료", "종료시간", "end", "end time"].includes(key)) info.endTime = value;
+      });
+      return info;
     }
 
     function names(value) {
@@ -199,6 +241,75 @@
     function isOpen(value) {
       const text = (value || "").trim().toLowerCase();
       return ["open", "<open>", "빈자리", "모집"].includes(text);
+    }
+
+    function parseDateValue(value) {
+      const text = (value || "").trim();
+      if (!text) return null;
+      const isoMatch = text.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})$/);
+      if (isoMatch) {
+        return new Date(Number(isoMatch[1]), Number(isoMatch[2]) - 1, Number(isoMatch[3]));
+      }
+      const koMatch = text.match(/(?:(\d{4})년\s*)?(\d{1,2})월\s*(\d{1,2})일/);
+      if (koMatch) {
+        const year = koMatch[1] ? Number(koMatch[1]) : new Date().getFullYear();
+        return new Date(year, Number(koMatch[2]) - 1, Number(koMatch[3]));
+      }
+      const parsed = new Date(text);
+      return Number.isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    function normalizeTime(value, fallback) {
+      const text = (value || "").trim();
+      const match = text.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
+      if (!match) return fallback;
+      let hour = Number(match[1]);
+      const minute = match[2] || "00";
+      const period = (match[3] || "").toLowerCase();
+      if (period === "pm" && hour < 12) hour += 12;
+      if (period === "am" && hour === 12) hour = 0;
+      return `${String(hour).padStart(2, "0")}:${minute}`;
+    }
+
+    function displayTime(value) {
+      const [hourText, minuteText] = normalizeTime(value, value).split(":");
+      let hour = Number(hourText);
+      const period = hour >= 12 ? "PM" : "AM";
+      hour = hour % 12 || 12;
+      return `${hour}:${minuteText} ${period}`;
+    }
+
+    function calendarDate(date, time) {
+      const [hour, minute] = normalizeTime(time, time).split(":").map(Number);
+      const local = new Date(date.getFullYear(), date.getMonth(), date.getDate(), hour, minute);
+      return local.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}Z$/, "Z");
+    }
+
+    function updateMeetupDisplay() {
+      const date = parseDateValue(meetupInfo.date);
+      const startTime = normalizeTime(meetupInfo.startTime, meetupDefaults.startTime);
+      const endTime = normalizeTime(meetupInfo.endTime, meetupDefaults.endTime);
+      if (!date) return;
+
+      const dateLabel = date.toLocaleDateString("ko-KR", { month: "long", day: "numeric", weekday: "long" });
+      document.getElementById("meetup-date-label").textContent = dateLabel.replace(/\s/g, " ");
+      document.getElementById("meetup-time-label").textContent = `${displayTime(startTime)} - ${displayTime(endTime)}`;
+      document.getElementById("hero-description").textContent = `격주로 모여 합주할 곡과 파트 현황을 한눈에 보는 페이지입니다. 다음 정모는 ${dateLabel} 저녁 ${displayTime(startTime)}부터 ${displayTime(endTime)}까지 진행합니다.`;
+
+      const details = [
+        "간단한 다과는 좋아요. 같이 나눌 음료나 간식이 있으면 편하게 가져와주세요.",
+        "악기는 개인 악기 사용이 우선입니다. 준비가 어렵다면 미리 문의해주세요.",
+        "입장료는 $10입니다. 사인업하신 분들이나 오실 분들은 모두 입장료를 송금해 주세요.",
+        "모든 곡들은 첨부된 영상 기준입니다. 송폼은 영상을 기준으로 맞춰주세요."
+      ].join(" ");
+      const params = new URLSearchParams({
+        action: "TEMPLATE",
+        text: "슬기로운 밴드생활 정모",
+        dates: `${calendarDate(date, startTime)}/${calendarDate(date, endTime)}`,
+        details,
+        location: meetupInfo.location || meetupDefaults.location
+      });
+      document.getElementById("calendar-link").href = `https://calendar.google.com/calendar/render?${params.toString()}`;
     }
 
     function openRoles(song) {
@@ -218,6 +329,11 @@
     function sheetLink(song) {
       const value = song["악보"] || "";
       return /^https?:\/\//.test(value) ? `<a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="${value}" target="_blank" rel="noreferrer">악보</a>` : "";
+    }
+
+    function songCode(song) {
+      const value = (song["코드"] || "").trim();
+      return value ? `<span class="rounded-md border border-amber-300/40 bg-amber-300/10 px-2.5 py-1 text-xs font-black text-amber-200">Key ${value}</span>` : "";
     }
 
     function rolePills(song) {
@@ -249,7 +365,10 @@
               <span class="text-xs font-bold text-slate-500">#${index + 1}</span>
             </div>
             <h3 class="mt-3 text-xl font-black text-white">${song["제목"] || "Untitled"}</h3>
-            <p class="mt-1 text-sm font-medium text-slate-400">${song["가수"] || "가수 미정"}</p>
+            <div class="mt-1 flex flex-wrap items-center gap-2">
+              <p class="text-sm font-medium text-slate-400">${song["가수"] || "가수 미정"}</p>
+              ${songCode(song)}
+            </div>
           </div>
           <div class="flex shrink-0 gap-2">
             <a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="${linkForVideo(song)}" target="_blank" rel="noreferrer">영상</a>
@@ -307,6 +426,7 @@
     }
 
     function renderAll() {
+      updateMeetupDisplay();
       renderStats();
       renderOverview();
       renderSongs();
@@ -386,11 +506,12 @@
     fetch(sheetCsvUrl)
       .then(response => response.ok ? response.text() : Promise.reject(new Error("sheet fetch failed")))
       .then(text => {
-        const sheetSongs = parseCsv(text).filter(song => song["제목"]);
-        if (sheetSongs.length) {
-          songs = sheetSongs;
-          renderAll();
+        const sheet = parseSheet(text);
+        meetupInfo = { ...meetupInfo, ...sheet.meetupInfo };
+        if (sheet.songs.length) {
+          songs = sheet.songs;
         }
+        renderAll();
       })
       .catch(() => {});
   </script>
