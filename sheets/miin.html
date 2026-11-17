@@ -120,19 +120,19 @@
           <p class="mt-1 text-sm text-slate-300">원곡: 신중현과 엽전들 · 편곡/연주: 윤하 & 시나위 (MBC 피크닉 라이브 소풍 EP.20)</p>
         </div>
         <div class="rounded-lg border border-amber-300/30 bg-amber-300/5 p-3.5 text-xs leading-5 text-amber-100 lg:max-w-md">
-          <p class="font-black text-amber-300">💡 합주 핵심 테마 정의</p>
+          <p class="font-black text-amber-300">💡 합주 핵심 구조 (대칭 사이클)</p>
           <ul class="mt-1 list-disc space-y-0.5 pl-4 text-slate-200">
-            <li><strong class="text-amber-200">Theme A:</strong> 파워코드 리프 (<code class="mono text-amber-200">A5</code>)</li>
-            <li><strong class="text-amber-200">Theme B:</strong> 메인 테마 리프 (<code class="mono text-amber-200">Am7</code> 유니즌 펜타토닉 리프)</li>
-            <li><strong class="text-amber-200">Theme C:</strong> Chorus (8마디: <code class="mono text-amber-200">F C E F | D C E F</code>) + Post-Chorus (⚠️ 3마디: <code class="mono text-amber-200">F6 C6 | G | D (4박 C)</code>)</li>
-            <li><strong>개별 마디(Bar) 박스를 클릭</strong>하면 해당 마디 위치로 바로 이동합니다.</li>
+            <li><strong class="text-amber-200">1절 사이클:</strong> Theme A (4) → Theme B (8) → Verse 1 (16) → Theme C (11)</li>
+            <li><strong class="text-amber-200">2절 사이클:</strong> Theme A (4) → Theme B (4) → Verse 2 (16) → Theme C (11)</li>
+            <li><strong class="text-amber-200">솔로 사이클:</strong> Theme A (4) → Guitar Solo (16) → Theme B (4) → Theme C (11)</li>
+            <li><strong class="text-amber-200">마무리:</strong> Outro (8 + 엔딩)</li>
           </ul>
         </div>
       </div>
 
       <!-- Flow Map -->
       <div class="mt-5 border-t border-[#253149] pt-4">
-        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400">전체 송폼 플로우 (클릭 시 구간 이동)</p>
+        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400">전체 송폼 플로우 (클릭 시 해당 섹션 이동)</p>
         <div id="flow-bar" class="mt-2.5 flex flex-wrap gap-1.5"></div>
       </div>
     </header>
@@ -171,14 +171,14 @@
         <div class="rounded-xl border border-[#253149] bg-[#10182a] p-4 space-y-3">
           <h2 class="text-sm font-black text-white">🎸 핵심 테마 (Theme A · B · C) 요약</h2>
           <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
-            <p class="font-black text-amber-300">Theme A — 파워코드 리프</p>
-            <p class="mono text-[11px] text-slate-200">| A5 (G5-A5) | A5 (G5-A5) |</p>
-            <p class="text-slate-400">묵직한 A5 파워코드 리프 + 블루스 필인</p>
+            <p class="font-black text-amber-300">Theme A — 파워코드 리프 (4마디)</p>
+            <p class="mono text-[11px] text-slate-200">| A5 | A5 | A5 | A5 |</p>
+            <p class="text-slate-400">묵직한 A5 파워코드 리프 + 블루스 필인 (2회차 첫 마디는 기타 브레이크)</p>
           </div>
           <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
             <p class="font-black text-sky-300">Theme B — 메인 테마 (Am7)</p>
             <p class="mono text-[11px] text-slate-200">| Am7 | Am7 | (전 구간 Am7)</p>
-            <p class="text-slate-400">2마디 단위 메인 펜타토닉 리프 · 기타 & 건반 유니즌</p>
+            <p class="text-slate-400">1회차(인트로)는 8마디, 2·3회차는 4마디 진행</p>
           </div>
           <div class="rounded-lg border border-amber-500/40 bg-[#2b1608] p-3 text-xs space-y-1.5">
             <p class="font-black text-emerald-300">Theme C — Chorus (8마디) + Post-Chorus (3마디)</p>
@@ -198,7 +198,6 @@
     const VIDEO_ID = "QNKGhkJU8-M";
     let autoScroll = true;
 
-    // Helper to generate evenly spaced 1-bar items across [start, end]
     function makeBars(start, end, items) {
       const count = items.length;
       const dur = (end - start) / count;
@@ -232,9 +231,9 @@
         ]
       },
       {
-        id: "intro-a",
-        name: "Intro A (Theme A)",
-        koName: "인트로 A — 파워코드 리프",
+        id: "theme-a-1",
+        name: "Theme A",
+        koName: "파워코드 리프 (Intro)",
         start: 2.6,
         end: 12.3,
         timeLabel: "00:02 ~ 00:12",
@@ -242,39 +241,39 @@
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
         summary: "Theme A (파워코드 리프) 4마디: A5 - G5 - A5 헤비 리프 2마디 + 리프 위 기타 블루스 필인 2마디",
         chords: makeBars(2.6, 12.3, [
-          { bar: "1", code: "A5 (Theme A)", sub: "파워코드 리프" },
-          { bar: "2", code: "A5 (Theme A)", sub: "파워코드 리프" },
-          { bar: "3", code: "A5 (Theme A)", sub: "+ 기타 블루스 릭" },
-          { bar: "4", code: "A5 (Theme A)", sub: "+ 기타 릭 마무리" }
+          { bar: "1", code: "A5", sub: "파워코드 리프" },
+          { bar: "2", code: "A5", sub: "파워코드 리프" },
+          { bar: "3", code: "A5", sub: "+ 기타 블루스 릭" },
+          { bar: "4", code: "A5", sub: "+ 기타 릭 마무리" }
         ]),
         cues: [
-          "🎸 기타/베이스: Theme A — 묵직한 A5 파워코드 그루브 (중간 G5 투투 포인트)",
+          "🎸 기타/베이스: 묵직한 A5 파워코드 그루브 (중간 G5 투투 포인트)",
           "🎸 리드기타: 3~4마디(00:07~)에서 하이 포지션 블루스 벤딩 필인"
         ]
       },
       {
-        id: "intro-b",
-        name: "Intro B (Theme B)",
-        koName: "인트로 B — 메인 테마",
+        id: "theme-b-1",
+        name: "Theme B",
+        koName: "메인 테마 (Intro — 8마디)",
         start: 12.3,
         end: 31.7,
         timeLabel: "00:12 ~ 00:31",
         bars: "8마디",
-        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
-        summary: "8마디 전체 Am7 — Theme B (메인 테마) 4마디 → Am7 브레이크 & 변주 2마디 → Theme B 2마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "8마디 전체 Am7 — 메인 테마 4마디 → Am7 브레이크 & 변주 2마디 → 메인 테마 2마디",
         chords: makeBars(12.3, 31.7, [
-          { bar: "1", code: "Am7 (Theme B)", sub: "메인 테마 1 (전반)" },
-          { bar: "2", code: "Am7 (Theme B)", sub: "메인 테마 1 (후반)" },
-          { bar: "3", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
-          { bar: "4", code: "Am7 (Theme B)", sub: "메인 테마 2 (후반)" },
+          { bar: "1", code: "Am7", sub: "메인 테마 1 (전반)" },
+          { bar: "2", code: "Am7", sub: "메인 테마 1 (후반)" },
+          { bar: "3", code: "Am7", sub: "메인 테마 2 (전반)" },
+          { bar: "4", code: "Am7", sub: "메인 테마 2 (후반)" },
           { bar: "5", code: "Am7 (Break)", sub: "00:22 스탑 & 블루스 릭", type: "stop" },
           { bar: "6", code: "Am7 (Groove)", sub: "00:24 리듬 변주 백킹", type: "warn" },
-          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 복귀 (전반)" },
-          { bar: "8", code: "Am7 (Theme B)", sub: "끝 박 보컬 픽업" }
+          { bar: "7", code: "Am7", sub: "메인 테마 복귀 (전반)" },
+          { bar: "8", code: "Am7", sub: "끝 박 보컬 픽업" }
         ]),
         cues: [
-          "🎸🎹 기타 & 건반: Intro B 8마디는 모두 Am7 코드로 진행됩니다.",
-          "🛑 5~6마디 (00:22~00:26): Am7 위에서 5마디 첫 박 스탑 & 기타 블루스 필인 → 6마디 리듬 백킹 후 7~8마디 Theme B 복귀",
+          "🎸🎹 기타 & 건반: Theme B 8마디는 모두 Am7 코드로 진행됩니다.",
+          "🛑 5~6마디 (00:22~00:26): Am7 위에서 5마디 첫 박 스탑 & 기타 블루스 필인 → 6마디 리듬 백킹 후 7~8마디 메인 테마 복귀",
           "🎤 보컬: 8마디 마지막 박('한 번 보고~') 픽업 진입"
         ]
       },
@@ -313,14 +312,14 @@
       },
       {
         id: "theme-c-1",
-        name: "Theme C 1 (Chorus 1 + Post-Chorus 1)",
-        koName: "후렴 1 + 연결부 1",
+        name: "Theme C",
+        koName: "Chorus 1 (8마디) + Post-Chorus 1 (3마디)",
         start: 70.4,
         end: 97.0,
         timeLabel: "01:10 ~ 01:37",
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
-        summary: "Theme C = Chorus 1 (8마디: F C E F | D C E F) + Post-Chorus 1 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
+        summary: "Chorus 1 (8마디: F C E F | D C E F) + Post-Chorus 1 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
         chords: makeBars(70.4, 97.0, [
           { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
           { bar: "2", code: "C", sub: "~랑하네" },
@@ -340,28 +339,43 @@
         ]
       },
       {
-        id: "interlude",
-        name: "Interlude (Break + Theme A + Theme B)",
-        koName: "간주 (기타 브레이크 + Theme A + Theme B)",
+        id: "theme-a-2",
+        name: "Theme A",
+        koName: "기타 브레이크 (1마디) + 파워코드 리프 (3마디)",
         start: 97.0,
-        end: 116.4,
-        timeLabel: "01:37 ~ 01:56",
-        bars: "8마디 (1+3+4)",
-        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
-        summary: "1마디 기타 무반주 브레이크 릭 → Theme A (파워코드 리프) 3마디 → Theme B (메인 테마) 4마디",
-        chords: makeBars(97.0, 116.4, [
+        end: 106.7,
+        timeLabel: "01:37 ~ 01:46",
+        bars: "4마디 (1+3)",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "첫 1마디 밴드 스탑 & 기타 단독 블루스 릭 → 2~4마디 A5 파워코드 리프",
+        chords: makeBars(97.0, 106.7, [
           { bar: "1", code: "Am (Stop/Break)", sub: "01:37 기타 단독 블루스 릭", type: "stop" },
-          { bar: "2", code: "A5 (Theme A)", sub: "01:39 파워코드 리프 진입" },
-          { bar: "3", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭" },
-          { bar: "4", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭" },
-          { bar: "5", code: "Am7 (Theme B)", sub: "01:46 메인 테마 1 (전반)" },
-          { bar: "6", code: "Am7 (Theme B)", sub: "메인 테마 1 (후반)" },
-          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
-          { bar: "8", code: "Am7 (Theme B)", sub: "메인 테마 2 + 보컬 픽업" }
+          { bar: "2", code: "A5", sub: "01:39 파워코드 리프 진입" },
+          { bar: "3", code: "A5", sub: "파워코드 리프 + 기타 릭" },
+          { bar: "4", code: "A5", sub: "파워코드 리프 + 기타 릭" }
         ]),
         cues: [
-          "🛑 1마디 (01:37~01:39.5): Post-Chorus 직후 밴드 전체 스탑! 리드기타 혼자 1마디 블루스 릭 연주 후 드럼 필인으로 2마디째(01:39.5) Theme A 진입",
-          "🎸 5~8마디 (01:46.7~01:56.4): Theme B (메인 테마) 2회 반복 (4마디) 후 바로 2절 진입"
+          "🛑 1마디 (01:37~01:39.5): Theme C 직후 밴드 전체 스탑! 리드기타 혼자 1마디 블루스 릭 연주 후 드럼 필인으로 2마디째(01:39.5) A5 파워코드 리프 진입"
+        ]
+      },
+      {
+        id: "theme-b-2",
+        name: "Theme B",
+        koName: "메인 테마 (4마디)",
+        start: 106.7,
+        end: 116.4,
+        timeLabel: "01:46 ~ 01:56",
+        bars: "4마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "Am7 메인 테마 리프 2회 반복 (4마디) 후 2절 진입",
+        chords: makeBars(106.7, 116.4, [
+          { bar: "1", code: "Am7", sub: "01:46 메인 테마 1 (전반)" },
+          { bar: "2", code: "Am7", sub: "메인 테마 1 (후반)" },
+          { bar: "3", code: "Am7", sub: "메인 테마 2 (전반)" },
+          { bar: "4", code: "Am7", sub: "메인 테마 2 + 2절 픽업" }
+        ]),
+        cues: [
+          "🎸🎹 기타 & 건반: 브레이크 변주 없이 깔끔하게 메인 테마 4마디 연주 후 바로 2절 보컬 픽업"
         ]
       },
       {
@@ -399,14 +413,14 @@
       },
       {
         id: "theme-c-2",
-        name: "Theme C 2 (Chorus 2 + Post-Chorus 2)",
-        koName: "후렴 2 + 연결부 2",
+        name: "Theme C",
+        koName: "Chorus 2 (8마디) + Post-Chorus 2 (3마디)",
         start: 155.4,
         end: 182.3,
         timeLabel: "02:35 ~ 03:02",
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
-        summary: "Theme C = Chorus 2 (8마디: F C E F | D C E F) + Post-Chorus 2 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
+        summary: "Chorus 2 (8마디: F C E F | D C E F) + Post-Chorus 2 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
         chords: makeBars(155.4, 182.3, [
           { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
           { bar: "2", code: "C", sub: "~랑하네" },
@@ -426,58 +440,88 @@
         ]
       },
       {
-        id: "guitar-solo",
-        name: "Guitar Solo (Theme A + Solo + Theme B)",
-        koName: "기타 솔로 & 밴드 잼",
+        id: "theme-a-3",
+        name: "Theme A",
+        koName: "파워코드 리프 (솔로 도입부 — 4마디)",
         start: 182.3,
-        end: 240.8,
-        timeLabel: "03:02 ~ 04:01",
-        bars: "24마디 (4+8+8+4)",
-        badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
-        summary: "Theme A 빌드업(4마디) → 솔로 전반 Am 원코드(8마디) → 솔로 후반 코드 백킹(8마디) → Theme B 메인 테마(4마디)",
-        chords: makeBars(182.3, 240.8, [
-          { bar: "1 (Theme A)", code: "A5 (Theme A)", sub: "03:02 파워코드 리프 1" },
-          { bar: "2 (Theme A)", code: "A5 (Theme A)", sub: "파워코드 리프 2" },
-          { bar: "3 (Theme A)", code: "A5 (Theme A)", sub: "파워코드 리프 3" },
-          { bar: "4 (Theme A)", code: "A5 (Theme A)", sub: "리프 4 (끝에 'Hey!')" },
-          { bar: "5 (Solo 1)", code: "Am7", sub: "03:12 와우 & 블루스 솔로" },
-          { bar: "6 (Solo 2)", code: "Am7", sub: "블루스 록 솔로" },
-          { bar: "7 (Solo 3)", code: "Am7", sub: "블루스 록 솔로" },
-          { bar: "8 (Solo 4)", code: "Am7", sub: "솔로 프레이즈 전환" },
-          { bar: "9 (Solo 5)", code: "Am7", sub: "03:21 하이 벤딩 & 속주" },
-          { bar: "10 (Solo 6)", code: "Am7", sub: "속주 진행" },
-          { bar: "11 (Solo 7)", code: "Am7", sub: "하이라이트 벤딩" },
-          { bar: "12 (Solo 8)", code: "Am7", sub: "후반부 전환 필인" },
-          { bar: "13 (Solo 9)", code: "Am7 (Open)", sub: "03:31 오픈 코드 백킹 시작", type: "warn" },
-          { bar: "14 (Solo 10)", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
-          { bar: "15 (Solo 11)", code: "Am7", sub: "리드미컬 솔로 백킹", type: "warn" },
-          { bar: "16 (Solo 12)", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
-          { bar: "17 (Solo 13)", code: "Am7", sub: "03:41 솔로 클라이맥스", type: "warn" },
-          { bar: "18 (Solo 14)", code: "Am7 / G", sub: "솔로 클라이맥스", type: "warn" },
-          { bar: "19 (Solo 15)", code: "D7 / F", sub: "03:46 텐션 빌드업 1", type: "stop" },
-          { bar: "20 (Solo 16)", code: "E7", sub: "텐션 빌드업 2 (솔로 피니시)", type: "stop" },
-          { bar: "21 (Theme B)", code: "Am7 (Theme B)", sub: "03:51 메인 테마 1 (전반)" },
-          { bar: "22 (Theme B)", code: "Am7 (Theme B)", sub: "03:54 '소리 질러!'" },
-          { bar: "23 (Theme B)", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
-          { bar: "24 (Theme B)", code: "Am7 (Theme B)", sub: "끝 박 Theme C 진입", type: "warn" }
+        end: 192.05,
+        timeLabel: "03:02 ~ 03:12",
+        bars: "4마디",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "기타 솔로 직전 에너지를 끌어올리는 A5 파워코드 리프 4마디 (4마디 끝 윤하 'Hey!')",
+        chords: makeBars(182.3, 192.05, [
+          { bar: "1", code: "A5", sub: "03:02 파워코드 리프 1" },
+          { bar: "2", code: "A5", sub: "파워코드 리프 2" },
+          { bar: "3", code: "A5", sub: "파워코드 리프 3" },
+          { bar: "4", code: "A5", sub: "리프 4 (끝에 'Hey!')" }
         ]),
         cues: [
-          "🎸 1~4마디 (03:02~03:12): Theme A (파워코드 리프) 4마디로 솔로 판을 깔아줍니다 (4마디 끝 윤하 'Hey!').",
-          "🎸 5~12마디 (03:12~03:31): Am7 원코드 하드록 백킹 위 기타 솔로 전반부 8마디.",
-          "🎸🎹 13~20마디 (03:31~03:51): 오픈 코드 리듬 백킹 위 솔로 후반부 8마디 (19~20마디 텐션 빌드업).",
-          "🎤 21~24마디 (03:51~04:01): Theme B (메인 테마) 4마디 복귀 (22마디 '소리 질러!' 큐)."
+          "🎸 전 파트: Post-Chorus 2 직후 브레이크 없이 첫 마디부터 다 같이 A5 파워코드 리프 연주 (03:11 윤하 'Hey!' 샤우팅 큐)"
+        ]
+      },
+      {
+        id: "guitar-solo",
+        name: "Guitar Solo",
+        koName: "기타 솔로 (16마디)",
+        start: 192.05,
+        end: 231.05,
+        timeLabel: "03:12 ~ 03:51",
+        bars: "16마디 (8+8)",
+        badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
+        summary: "솔로 전반 Am7 원코드(1~8마디) → 솔로 후반 오픈 코드 백킹 & 클라이맥스(9~16마디)",
+        chords: makeBars(192.05, 231.05, [
+          { bar: "1", code: "Am7", sub: "03:12 와우 & 블루스 솔로" },
+          { bar: "2", code: "Am7", sub: "블루스 록 솔로" },
+          { bar: "3", code: "Am7", sub: "블루스 록 솔로" },
+          { bar: "4", code: "Am7", sub: "솔로 프레이즈 전환" },
+          { bar: "5", code: "Am7", sub: "03:21 하이 벤딩 & 속주" },
+          { bar: "6", code: "Am7", sub: "속주 진행" },
+          { bar: "7", code: "Am7", sub: "하이라이트 벤딩" },
+          { bar: "8", code: "Am7", sub: "후반부 전환 필인" },
+          { bar: "9", code: "Am7 (Open)", sub: "03:31 오픈 코드 백킹 시작", type: "warn" },
+          { bar: "10", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "11", code: "Am7", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "12", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "13", code: "Am7", sub: "03:41 솔로 클라이맥스", type: "warn" },
+          { bar: "14", code: "Am7 / G", sub: "솔로 클라이맥스", type: "warn" },
+          { bar: "15", code: "D7 / F", sub: "03:46 텐션 빌드업 1", type: "stop" },
+          { bar: "16", code: "E7", sub: "텐션 빌드업 2 (솔로 피니시)", type: "stop" }
+        ]),
+        cues: [
+          "🎸 1~8마디 (03:12~03:31): Am7 원코드 하드록 백킹 위 기타 솔로 전반부 8마디.",
+          "🎸🎹 9~16마디 (03:31~03:51): 오픈 코드 리듬 백킹 위 솔로 후반부 8마디 (15~16마디 텐션 빌드업 후 Theme B로 복귀)."
+        ]
+      },
+      {
+        id: "theme-b-3",
+        name: "Theme B",
+        koName: "메인 테마 (4마디 — '소리 질러!')",
+        start: 231.05,
+        end: 240.8,
+        timeLabel: "03:51 ~ 04:01",
+        bars: "4마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "기타 솔로 직후 Am7 메인 테마 리프 2회 반복 (4마디) 후 마지막 Theme C 진입",
+        chords: makeBars(231.05, 240.8, [
+          { bar: "1", code: "Am7", sub: "03:51 메인 테마 1 (전반)" },
+          { bar: "2", code: "Am7", sub: "03:54 '소리 질러!'" },
+          { bar: "3", code: "Am7", sub: "메인 테마 2 (전반)" },
+          { bar: "4", code: "Am7", sub: "끝 박 Theme C 진입", type: "warn" }
+        ]),
+        cues: [
+          "🎤🎸 2마디째(03:54)에 보컬 '소리 질러!' 멘트 후 4마디 끝 드럼 필인으로 마지막 Theme C 진입"
         ]
       },
       {
         id: "theme-c-3",
-        name: "Theme C 3 (Chorus 3 + Post-Chorus 3)",
-        koName: "마지막 후렴 + 연결부 3",
+        name: "Theme C",
+        koName: "Chorus 3 (8마디) + Post-Chorus 3 (3마디)",
         start: 240.8,
         end: 267.7,
         timeLabel: "04:01 ~ 04:28",
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
-        summary: "Theme C = Chorus 3 (8마디: F C E F | D C E F) + Post-Chorus 3 (⚠️ 3마디: F6 C6 | G | D (4박 C) + 카운트)",
+        summary: "Chorus 3 (8마디: F C E F | D C E F) + Post-Chorus 3 (⚠️ 3마디: F6 C6 | G | D (4박 C) + 카운트)",
         chords: makeBars(240.8, 267.7, [
           { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
           { bar: "2", code: "C", sub: "~랑하네" },
@@ -676,7 +720,6 @@
       const currentSec = sections.find(s => currentTime >= s.start && currentTime < s.end);
       const activeSecId = currentSec ? currentSec.id : null;
 
-      // Update section & flow pill highlights
       sections.forEach(sec => {
         const card = document.getElementById(`card-${sec.id}`);
         const pill = document.getElementById(`pill-${sec.id}`);
@@ -733,7 +776,7 @@
       if (currentSec) {
         if (lastActiveSectionId !== currentSec.id) {
           lastActiveSectionId = currentSec.id;
-          document.getElementById("current-section-label").textContent = `${currentSec.name} (${currentSec.bars})`;
+          document.getElementById("current-section-label").textContent = `${currentSec.name} · ${currentSec.koName} (${currentSec.bars})`;
         }
       } else {
         updateHudBeats(0);
