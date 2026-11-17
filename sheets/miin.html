@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미인 (윤하 & 시나위) - 송폼 & 코드 악보 | 슬기로운 밴드생활</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: "Noto Sans KR", system-ui, sans-serif; }
+    .mono { font-family: "JetBrains Mono", monospace; }
+    body { background: #0b1020; color: #e8edf8; }
+    .section-card { transition: border-color .15s ease, background-color .15s ease, transform .15s ease; }
+    .section-card:hover { border-color: #f6c95b88; }
+    .section-card.active-section {
+      border-color: #f6c95b !important;
+      background: #17223b !important;
+      box-shadow: 0 0 0 1px #f6c95b55, 0 10px 25px -5px rgba(246, 201, 91, 0.15);
+    }
+    .bar-box {
+      background: #0b1221;
+      border: 1px solid #253149;
+      min-height: 54px;
+    }
+    .bar-box.warn {
+      background: #2b1608;
+      border-color: #d97706;
+    }
+    .bar-box.stop {
+      background: #2a121f;
+      border-color: #e11d48;
+    }
+    .flow-pill { transition: all .15s ease; }
+    .flow-pill:hover { border-color: #f6c95b; color: #f6c95b; }
+    .flow-pill.active-pill { background: #f6c95b; color: #0b1020; border-color: #f6c95b; font-weight: 900; }
+    @media print {
+      body { background: #ffffff; color: #111827; }
+      .no-print { display: none !important; }
+      .section-card { break-inside: avoid; border-color: #d1d5db !important; background: #ffffff !important; color: #111827 !important; }
+      .bar-box { background: #f9fafb !important; border-color: #9ca3af !important; color: #111827 !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20">
+  <!-- Top Nav -->
+  <nav class="no-print sticky top-0 z-30 border-b border-[#1f2a44] bg-[#070b15]/95 px-4 py-3 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="rounded-lg border border-[#2b3955] bg-[#111a2d] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#18233a]">← 정모 홈</a>
+        <div>
+          <p class="text-sm font-black tracking-tight text-white">미인 — 윤하 & 시나위</p>
+          <p class="text-[11px] font-medium text-slate-400">피크닉 라이브 소풍 EP.20 기준 송폼 · 코드 시트</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="https://www.youtube.com/watch?v=QNKGhkJU8-M" target="_blank" rel="noreferrer" class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#172238]">▶ 원본 유튜브</a>
+        <button onclick="window.print()" class="rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-black text-slate-950 hover:bg-amber-200">🖨️ 인쇄 / PDF</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-6xl px-4 pt-6">
+    <!-- Song Header & Metadata -->
+    <header class="rounded-xl border border-[#253149] bg-[#10182a] p-6 shadow-xl">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-amber-200">Band Score & Song Form</span>
+            <span class="rounded-md bg-emerald-400/15 px-2.5 py-1 text-xs font-black text-emerald-300">Key: A Minor (Am)</span>
+            <span class="rounded-md bg-sky-400/15 px-2.5 py-1 text-xs font-black text-sky-300">Tempo: ~99 BPM (Double ~198)</span>
+            <span class="rounded-md bg-purple-400/15 px-2.5 py-1 text-xs font-black text-purple-300">4/4 박자</span>
+          </div>
+          <h1 class="mt-3 text-3xl font-black tracking-tight text-white md:text-4xl">미인 (윤하 & 시나위 Live Ver.)</h1>
+          <p class="mt-1 text-sm text-slate-300">원곡: 신중현과 엽전들 · 편곡/연주: 윤하 & 시나위 (MBC 피크닉 라이브 소풍 EP.20)</p>
+        </div>
+        <div class="rounded-lg border border-amber-300/30 bg-amber-300/5 p-3.5 text-xs leading-5 text-amber-100 lg:max-w-md">
+          <p class="font-black text-amber-300">💡 합주 핵심 체크</p>
+          <ul class="mt-1 list-disc space-y-0.5 pl-4 text-slate-200">
+            <li>일반 시나위 원곡(<code class="mono text-amber-200">Em</code>)이 아닌 <strong>여성 보컬 기준 <code class="mono text-amber-200">Am</code> 키</strong>입니다.</li>
+            <li>후렴 직후 <code class="mono text-amber-200">C - G - D</code> 연결부는 4마디가 아니라 <strong>3마디</strong>입니다.</li>
+            <li>각 구간 카드를 클릭하면 <strong>해당 타임스탬프로 영상이 즉시 이동</strong>합니다.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Flow Map -->
+      <div class="mt-5 border-t border-[#253149] pt-4">
+        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400">전체 송폼 플로우 (클릭 시 구간 이동)</p>
+        <div id="flow-bar" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+      </div>
+    </header>
+
+    <!-- Main Grid: Sticky Video Player + Interactive Sections -->
+    <div class="mt-6 grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start">
+      <!-- Left Column: Video & Quick Summary -->
+      <aside class="no-print space-y-4 lg:sticky lg:top-16">
+        <div class="overflow-hidden rounded-xl border border-[#253149] bg-[#10182a] shadow-xl">
+          <div class="aspect-video w-full bg-black">
+            <div id="yt-player" class="h-full w-full"></div>
+          </div>
+          <div class="p-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">현재 재생 구간</span>
+              <span id="current-time-label" class="mono rounded bg-[#0b1221] px-2 py-0.5 text-xs font-bold text-amber-300">00:00</span>
+            </div>
+            <p id="current-section-label" class="mt-1.5 text-base font-black text-white">대기 중 (구간을 클릭하세요)</p>
+            <p id="current-cue-label" class="mt-1 text-xs text-slate-300">구간 카드를 누르면 해당 위치부터 재생됩니다.</p>
+          </div>
+        </div>
+
+        <!-- Core Riff Cheat Sheet -->
+        <div class="rounded-xl border border-[#253149] bg-[#10182a] p-4 space-y-3">
+          <h2 class="text-sm font-black text-white">🎸 핵심 리프 & 코드 요약</h2>
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
+            <p class="font-black text-amber-300">1. 메인 테마 리프 (Am 펜타토닉 유니즌)</p>
+            <p class="mono text-[11px] text-slate-200">A - C - D - E (벤딩) / D - C - A - G - A</p>
+            <p class="text-slate-400">2마디 단위 반복 · 기타 & 건반(오르간) 유니즌</p>
+          </div>
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
+            <p class="font-black text-emerald-300">2. 후렴 (Chorus - 8마디)</p>
+            <p class="mono text-[11px] text-slate-200">| F | G | F | E7 | (×2회)</p>
+            <p class="text-slate-400">"모두 사랑하네(F-G) ~ 나도 사랑하네(F-E7)"</p>
+          </div>
+          <div class="rounded-lg border border-amber-500/40 bg-[#2b1608] p-3 text-xs space-y-1.5">
+            <p class="font-black text-amber-300">3. 후렴 직후 연결부 (⚠️ 3마디 주의!)</p>
+            <p class="mono text-[11px] text-amber-100">| C (4박) | G (4박) | D (3박) + F-G (4박째) |</p>
+            <p class="text-amber-200/80">4마디가 아닌 <strong>3마디</strong>만 연주 후 바로 Am로 진입!</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Detailed Section Cards -->
+      <section id="sections-container" class="space-y-4"></section>
+    </div>
+  </main>
+
+  <script>
+    const VIDEO_ID = "QNKGhkJU8-M";
+
+    const sections = [
+      {
+        id: "count-in",
+        name: "Count-in",
+        koName: "카운트인 & 드럼 필인",
+        start: 0,
+        end: 2.6,
+        timeLabel: "00:00 ~ 00:02",
+        bars: "1마디",
+        badgeClass: "bg-slate-700 text-slate-200",
+        summary: "드럼 하이햇 오픈 카운트 후 스네어/탐 필인으로 밴드 전체 진입",
+        chords: [
+          { bar: "Count", code: "N.C. (Drum Fill)", sub: "하이햇 + 필인 후 강박 진입", type: "normal" }
+        ],
+        cues: [
+          "🥁 드럼: 하이햇 카운트 후 4박 필인으로 밴드 전체 템포(~99 BPM) 제시",
+          "🎸 기타/베이스: 00:02.5 첫 강박 A5 파워코드 준비"
+        ]
+      },
+      {
+        id: "intro-a",
+        name: "Intro A",
+        koName: "인트로 A (파워코드 리프)",
+        start: 2.6,
+        end: 12.3,
+        timeLabel: "00:02 ~ 00:12",
+        bars: "4마디",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "강렬한 A5 - G5 - A5 하드록 리프 2마디 + 기타 블루스 필인 2마디",
+        chords: [
+          { bar: "1", code: "A5 (G5-A5)", sub: "헤비 리프", type: "normal" },
+          { bar: "2", code: "A5 (G5-A5)", sub: "헤비 리프", type: "normal" },
+          { bar: "3", code: "A5", sub: "+ 기타 블루스 릭", type: "normal" },
+          { bar: "4", code: "A5", sub: "+ 기타 릭 마무리", type: "normal" }
+        ],
+        cues: [
+          "🎸 기타/베이스: 묵직한 A5 파워코드 그루브 (중간 G5 투투 포인트)",
+          "🎸 리드기타: 3~4마디(00:07~)에서 하이 포지션 블루스 벤딩 필인"
+        ]
+      },
+      {
+        id: "intro-b",
+        name: "Intro B",
+        koName: "인트로 B (메인 테마 리프)",
+        start: 12.3,
+        end: 31.7,
+        timeLabel: "00:12 ~ 00:31",
+        bars: "8마디",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "메인 펜타토닉 리프 4마디 → D7 스탑 & F7-E7 변주 2마디 → 메인 리프 2마디",
+        chords: [
+          { bar: "1", code: "Am7", sub: "메인 리프 (전반)", type: "normal" },
+          { bar: "2", code: "Am7", sub: "메인 리프 (후반)", type: "normal" },
+          { bar: "3", code: "Am7", sub: "메인 리프 (전반)", type: "normal" },
+          { bar: "4", code: "Am7", sub: "메인 리프 (후반)", type: "normal" },
+          { bar: "5", code: "D7 (Break)", sub: "00:22 스탑 & 블루스 릭", type: "stop" },
+          { bar: "6", code: "F7   E7", sub: "00:24 반음 하행 백킹", type: "warn" },
+          { bar: "7", code: "Am7", sub: "메인 리프 복귀", type: "normal" },
+          { bar: "8", code: "Am7", sub: "끝 박 보컬 픽업", type: "normal" }
+        ],
+        cues: [
+          "🎸🎹 기타 & 건반: 1~4마디, 7~8마디 메인 테마 리프 유니즌",
+          "🛑 전 파트 주의 (5~6마디, 00:22~00:26): 5마디 첫 박 D7 히트 후 브레이크(기타 솔로 필인) → 6마디 F7(2박) - E7(2박) 연주",
+          "🎤 보컬: 8마디 마지막 박('한 번 보고~') 픽업 진입"
+        ]
+      },
+      {
+        id: "verse-1",
+        name: "Verse 1",
+        koName: "1절 (보컬 & 리프 주고받기)",
+        start: 31.7,
+        end: 70.4,
+        timeLabel: "00:31 ~ 01:10",
+        bars: "16마디 (4×4)",
+        badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
+        summary: "[보컬 2마디 (백킹 브레이크/오르간 패드) + 밴드 메인 리프 2마디] × 4세트",
+        chords: [
+          { bar: "1~2", code: "Am7 (Vocal)", sub: "① 한 번 보고 두 번 보고 자꾸만 보고 싶네", type: "normal" },
+          { bar: "3~4", code: "Am7 (Riff)", sub: "메인 테마 리프 (00:36~)", type: "normal" },
+          { bar: "5~6", code: "Am7 (Vocal)", sub: "② 아름다운 그 모습을 자꾸만 보고 싶네", type: "normal" },
+          { bar: "7~8", code: "Am7 (Riff)", sub: "메인 테마 리프 (00:46~)", type: "normal" },
+          { bar: "9~10", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면 자꾸만 보고 있네", type: "normal" },
+          { bar: "11~12", code: "Am7 (Riff)", sub: "메인 테마 리프 (00:55~)", type: "normal" },
+          { bar: "13~14", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가 정말로 궁금하네", type: "normal" },
+          { bar: "15~16", code: "Am7 (Riff)", sub: "메인 리프 + 16마디 끝 코러스 필인", type: "normal" }
+        ],
+        cues: [
+          "🎤 보컬 구간 (홀수 2마디): 기타/베이스는 공간감을 비워주고 건반 오르간 코드 & 드럼 백비트 위주로 백킹",
+          "🎸 연주 구간 (짝수 2마디): 보컬 어절이 끝나자마자('~싶네!') 메인 테마 리프 즉시 진입",
+          "🥁 드럼: 16마디 끝(01:09)에 크래시와 함께 후렴 오픈 필인"
+        ]
+      },
+      {
+        id: "chorus-1",
+        name: "Chorus 1",
+        koName: "후렴 1 (모두 사랑하네)",
+        start: 70.4,
+        end: 89.8,
+        timeLabel: "01:10 ~ 01:30",
+        bars: "8마디",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "F - G - F - E7 코드 진행 2회 반복 · 시원한 오픈 스트로크 & 오르간 패드",
+        chords: [
+          { bar: "1", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "2", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "3", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "4", code: "E7", sub: "~랑하네", type: "normal" },
+          { bar: "5", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "6", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "7", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "8", code: "E7", sub: "~랑하네 Yeah~", type: "normal" }
+        ],
+        cues: [
+          "🎸🎹 기타/건반/베이스: 각 코드 1마디씩 꽉 채운 서스테인 & 8비트 스트로크",
+          "🎤 보컬: 시원한 롱톤 후 8마디 끝에 'Yeah~' 애드리브"
+        ]
+      },
+      {
+        id: "post-chorus-1",
+        name: "Post-Chorus 1",
+        koName: "후렴 연결부 1 (⚠️ 3마디 주의!)",
+        start: 89.8,
+        end: 97.0,
+        timeLabel: "01:30 ~ 01:37",
+        bars: "⚠️ 3마디",
+        badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
+        summary: "C (1마디) → G (1마디) → D (3박 빌드업 + 4박째 F-G 커팅) 총 3마디!",
+        chords: [
+          { bar: "1", code: "C", sub: "메이저 펜타 리프 (4박)", type: "warn" },
+          { bar: "2", code: "G", sub: "G 리프 (4박)", type: "warn" },
+          { bar: "3", code: "D (3박) + F G", sub: "D 빌드업 후 4박째 F-G!", type: "warn" }
+        ],
+        cues: [
+          "⚠️ 가장 틀리기 쉬운 구간: 4마디가 아니라 정확히 3마디입니다!",
+          "🥁🎸 3번째 마디(D 코드)에서 8분음표로 달린 뒤 4박째에 'F - G' 두 번 끊어 치고 간주로 넘어갑니다."
+        ]
+      },
+      {
+        id: "interlude",
+        name: "Interlude",
+        koName: "간주 (기타 브레이크 + 리프)",
+        start: 97.0,
+        end: 116.4,
+        timeLabel: "01:37 ~ 01:56",
+        bars: "8마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "1마디 기타 무반주 브레이크 릭 → A5 파워코드 리프 3마디 → 메인 테마 리프 4마디",
+        chords: [
+          { bar: "1", code: "Am (Stop/Break)", sub: "01:37 기타 단독 블루스 릭", type: "stop" },
+          { bar: "2", code: "A5", sub: "01:39 파워코드 리프 진입", type: "normal" },
+          { bar: "3", code: "A5", sub: "파워코드 리프 + 기타 릭", type: "normal" },
+          { bar: "4", code: "A5", sub: "파워코드 리프 + 기타 릭", type: "normal" },
+          { bar: "5", code: "Am7", sub: "01:46 메인 리프 (전반)", type: "normal" },
+          { bar: "6", code: "Am7", sub: "메인 리프 (후반)", type: "normal" },
+          { bar: "7", code: "Am7", sub: "메인 리프 (전반)", type: "normal" },
+          { bar: "8", code: "Am7", sub: "메인 리프 + 2절 보컬 픽업", type: "normal" }
+        ],
+        cues: [
+          "🛑 1마디 (01:37~01:39.5): F-G 직후 밴드 전체 스탑! 리드기타 혼자 1마디 블루스 솔로 릭 연주 후 드럼 필인으로 2마디째(01:39.5) A5 리프 진입",
+          "🎸 5~8마디 (01:46.7~01:56.4): 메인 테마 리프 2회 반복 (인트로와 달리 여기서는 D7 변주 없이 4마디 후 바로 2절 진입!)"
+        ]
+      },
+      {
+        id: "verse-2",
+        name: "Verse 2",
+        koName: "2절 (보컬 & 리프 주고받기)",
+        start: 116.4,
+        end: 155.4,
+        timeLabel: "01:56 ~ 02:35",
+        bars: "16마디 (4×4)",
+        badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
+        summary: "1절과 동일한 16마디 구조 · 보컬 백킹 구간의 브레이크/타격감 강화",
+        chords: [
+          { bar: "1~2", code: "Am7 (Vocal)", sub: "① 한 번 보나 두 번 보나 그 여인을 자꾸만 보고 싶네", type: "normal" },
+          { bar: "3~4", code: "Am7 (Riff)", sub: "메인 테마 리프 (02:01~)", type: "normal" },
+          { bar: "5~6", code: "Am7 (Vocal)", sub: "② 그 누구나 마음 속엔 호기심이 자꾸만 보고 있네", type: "normal" },
+          { bar: "7~8", code: "Am7 (Riff)", sub: "메인 테마 리프 (02:11~)", type: "normal" },
+          { bar: "9~10", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면 자꾸만 보고 있네", type: "normal" },
+          { bar: "11~12", code: "Am7 (Riff)", sub: "메인 테마 리프 (02:20~)", type: "normal" },
+          { bar: "13~14", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가 정말로 궁금하네", type: "normal" },
+          { bar: "15~16", code: "Am7 (Riff)", sub: "메인 리프 + 코러스 진입 필인", type: "normal" }
+        ],
+        cues: [
+          "🥁🎸 2절 첫 프레이즈(01:56~02:00)는 1절보다 더 과감하게 백킹을 비워 보컬 라인을 부각시킵니다.",
+          "🎤 가사 차이: ① '한 번 보나 두 번 보나 그 여인을~' / ② '그 누구나 마음 속엔 호기심이~'"
+        ]
+      },
+      {
+        id: "chorus-2",
+        name: "Chorus 2",
+        koName: "후렴 2 (모두 사랑하네)",
+        start: 155.4,
+        end: 175.0,
+        timeLabel: "02:35 ~ 02:55",
+        bars: "8마디",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "후렴 1과 동일한 8마디 (F - G - F - E7 × 2회)",
+        chords: [
+          { bar: "1", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "2", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "3", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "4", code: "E7", sub: "~랑하네", type: "normal" },
+          { bar: "5", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "6", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "7", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "8", code: "E7", sub: "~랑하네 Yeah~", type: "normal" }
+        ],
+        cues: [
+          "🎤 보컬 & 밴드: 8마디 끝 E7에서 에너지 최고조로 끌어올린 뒤 연결부 C 코드 진입"
+        ]
+      },
+      {
+        id: "post-chorus-2",
+        name: "Post-Chorus 2",
+        koName: "후렴 연결부 2 (⚠️ 3마디 주의!)",
+        start: 175.0,
+        end: 182.3,
+        timeLabel: "02:55 ~ 03:02",
+        bars: "⚠️ 3마디",
+        badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
+        summary: "C (1마디) → G (1마디) → D (3박 빌드업 + 4박째 F-G 커팅) 총 3마디!",
+        chords: [
+          { bar: "1", code: "C", sub: "C 리프 (4박)", type: "warn" },
+          { bar: "2", code: "G", sub: "G 리프 (4박)", type: "warn" },
+          { bar: "3", code: "D (3박) + F G", sub: "4박째 F-G 후 바로 A5 리프!", type: "warn" }
+        ],
+        cues: [
+          "⚠️ 1절 후와 다른 점: 이번에는 F-G 직후 기타 무반주 브레이크 없이 바로 03:02에 전 파트 A5 파워코드 리프로 들어갑니다!"
+        ]
+      },
+      {
+        id: "guitar-solo",
+        name: "Guitar Solo",
+        koName: "기타 솔로 & 밴드 잼",
+        start: 182.3,
+        end: 240.8,
+        timeLabel: "03:02 ~ 04:01",
+        bars: "24마디 (4+8+8+4)",
+        badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
+        summary: "A5 리프 빌드업(4마디) → 솔로 전반 Am 원코드(8마디) → 솔로 후반 코드 백킹(8마디) → 메인 테마 리프(4마디)",
+        chords: [
+          { bar: "1~4", code: "A5 (Riff × 4)", sub: "03:02~03:12 파워코드 리프 4마디 (끝에 'Hey!')", type: "normal" },
+          { bar: "5~8", code: "Am7 (Solo 1-A)", sub: "03:12~03:21 와우 & 블루스 록 솔로 (4마디)", type: "normal" },
+          { bar: "9~12", code: "Am7 (Solo 1-B)", sub: "03:21~03:31 하이라이트 벤딩 & 속주 (4마디)", type: "normal" },
+          { bar: "13~16", code: "Am - G - D/F# - F", sub: "03:31~03:41 백킹 코드 체인지 & 리드미컬 솔로", type: "warn" },
+          { bar: "17~20", code: "Am - G - D7 - F/E7", sub: "03:41~03:51 솔로 클라이맥스 (03:46부터 2마디 텐션 업)", type: "warn" },
+          { bar: "21~22", code: "Am7 (Main Riff)", sub: "03:51~03:56 메인 테마 리프 1회 ('소리 질러!')", type: "normal" },
+          { bar: "23~24", code: "Am7 (Main Riff)", sub: "03:56~04:01 메인 테마 리프 1회 후 코러스 진입", type: "normal" }
+        ],
+        cues: [
+          "🎸 03:02 ~ 03:12 (4마디): 인트로 A와 동일한 A5 리프 4마디로 솔로 판을 깔아줍니다 (03:11 윤하 'Hey!' 샤우팅).",
+          "🎸 03:12 ~ 03:31 (8마디): Am 원코드 하드록 백킹 위 기타 솔로 전반부.",
+          "🎸🎹 03:31 ~ 03:51 (8마디): 세컨기타/건반/베이스가 오픈 코드 리듬으로 받쳐주며 솔로 후반부 클라이맥스 진행 후 03:46부터 2마디 빌드업.",
+          "🎤 03:51 ~ 04:01 (4마디): 메인 테마 리프 2회 연주 중 03:54에 보컬 '소리 질러!' 큐 후 마지막 후렴 진입."
+        ]
+      },
+      {
+        id: "chorus-3",
+        name: "Chorus 3",
+        koName: "후렴 3 (마지막 후렴)",
+        start: 240.8,
+        end: 260.4,
+        timeLabel: "04:01 ~ 04:20",
+        bars: "8마디",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "F - G - F - E7 × 2회 (총 8마디)",
+        chords: [
+          { bar: "1", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "2", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "3", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "4", code: "E7", sub: "~랑하네", type: "normal" },
+          { bar: "5", code: "F", sub: "모두 사~", type: "normal" },
+          { bar: "6", code: "G", sub: "~랑하네", type: "normal" },
+          { bar: "7", code: "F", sub: "나도 사~", type: "normal" },
+          { bar: "8", code: "E7", sub: "~랑하네 Yeah~", type: "normal" }
+        ],
+        cues: [
+          "🎤 보컬: 마지막 7~8마디 고음 샤우팅 애드리브"
+        ]
+      },
+      {
+        id: "post-chorus-3",
+        name: "Post-Chorus 3",
+        koName: "후렴 연결부 3 (⚠️ 3마디 + 카운트)",
+        start: 260.4,
+        end: 267.7,
+        timeLabel: "04:20 ~ 04:28",
+        bars: "⚠️ 3마디",
+        badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
+        summary: "C (1마디) → G (1마디) → D (3박 + 4박째 F-G & 'One, Two, Three!' 콜)",
+        chords: [
+          { bar: "1", code: "C", sub: "C 리프 (4박)", type: "warn" },
+          { bar: "2", code: "G", sub: "G 리프 (4박)", type: "warn" },
+          { bar: "3", code: "D + F G", sub: "04:26 'One, Two, Three!'", type: "warn" }
+        ],
+        cues: [
+          "🎤🥁 3마디 끝(04:26~04:27)에 'One, Two, Three!' 기합과 함께 아우트로 메인 리프로 직행!"
+        ]
+      },
+      {
+        id: "outro",
+        name: "Outro & Ending",
+        koName: "아우트로 & 엔딩",
+        start: 267.7,
+        end: 290.0,
+        timeLabel: "04:28 ~ 04:50",
+        bars: "8마디 + 엔딩",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "리프+보컬 추임새 2회 → 리프 1마디 후 D7 스탑('세번 보고 네번 보고~') → F7-E7 히트 → Am 롱톤 피니시!",
+        chords: [
+          { bar: "1~2", code: "Am7 (메인 리프)", sub: "04:28 리프 후 끝 박 '한 번 보고!'", type: "normal" },
+          { bar: "3~4", code: "Am7 (메인 리프)", sub: "04:32 리프 후 끝 박 '두 번 보고!'", type: "normal" },
+          { bar: "5", code: "Am7 (리프 전반)", sub: "04:37 메인 리프 전반 1마디만!", type: "warn" },
+          { bar: "6", code: "D7 (Stop!)", sub: "04:40 '세번 보고 네번 보고 자꾸 보고 자꾸 보고!'", type: "stop" },
+          { bar: "7", code: "F7   E7", sub: "04:42 '자꾸만 보고~' (브레이크 액센트)", type: "warn" },
+          { bar: "8~End", code: "Am (Tremolo End)", sub: "04:45 '싶네~~~!' 롱톤 & 04:48.5 일제히 컷!", type: "stop" }
+        ],
+        cues: [
+          "🎤🎸 1~2마디(04:28~04:32): 메인 리프 2마디 치고 마지막 박에 '한 번 보고!'",
+          "🎤🎸 3~4마디(04:32~04:37): 메인 리프 2마디 치고 마지막 박에 '두 번 보고!'",
+          "🛑 5~6마디(04:37~04:42): 세 번째 리프는 1마디만 치고 6마디 첫 박(04:40) D7에서 딱 멈춤! 보컬이 무반주로 '세 번 보고 네 번 보고 자꾸 보고 자꾸 보고!' 속사포 가사",
+          "💥 7~8마디(04:42~04:49): '자꾸만 보고~'에 맞춰 F7 - E7 브레이크 히트 후 04:45 Am 트레몰로 & 보컬 초고음 샤우팅('싶네~~~!') → 04:48.5 드럼 심벌 컷으로 엔딩!"
+        ]
+      }
+    ];
+
+    function renderFlowBar() {
+      const flowBar = document.getElementById("flow-bar");
+      flowBar.innerHTML = sections.map(sec => `
+        <button
+          id="pill-${sec.id}"
+          onclick="seekToSection('${sec.id}')"
+          class="flow-pill rounded-lg border border-[#33415f] bg-[#0b1221] px-2.5 py-1.5 text-left text-xs font-bold text-slate-200"
+        >
+          <span class="block text-[10px] text-slate-400 mono">${sec.timeLabel.split(" ~ ")[0]} · ${sec.bars}</span>
+          <span>${sec.name}</span>
+        </button>
+      `).join("");
+    }
+
+    function renderSections() {
+      const container = document.getElementById("sections-container");
+      container.innerHTML = sections.map((sec, idx) => `
+        <article
+          id="card-${sec.id}"
+          onclick="seekToSection('${sec.id}')"
+          class="section-card cursor-pointer rounded-xl border border-[#253149] bg-[#10182a] p-5"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="mono rounded-md bg-[#0b1221] px-2.5 py-1 text-xs font-black text-amber-300 border border-[#253149]">▶ ${sec.timeLabel}</span>
+              <span class="rounded-md px-2.5 py-1 text-xs font-black ${sec.badgeClass}">${sec.bars}</span>
+              <h3 class="text-lg font-black text-white">${idx + 1}. ${sec.name} <span class="text-sm font-bold text-slate-400">· ${sec.koName}</span></h3>
+            </div>
+            <span class="no-print text-[11px] font-bold text-slate-400">클릭하여 구간 재생</span>
+          </div>
+
+          <p class="mt-2 text-xs font-medium text-slate-300">${sec.summary}</p>
+
+          <!-- Chord Grid -->
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            ${sec.chords.map(c => `
+              <div class="bar-box ${c.type === 'warn' ? 'warn' : c.type === 'stop' ? 'stop' : ''} flex flex-col justify-between rounded-lg p-2.5">
+                <div class="flex items-center justify-between gap-1">
+                  <span class="mono text-[10px] font-bold text-slate-400">Bar ${c.bar}</span>
+                </div>
+                <p class="mono mt-1 text-sm font-extrabold text-white">${c.code}</p>
+                <p class="mt-1 text-[11px] leading-tight text-slate-300">${c.sub}</p>
+              </div>
+            `).join("")}
+          </div>
+
+          <!-- Cues -->
+          <ul class="mt-3 space-y-1 border-t border-[#253149]/80 pt-2.5 text-xs leading-5 text-slate-200">
+            ${sec.cues.map(cue => `<li>${cue}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("");
+    }
+
+    renderFlowBar();
+    renderSections();
+
+    // YouTube IFrame API Integration
+    let player = null;
+    let playerReady = false;
+    let syncTimer = null;
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player("yt-player", {
+        videoId: VIDEO_ID,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onReady: () => {
+            playerReady = true;
+            startSyncLoop();
+          }
+        }
+      });
+    };
+
+    function seekToSection(sectionId) {
+      const sec = sections.find(s => s.id === sectionId);
+      if (!sec) return;
+      highlightSection(sec.id);
+      if (playerReady && player && typeof player.seekTo === "function") {
+        player.seekTo(sec.start, true);
+        player.playVideo();
+      }
+    }
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function highlightSection(activeId) {
+      sections.forEach(sec => {
+        const card = document.getElementById(`card-${sec.id}`);
+        const pill = document.getElementById(`pill-${sec.id}`);
+        const isActive = sec.id === activeId;
+        if (card) card.classList.toggle("active-section", isActive);
+        if (pill) pill.classList.toggle("active-pill", isActive);
+      });
+      const activeSec = sections.find(s => s.id === activeId);
+      if (activeSec) {
+        document.getElementById("current-section-label").textContent = `${activeSec.name} · ${activeSec.koName} (${activeSec.bars})`;
+        document.getElementById("current-cue-label").textContent = activeSec.summary;
+      }
+    }
+
+    function startSyncLoop() {
+      if (syncTimer) clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        if (!playerReady || !player || typeof player.getCurrentTime !== "function") return;
+        const currentTime = player.getCurrentTime() || 0;
+        document.getElementById("current-time-label").textContent = formatTime(currentTime);
+        const currentSec = sections.find(s => currentTime >= s.start && currentTime < s.end);
+        if (currentSec) {
+          highlightSection(currentSec.id);
+        }
+      }, 250);
+    }
+  </script>
+</body>
+</html>

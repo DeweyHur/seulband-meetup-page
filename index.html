@@ -151,6 +151,23 @@
     </section>
   </main>
 
+  <!-- Songform / Sheet Viewer Modal -->
+  <div id="songform-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 p-3 backdrop-blur-sm md:p-6">
+    <div class="flex h-[90vh] w-full max-w-6xl flex-col overflow-hidden rounded-xl border border-[#2b3955] bg-[#0b1020] shadow-2xl">
+      <div class="flex items-center justify-between gap-3 border-b border-[#1f2a44] bg-[#10182a] px-4 py-3">
+        <div class="min-w-0">
+          <h3 id="modal-song-title" class="truncate text-base font-black text-white">송폼 / 악보</h3>
+          <p id="modal-song-subtitle" class="truncate text-xs font-medium text-slate-400"></p>
+        </div>
+        <div class="flex shrink-0 items-center gap-2">
+          <a id="modal-open-new" href="#" target="_blank" rel="noreferrer" class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#172238]">↗ 새 창에서 열기</a>
+          <button type="button" onclick="closeSongformModal()" class="rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-black text-slate-950 hover:bg-amber-200">닫기 ✕</button>
+        </div>
+      </div>
+      <div id="modal-body" class="relative flex-1 overflow-y-auto bg-[#0b1020]"></div>
+    </div>
+  </div>
+
   <script>
     const sheetCsvUrl = "https://docs.google.com/spreadsheets/d/197XuQpfpT_8KOgaTvSmt6jjzUNzs8dm2Qnyqd6jIw3o/gviz/tq?tqx=out:csv&sheet=Signup_3&headers=0";
     const meetupDefaults = {
@@ -326,13 +343,152 @@
       return `https://www.youtube.com/results?search_query=${encodeURIComponent(`${song["제목"] || ""} ${song["가수"] || ""} ${value}`.trim())}`;
     }
 
-    function sheetLink(song) {
-      const value = song["악보"] || "";
-      return /^https?:\/\//.test(value) ? `<a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="${value}" target="_blank" rel="noreferrer">악보</a>` : "";
+    // Built-in HTML Songform registry (matched by YouTube Video ID or Song Title)
+    const builtInSheets = {
+      byVideoId: {
+        "QNKGhkJU8-M": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" }
+      },
+      byTitle: {
+        "미인": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" }
+      }
+    };
+
+    function getBuiltInSheet(song) {
+      const videoId = extractYouTubeId(song["영상"] || "");
+      if (videoId && builtInSheets.byVideoId[videoId]) return builtInSheets.byVideoId[videoId];
+      const title = (song["제목"] || "").trim();
+      if (title && builtInSheets.byTitle[title]) return builtInSheets.byTitle[title];
+      return null;
     }
 
+    function normalizeSheetUrl(raw) {
+      const val = (raw || "").trim();
+      if (!val || ["-", "x", "없음", "tbd", "미정"].includes(val.toLowerCase())) return null;
+      if (/^https?:\/\//i.test(val)) return val;
+      if (/^[\w./-]+\.html?(?:[?#].*)?$/i.test(val)) {
+        return val.includes("/") ? val.replace(/^\/+/, "") : `sheets/${val}`;
+      }
+      return null;
+    }
+
+    function isHtmlOrSongformText(raw) {
+      const val = (raw || "").trim();
+      if (!val || ["-", "x", "없음", "tbd", "미정"].includes(val.toLowerCase())) return false;
+      if (normalizeSheetUrl(val)) return false;
+      return /<[a-z][\s\S]*>/i.test(val) || val.includes("\n") || /intro|verse|chorus|bridge|solo|outro|마디|인트로|절|후렴|간주|솔로/i.test(val);
+    }
+
+    function isLocalHtmlSheet(url) {
+      if (!url) return false;
+      if (/^(?:\.?\/)?sheets\/[\w.-]+\.html?/i.test(url)) return true;
+      if (/deweyhur\.github\.io\/seulband-meetup-page\/sheets\//i.test(url)) return true;
+      return false;
+    }
+
+    function sheetLink(song, songIndex) {
+      const rawSheet = (song["악보"] || "").trim();
+      const rawSongform = (song["송폼"] || song["송폼(HTML)"] || "").trim();
+      const builtIn = getBuiltInSheet(song);
+      const buttons = [];
+
+      const sheetUrl = normalizeSheetUrl(rawSheet);
+      const songformUrl = normalizeSheetUrl(rawSongform);
+
+      if (sheetUrl) {
+        if (isLocalHtmlSheet(sheetUrl)) {
+          buttons.push(`<button type="button" onclick="openSongformModal(${songIndex}, '${sheetUrl.replace(/'/g, "\\'")}')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 송폼/악보</button>`);
+        } else {
+          buttons.push(`<a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="${sheetUrl}" target="_blank" rel="noreferrer">악보</a>`);
+        }
+      } else if (isHtmlOrSongformText(rawSheet)) {
+        buttons.push(`<button type="button" onclick="openInlineSongformModal(${songIndex}, '악보')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 송폼/악보</button>`);
+      }
+
+      if (songformUrl && songformUrl !== sheetUrl) {
+        buttons.push(`<button type="button" onclick="openSongformModal(${songIndex}, '${songformUrl.replace(/'/g, "\\'")}')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 송폼</button>`);
+      } else if (isHtmlOrSongformText(rawSongform)) {
+        buttons.push(`<button type="button" onclick="openInlineSongformModal(${songIndex}, '송폼')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 송폼</button>`);
+      }
+
+      if (!buttons.length && builtIn) {
+        buttons.push(`<button type="button" onclick="openSongformModal(${songIndex}, '${builtIn.url}')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 ${builtIn.label}</button>`);
+      } else if (buttons.length && builtIn && sheetUrl && !isLocalHtmlSheet(sheetUrl) && !songformUrl && !isHtmlOrSongformText(rawSongform)) {
+        buttons.push(`<button type="button" onclick="openSongformModal(${songIndex}, '${builtIn.url}')" class="rounded-lg border border-amber-300/50 bg-amber-300/10 px-3 py-2 text-xs font-black text-amber-200 hover:bg-amber-300/20">📋 송폼</button>`);
+      }
+
+      return buttons.join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function openSongformModal(songIndex, url) {
+      const song = songs[songIndex] || {};
+      const modal = document.getElementById("songform-modal");
+      const titleEl = document.getElementById("modal-song-title");
+      const subtitleEl = document.getElementById("modal-song-subtitle");
+      const openNewEl = document.getElementById("modal-open-new");
+      const bodyEl = document.getElementById("modal-body");
+
+      titleEl.textContent = `${song["제목"] || "송폼"} — ${song["가수"] || ""}`.replace(/\s+—\s*$/, "");
+      subtitleEl.textContent = "구간 카드를 클릭하면 영상의 해당 타임스탬프로 이동합니다.";
+      openNewEl.href = url;
+      openNewEl.classList.remove("hidden");
+      bodyEl.innerHTML = `<iframe src="${url}" class="h-full w-full border-0" allow="autoplay; encrypted-media"></iframe>`;
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function openInlineSongformModal(songIndex, fieldName) {
+      const song = songs[songIndex] || {};
+      const raw = (song[fieldName] || song["송폼(HTML)"] || "").trim();
+      const modal = document.getElementById("songform-modal");
+      const titleEl = document.getElementById("modal-song-title");
+      const subtitleEl = document.getElementById("modal-song-subtitle");
+      const openNewEl = document.getElementById("modal-open-new");
+      const bodyEl = document.getElementById("modal-body");
+
+      titleEl.textContent = `${song["제목"] || "송폼"} — ${song["가수"] || ""}`.replace(/\s+—\s*$/, "");
+      subtitleEl.textContent = "스프레드시트 등록 송폼";
+      openNewEl.classList.add("hidden");
+
+      const isHtml = /<[a-z][\s\S]*>/i.test(raw);
+      if (isHtml) {
+        const srcDoc = `<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><script src="https://cdn.tailwindcss.com"><\/script><style>body{background:#0b1020;color:#e8edf8;font-family:system-ui,sans-serif;padding:20px;}</style></head><body>${raw}</body></html>`;
+        const iframe = document.createElement("iframe");
+        iframe.className = "h-full w-full border-0";
+        iframe.srcdoc = srcDoc;
+        bodyEl.innerHTML = "";
+        bodyEl.appendChild(iframe);
+      } else {
+        bodyEl.innerHTML = `<div class="p-6"><pre class="whitespace-pre-wrap rounded-xl border border-[#253149] bg-[#10182a] p-5 text-sm leading-7 text-slate-100">${escapeHtml(raw)}</pre></div>`;
+      }
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+    }
+
+    function closeSongformModal() {
+      const modal = document.getElementById("songform-modal");
+      const bodyEl = document.getElementById("modal-body");
+      bodyEl.innerHTML = "";
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+    }
+
+    document.addEventListener("keydown", e => {
+      if (e.key === "Escape") closeSongformModal();
+    });
+
     function songCode(song) {
-      const value = (song["코드"] || "").trim();
+      const builtIn = getBuiltInSheet(song);
+      const value = (song["코드"] || "").trim() || (builtIn && builtIn.key ? builtIn.key : "");
       return value ? `<span class="rounded-md border border-amber-300/40 bg-amber-300/10 px-2.5 py-1 text-xs font-black text-amber-200">Key ${value}</span>` : "";
     }
 
@@ -357,12 +513,14 @@
 
     function songCard(song, index) {
       const missing = openRoles(song);
+      const realIndex = songs.indexOf(song);
+      const songIdx = realIndex >= 0 ? realIndex : index;
       return `<article class="song-card rounded-lg border border-[#253149] bg-[#10182a] p-5">
         <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div class="min-w-0">
             <div class="flex flex-wrap items-center gap-2">
               <span class="rounded-md ${ready(song) ? "bg-emerald-400 text-emerald-950" : "bg-orange-300 text-orange-950"} px-2 py-1 text-[10px] font-black uppercase tracking-widest">${ready(song) ? "Ready" : `${missing.length} open`}</span>
-              <span class="text-xs font-bold text-slate-500">#${index + 1}</span>
+              <span class="text-xs font-bold text-slate-500">#${songIdx + 1}</span>
             </div>
             <h3 class="mt-3 text-xl font-black text-white">${song["제목"] || "Untitled"}</h3>
             <div class="mt-1 flex flex-wrap items-center gap-2">
@@ -370,9 +528,9 @@
               ${songCode(song)}
             </div>
           </div>
-          <div class="flex shrink-0 gap-2">
+          <div class="flex shrink-0 flex-wrap gap-2">
             <a class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-2 text-xs font-bold text-slate-200 hover:bg-[#172238]" href="${linkForVideo(song)}" target="_blank" rel="noreferrer">영상</a>
-            ${sheetLink(song)}
+            ${sheetLink(song, songIdx)}
           </div>
         </div>
         <div class="mt-4 flex flex-wrap gap-1.5">${rolePills(song)}</div>
@@ -456,8 +614,6 @@
     document.getElementById("search-input").addEventListener("input", renderSongs);
     document.getElementById("status-filter").addEventListener("change", renderSongs);
 
-    // --- New: Play All button and helper to open YouTube embed playlist ---
-    // We'll add a simple button to the Songs panel header dynamically and implement playAll()
     function extractYouTubeId(url) {
       if (!url) return null;
       try {
@@ -488,7 +644,6 @@
       }
     }
 
-    // add button to Songs panel controls
     (function addPlayAllButton(){
       const container = document.querySelector('#panel-songs > .grid');
       if (!container) return;
