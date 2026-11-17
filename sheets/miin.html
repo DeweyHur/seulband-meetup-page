@@ -12,17 +12,23 @@
     * { font-family: "Noto Sans KR", system-ui, sans-serif; }
     .mono { font-family: "JetBrains Mono", monospace; }
     body { background: #0b1020; color: #e8edf8; }
-    .section-card { transition: border-color .15s ease, background-color .15s ease, transform .15s ease; }
-    .section-card:hover { border-color: #f6c95b88; }
+    .section-card { transition: border-color .15s ease, background-color .15s ease; }
+    .section-card:hover { border-color: #f6c95b66; }
     .section-card.active-section {
       border-color: #f6c95b !important;
-      background: #17223b !important;
-      box-shadow: 0 0 0 1px #f6c95b55, 0 10px 25px -5px rgba(246, 201, 91, 0.15);
+      background: #131d36 !important;
+      box-shadow: 0 0 0 1px #f6c95b44, 0 10px 25px -5px rgba(246, 201, 91, 0.12);
     }
     .bar-box {
+      position: relative;
+      overflow: hidden;
       background: #0b1221;
       border: 1px solid #253149;
-      min-height: 54px;
+      min-height: 64px;
+      transition: transform .1s ease, border-color .1s ease, background-color .1s ease, box-shadow .1s ease;
+    }
+    .bar-box:hover {
+      border-color: #f6c95b88;
     }
     .bar-box.warn {
       background: #2b1608;
@@ -32,6 +38,43 @@
       background: #2a121f;
       border-color: #e11d48;
     }
+    .bar-box.passed-bar {
+      opacity: 0.55;
+    }
+    .bar-box.active-bar {
+      border-color: #f6c95b !important;
+      background: #26200d !important;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px #f6c95b, 0 8px 20px -4px rgba(246, 201, 91, 0.35);
+      z-index: 10;
+      opacity: 1 !important;
+    }
+    .bar-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b, #fde047);
+      width: 0%;
+      pointer-events: none;
+    }
+    .bar-fill-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(246, 201, 91, 0.16), rgba(246, 201, 91, 0.04));
+      width: 0%;
+      pointer-events: none;
+    }
+    .beat-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #33415f;
+    }
+    .beat-dot.on {
+      background: #f6c95b;
+      box-shadow: 0 0 6px #f6c95b;
+    }
     .flow-pill { transition: all .15s ease; }
     .flow-pill:hover { border-color: #f6c95b; color: #f6c95b; }
     .flow-pill.active-pill { background: #f6c95b; color: #0b1020; border-color: #f6c95b; font-weight: 900; }
@@ -39,11 +82,11 @@
       body { background: #ffffff; color: #111827; }
       .no-print { display: none !important; }
       .section-card { break-inside: avoid; border-color: #d1d5db !important; background: #ffffff !important; color: #111827 !important; }
-      .bar-box { background: #f9fafb !important; border-color: #9ca3af !important; color: #111827 !important; }
+      .bar-box { background: #f9fafb !important; border-color: #9ca3af !important; color: #111827 !important; opacity: 1 !important; transform: none !important; }
     }
   </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="min-h-screen pb-24">
   <!-- Top Nav -->
   <nav class="no-print sticky top-0 z-30 border-b border-[#1f2a44] bg-[#070b15]/95 px-4 py-3 backdrop-blur">
     <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
@@ -51,10 +94,11 @@
         <a href="../index.html" class="rounded-lg border border-[#2b3955] bg-[#111a2d] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#18233a]">← 정모 홈</a>
         <div>
           <p class="text-sm font-black tracking-tight text-white">미인 — 윤하 & 시나위</p>
-          <p class="text-[11px] font-medium text-slate-400">피크닉 라이브 소풍 EP.20 기준 송폼 · 코드 시트</p>
+          <p class="text-[11px] font-medium text-slate-400">마디(Bar)별 실시간 자동 추적 악보</p>
         </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="autoscroll-btn" type="button" onclick="toggleAutoScroll()" class="rounded-lg border border-amber-300/60 bg-amber-300/15 px-3 py-1.5 text-xs font-black text-amber-200 hover:bg-amber-300/25">🎯 자동 스크롤: ON</button>
         <a href="https://www.youtube.com/watch?v=QNKGhkJU8-M" target="_blank" rel="noreferrer" class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#172238]">▶ 원본 유튜브</a>
         <button onclick="window.print()" class="rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-black text-slate-950 hover:bg-amber-200">🖨️ 인쇄 / PDF</button>
       </div>
@@ -67,7 +111,7 @@
       <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
           <div class="flex flex-wrap items-center gap-2">
-            <span class="rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-amber-200">Band Score & Song Form</span>
+            <span class="rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-amber-200">Real-time Bar Tracker</span>
             <span class="rounded-md bg-emerald-400/15 px-2.5 py-1 text-xs font-black text-emerald-300">Key: A Minor (Am)</span>
             <span class="rounded-md bg-sky-400/15 px-2.5 py-1 text-xs font-black text-sky-300">Tempo: ~99 BPM (Double ~198)</span>
             <span class="rounded-md bg-purple-400/15 px-2.5 py-1 text-xs font-black text-purple-300">4/4 박자</span>
@@ -81,6 +125,7 @@
             <li><strong class="text-amber-200">Theme A:</strong> 파워코드 리프 (<code class="mono text-amber-200">A5</code>)</li>
             <li><strong class="text-amber-200">Theme B:</strong> 메인 테마 리프 (<code class="mono text-amber-200">Am7</code> 유니즌 펜타토닉 리프)</li>
             <li><strong class="text-amber-200">Theme C:</strong> Chorus (8마디: <code class="mono text-amber-200">F C E F | D C E F</code>) + Post-Chorus (⚠️ 3마디: <code class="mono text-amber-200">F6 C6 | G | D (4박 C)</code>)</li>
+            <li><strong>개별 마디(Bar) 박스를 클릭</strong>하면 해당 마디 위치로 바로 이동합니다.</li>
           </ul>
         </div>
       </div>
@@ -102,11 +147,23 @@
           </div>
           <div class="p-4">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-slate-400">현재 재생 구간</span>
+              <span class="text-xs font-bold text-slate-400">현재 재생 마디 & 박자</span>
               <span id="current-time-label" class="mono rounded bg-[#0b1221] px-2 py-0.5 text-xs font-bold text-amber-300">00:00</span>
             </div>
-            <p id="current-section-label" class="mt-1.5 text-base font-black text-white">대기 중 (구간을 클릭하세요)</p>
-            <p id="current-cue-label" class="mt-1 text-xs text-slate-300">구간 카드를 누르면 해당 위치부터 재생됩니다.</p>
+            <p id="current-section-label" class="mt-1.5 text-base font-black text-white">대기 중 (영상을 재생하세요)</p>
+            <div class="mt-2 flex items-center justify-between rounded-lg border border-[#253149] bg-[#0b1221] px-3 py-2">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Current Bar</span>
+                <p id="current-bar-label" class="mono text-sm font-black text-amber-300">-</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span id="hud-beat-1" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">1</span>
+                <span id="hud-beat-2" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">2</span>
+                <span id="hud-beat-3" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">3</span>
+                <span id="hud-beat-4" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">4</span>
+              </div>
+            </div>
+            <p id="current-cue-label" class="mt-2 text-xs text-slate-300">어느 마디든 클릭하면 해당 마디부터 재생됩니다.</p>
           </div>
         </div>
 
@@ -139,6 +196,21 @@
 
   <script>
     const VIDEO_ID = "QNKGhkJU8-M";
+    let autoScroll = true;
+
+    // Helper to generate evenly spaced 1-bar items across [start, end]
+    function makeBars(start, end, items) {
+      const count = items.length;
+      const dur = (end - start) / count;
+      return items.map((item, idx) => ({
+        bar: item.bar || String(idx + 1),
+        code: item.code,
+        sub: item.sub || "",
+        type: item.type || "normal",
+        start: item.start !== undefined ? item.start : +(start + idx * dur).toFixed(2),
+        end: item.end !== undefined ? item.end : +(start + (idx + 1) * dur).toFixed(2)
+      }));
+    }
 
     const sections = [
       {
@@ -151,12 +223,12 @@
         bars: "1마디",
         badgeClass: "bg-slate-700 text-slate-200",
         summary: "드럼 하이햇 오픈 카운트 후 스네어/탐 필인으로 밴드 전체 진입",
-        chords: [
-          { bar: "Count", code: "N.C. (Drum Fill)", sub: "하이햇 + 필인 후 강박 진입", type: "normal" }
-        ],
+        chords: makeBars(0, 2.6, [
+          { bar: "Count", code: "N.C. (Drum Fill)", sub: "하이햇 + 4박 필인" }
+        ]),
         cues: [
           "🥁 드럼: 하이햇 카운트 후 4박 필인으로 밴드 전체 템포(~99 BPM) 제시",
-          "🎸 기타/베이스: 00:02.5 첫 강박 Theme A (A5 파워코드 리프) 준비"
+          "🎸 기타/베이스: 00:02.6 첫 강박 Theme A (A5 파워코드 리프) 준비"
         ]
       },
       {
@@ -169,12 +241,12 @@
         bars: "4마디",
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
         summary: "Theme A (파워코드 리프) 4마디: A5 - G5 - A5 헤비 리프 2마디 + 리프 위 기타 블루스 필인 2마디",
-        chords: [
-          { bar: "1", code: "A5 (Theme A)", sub: "파워코드 리프", type: "normal" },
-          { bar: "2", code: "A5 (Theme A)", sub: "파워코드 리프", type: "normal" },
-          { bar: "3", code: "A5 (Theme A)", sub: "+ 기타 블루스 릭", type: "normal" },
-          { bar: "4", code: "A5 (Theme A)", sub: "+ 기타 릭 마무리", type: "normal" }
-        ],
+        chords: makeBars(2.6, 12.3, [
+          { bar: "1", code: "A5 (Theme A)", sub: "파워코드 리프" },
+          { bar: "2", code: "A5 (Theme A)", sub: "파워코드 리프" },
+          { bar: "3", code: "A5 (Theme A)", sub: "+ 기타 블루스 릭" },
+          { bar: "4", code: "A5 (Theme A)", sub: "+ 기타 릭 마무리" }
+        ]),
         cues: [
           "🎸 기타/베이스: Theme A — 묵직한 A5 파워코드 그루브 (중간 G5 투투 포인트)",
           "🎸 리드기타: 3~4마디(00:07~)에서 하이 포지션 블루스 벤딩 필인"
@@ -190,16 +262,16 @@
         bars: "8마디",
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
         summary: "8마디 전체 Am7 — Theme B (메인 테마) 4마디 → Am7 브레이크 & 변주 2마디 → Theme B 2마디",
-        chords: [
-          { bar: "1", code: "Am7 (Theme B)", sub: "메인 테마 (전반)", type: "normal" },
-          { bar: "2", code: "Am7 (Theme B)", sub: "메인 테마 (후반)", type: "normal" },
-          { bar: "3", code: "Am7 (Theme B)", sub: "메인 테마 (전반)", type: "normal" },
-          { bar: "4", code: "Am7 (Theme B)", sub: "메인 테마 (후반)", type: "normal" },
+        chords: makeBars(12.3, 31.7, [
+          { bar: "1", code: "Am7 (Theme B)", sub: "메인 테마 1 (전반)" },
+          { bar: "2", code: "Am7 (Theme B)", sub: "메인 테마 1 (후반)" },
+          { bar: "3", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
+          { bar: "4", code: "Am7 (Theme B)", sub: "메인 테마 2 (후반)" },
           { bar: "5", code: "Am7 (Break)", sub: "00:22 스탑 & 블루스 릭", type: "stop" },
           { bar: "6", code: "Am7 (Groove)", sub: "00:24 리듬 변주 백킹", type: "warn" },
-          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 복귀", type: "normal" },
-          { bar: "8", code: "Am7 (Theme B)", sub: "끝 박 보컬 픽업", type: "normal" }
-        ],
+          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 복귀 (전반)" },
+          { bar: "8", code: "Am7 (Theme B)", sub: "끝 박 보컬 픽업" }
+        ]),
         cues: [
           "🎸🎹 기타 & 건반: Intro B 8마디는 모두 Am7 코드로 진행됩니다.",
           "🛑 5~6마디 (00:22~00:26): Am7 위에서 5마디 첫 박 스탑 & 기타 블루스 필인 → 6마디 리듬 백킹 후 7~8마디 Theme B 복귀",
@@ -216,20 +288,27 @@
         bars: "16마디 (4×4)",
         badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
         summary: "[보컬 2마디 (Am7) + Theme B (메인 테마) 2마디 (Am7)] × 4세트",
-        chords: [
-          { bar: "1~2", code: "Am7 (Vocal)", sub: "① 한 번 보고 두 번 보고 자꾸만 보고 싶네", type: "normal" },
-          { bar: "3~4", code: "Am7 (Theme B)", sub: "메인 테마 (00:36~)", type: "normal" },
-          { bar: "5~6", code: "Am7 (Vocal)", sub: "② 아름다운 그 모습을 자꾸만 보고 싶네", type: "normal" },
-          { bar: "7~8", code: "Am7 (Theme B)", sub: "메인 테마 (00:46~)", type: "normal" },
-          { bar: "9~10", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면 자꾸만 보고 있네", type: "normal" },
-          { bar: "11~12", code: "Am7 (Theme B)", sub: "메인 테마 (00:55~)", type: "normal" },
-          { bar: "13~14", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가 정말로 궁금하네", type: "normal" },
-          { bar: "15~16", code: "Am7 (Theme B)", sub: "메인 테마 + 16마디 끝 Theme C 필인", type: "normal" }
-        ],
+        chords: makeBars(31.7, 70.4, [
+          { bar: "1", code: "Am7 (Vocal)", sub: "① 한 번 보고 두 번 보고" },
+          { bar: "2", code: "Am7 (Vocal)", sub: "자꾸만 보고 싶네~" },
+          { bar: "3", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "4", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "5", code: "Am7 (Vocal)", sub: "② 아름다운 그 모습을" },
+          { bar: "6", code: "Am7 (Vocal)", sub: "자꾸만 보고 싶네~" },
+          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "8", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "9", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면" },
+          { bar: "10", code: "Am7 (Vocal)", sub: "자꾸만 보고 있네~" },
+          { bar: "11", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "12", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "13", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가" },
+          { bar: "14", code: "Am7 (Vocal)", sub: "정말로 궁금하네~" },
+          { bar: "15", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "16", code: "Am7 (Theme B)", sub: "끝 박 Theme C 필인", type: "warn" }
+        ]),
         cues: [
-          "🎤 보컬 구간 (홀수 2마디): 기타/베이스는 공간감을 비워주고 건반 오르간 Am7 코드 & 드럼 백비트 위주로 백킹",
-          "🎸 연주 구간 (짝수 2마디): 보컬 어절이 끝나자마자('~싶네!') Theme B 즉시 진입",
-          "🥁 드럼: 16마디 끝(01:09)에 크래시와 함께 Theme C (Chorus 1) 오픈 필인"
+          "🎤 보컬 구간 (각 줄 1~2번째 마디): 기타/베이스는 공간감을 비워주고 건반 오르간 Am7 코드 & 드럼 백비트 위주로 백킹",
+          "🎸 연주 구간 (각 줄 3~4번째 마디): 보컬 어절이 끝나자마자('~싶네!') Theme B 즉시 진입"
         ]
       },
       {
@@ -242,23 +321,22 @@
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
         summary: "Theme C = Chorus 1 (8마디: F C E F | D C E F) + Post-Chorus 1 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
-        subSeek: { time: 89.8, label: "▶ 01:30 Post-Chorus 1 (3마디) 바로가기" },
-        chords: [
-          { bar: "Chorus 1", code: "F", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 2", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 3", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 4", code: "F", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 5", code: "D", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 6", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 7", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 8", code: "F", sub: "~랑하네 Yeah~", type: "normal" },
-          { bar: "Post 1 (01:30)", code: "F6   C6", sub: "Post-Chorus 첫 마디", type: "warn" },
-          { bar: "Post 2", code: "G", sub: "Post-Chorus 둘째 마디", type: "warn" },
-          { bar: "Post 3 (⚠️3마디 끝)", code: "D (4박 C)", sub: "D 3박 빌드업 + 4박째 C!", type: "warn" }
-        ],
+        chords: makeBars(70.4, 97.0, [
+          { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
+          { bar: "2", code: "C", sub: "~랑하네" },
+          { bar: "3", code: "E", sub: "나도 사~" },
+          { bar: "4", code: "F", sub: "~랑하네" },
+          { bar: "5", code: "D", sub: "모두 사~" },
+          { bar: "6", code: "C", sub: "~랑하네" },
+          { bar: "7", code: "E", sub: "나도 사~" },
+          { bar: "8", code: "F", sub: "~랑하네 Yeah~" },
+          { bar: "9 (Post 1)", code: "F6   C6", sub: "01:30 Post-Chorus 1", type: "warn" },
+          { bar: "10 (Post 2)", code: "G", sub: "Post-Chorus 2", type: "warn" },
+          { bar: "11 (⚠️3마디 끝)", code: "D (4박 C)", sub: "D 3박 + 4박째 C!", type: "warn" }
+        ]),
         cues: [
           "🎵 Chorus 1 (1~8마디, 01:10~01:30): | F | C | E | F | D | C | E | F | ('모두 사랑하네 ~ 나도 사랑하네' × 2회)",
-          "⚠️ Post-Chorus 1 (9~11마디, 01:30~01:37): | F6  C6 | G | D (4박 C) | — 4마디가 아니라 총 3마디입니다! 마지막 3번째 마디 4박째에 C를 치고 간주로 넘어갑니다."
+          "⚠️ Post-Chorus 1 (9~11마디, 01:30~01:37): | F6  C6 | G | D (4박 C) | — 4마디가 아니라 총 3마디입니다!"
         ]
       },
       {
@@ -271,16 +349,16 @@
         bars: "8마디 (1+3+4)",
         badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
         summary: "1마디 기타 무반주 브레이크 릭 → Theme A (파워코드 리프) 3마디 → Theme B (메인 테마) 4마디",
-        chords: [
+        chords: makeBars(97.0, 116.4, [
           { bar: "1", code: "Am (Stop/Break)", sub: "01:37 기타 단독 블루스 릭", type: "stop" },
-          { bar: "2", code: "A5 (Theme A)", sub: "01:39 파워코드 리프 진입", type: "normal" },
-          { bar: "3", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭", type: "normal" },
-          { bar: "4", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭", type: "normal" },
-          { bar: "5", code: "Am7 (Theme B)", sub: "01:46 메인 테마 (전반)", type: "normal" },
-          { bar: "6", code: "Am7 (Theme B)", sub: "메인 테마 (후반)", type: "normal" },
-          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 (전반)", type: "normal" },
-          { bar: "8", code: "Am7 (Theme B)", sub: "메인 테마 + 2절 보컬 픽업", type: "normal" }
-        ],
+          { bar: "2", code: "A5 (Theme A)", sub: "01:39 파워코드 리프 진입" },
+          { bar: "3", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭" },
+          { bar: "4", code: "A5 (Theme A)", sub: "파워코드 리프 + 기타 릭" },
+          { bar: "5", code: "Am7 (Theme B)", sub: "01:46 메인 테마 1 (전반)" },
+          { bar: "6", code: "Am7 (Theme B)", sub: "메인 테마 1 (후반)" },
+          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
+          { bar: "8", code: "Am7 (Theme B)", sub: "메인 테마 2 + 보컬 픽업" }
+        ]),
         cues: [
           "🛑 1마디 (01:37~01:39.5): Post-Chorus 직후 밴드 전체 스탑! 리드기타 혼자 1마디 블루스 릭 연주 후 드럼 필인으로 2마디째(01:39.5) Theme A 진입",
           "🎸 5~8마디 (01:46.7~01:56.4): Theme B (메인 테마) 2회 반복 (4마디) 후 바로 2절 진입"
@@ -296,16 +374,24 @@
         bars: "16마디 (4×4)",
         badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
         summary: "1절과 동일한 16마디 구조 — [보컬 2마디 (Am7) + Theme B 2마디 (Am7)] × 4세트",
-        chords: [
-          { bar: "1~2", code: "Am7 (Vocal)", sub: "① 한 번 보나 두 번 보나 그 여인을 자꾸만 보고 싶네", type: "normal" },
-          { bar: "3~4", code: "Am7 (Theme B)", sub: "메인 테마 (02:01~)", type: "normal" },
-          { bar: "5~6", code: "Am7 (Vocal)", sub: "② 그 누구나 마음 속엔 호기심이 자꾸만 보고 있네", type: "normal" },
-          { bar: "7~8", code: "Am7 (Theme B)", sub: "메인 테마 (02:11~)", type: "normal" },
-          { bar: "9~10", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면 자꾸만 보고 있네", type: "normal" },
-          { bar: "11~12", code: "Am7 (Theme B)", sub: "메인 테마 (02:20~)", type: "normal" },
-          { bar: "13~14", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가 정말로 궁금하네", type: "normal" },
-          { bar: "15~16", code: "Am7 (Theme B)", sub: "메인 테마 + Theme C 진입 필인", type: "normal" }
-        ],
+        chords: makeBars(116.4, 155.4, [
+          { bar: "1", code: "Am7 (Vocal)", sub: "① 한 번 보나 두 번 보나" },
+          { bar: "2", code: "Am7 (Vocal)", sub: "그 여인을 자꾸만 보고 싶네" },
+          { bar: "3", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "4", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "5", code: "Am7 (Vocal)", sub: "② 그 누구나 마음 속엔" },
+          { bar: "6", code: "Am7 (Vocal)", sub: "호기심이 자꾸만 보고 있네" },
+          { bar: "7", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "8", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "9", code: "Am7 (Vocal)", sub: "③ 그 누구나 한 번 보면" },
+          { bar: "10", code: "Am7 (Vocal)", sub: "자꾸만 보고 있네~" },
+          { bar: "11", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "12", code: "Am7 (Theme B)", sub: "메인 테마 (후반)" },
+          { bar: "13", code: "Am7 (Vocal)", sub: "④ 그 누구의 애인인가" },
+          { bar: "14", code: "Am7 (Vocal)", sub: "정말로 궁금하네~" },
+          { bar: "15", code: "Am7 (Theme B)", sub: "메인 테마 (전반)" },
+          { bar: "16", code: "Am7 (Theme B)", sub: "끝 박 Theme C 필인", type: "warn" }
+        ]),
         cues: [
           "🥁🎸 2절 첫 프레이즈(01:56~02:00)는 1절보다 더 과감하게 백킹을 비워 보컬 라인을 부각시킵니다.",
           "🎤 가사 차이: ① '한 번 보나 두 번 보나 그 여인을~' / ② '그 누구나 마음 속엔 호기심이~'"
@@ -321,23 +407,22 @@
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
         summary: "Theme C = Chorus 2 (8마디: F C E F | D C E F) + Post-Chorus 2 (⚠️ 3마디: F6 C6 | G | D (4박 C))",
-        subSeek: { time: 175.0, label: "▶ 02:55 Post-Chorus 2 (3마디) 바로가기" },
-        chords: [
-          { bar: "Chorus 1", code: "F", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 2", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 3", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 4", code: "F", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 5", code: "D", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 6", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 7", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 8", code: "F", sub: "~랑하네 Yeah~", type: "normal" },
-          { bar: "Post 1 (02:55)", code: "F6   C6", sub: "Post-Chorus 첫 마디", type: "warn" },
-          { bar: "Post 2", code: "G", sub: "Post-Chorus 둘째 마디", type: "warn" },
-          { bar: "Post 3 (⚠️3마디 끝)", code: "D (4박 C)", sub: "4박째 C 후 바로 Theme A 진입!", type: "warn" }
-        ],
+        chords: makeBars(155.4, 182.3, [
+          { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
+          { bar: "2", code: "C", sub: "~랑하네" },
+          { bar: "3", code: "E", sub: "나도 사~" },
+          { bar: "4", code: "F", sub: "~랑하네" },
+          { bar: "5", code: "D", sub: "모두 사~" },
+          { bar: "6", code: "C", sub: "~랑하네" },
+          { bar: "7", code: "E", sub: "나도 사~" },
+          { bar: "8", code: "F", sub: "~랑하네 Yeah~" },
+          { bar: "9 (Post 1)", code: "F6   C6", sub: "02:55 Post-Chorus 1", type: "warn" },
+          { bar: "10 (Post 2)", code: "G", sub: "Post-Chorus 2", type: "warn" },
+          { bar: "11 (⚠️3마디 끝)", code: "D (4박 C)", sub: "4박째 C 후 바로 Theme A!", type: "warn" }
+        ]),
         cues: [
           "🎵 Chorus 2 (1~8마디, 02:35~02:55): | F | C | E | F | D | C | E | F |",
-          "⚠️ Post-Chorus 2 (9~11마디, 02:55~03:02): | F6  C6 | G | D (4박 C) | — 1절 후와 달리 이번에는 브레이크 없이 바로 03:02에 전 파트 Theme A (파워코드 리프)로 들어갑니다!"
+          "⚠️ Post-Chorus 2 (9~11마디, 02:55~03:02): | F6  C6 | G | D (4박 C) | — 1절 후와 달리 브레이크 없이 바로 03:02에 전 파트 Theme A로 들어갑니다!"
         ]
       },
       {
@@ -350,20 +435,37 @@
         bars: "24마디 (4+8+8+4)",
         badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
         summary: "Theme A 빌드업(4마디) → 솔로 전반 Am 원코드(8마디) → 솔로 후반 코드 백킹(8마디) → Theme B 메인 테마(4마디)",
-        chords: [
-          { bar: "1~4", code: "A5 (Theme A × 4)", sub: "03:02~03:12 파워코드 리프 4마디 (끝에 'Hey!')", type: "normal" },
-          { bar: "5~8", code: "Am7 (Solo 1-A)", sub: "03:12~03:21 와우 & 블루스 록 솔로 (4마디)", type: "normal" },
-          { bar: "9~12", code: "Am7 (Solo 1-B)", sub: "03:21~03:31 하이라이트 벤딩 & 속주 (4마디)", type: "normal" },
-          { bar: "13~16", code: "Am - G - D/F# - F", sub: "03:31~03:41 백킹 코드 체인지 & 리드미컬 솔로", type: "warn" },
-          { bar: "17~20", code: "Am - G - D7 - F/E7", sub: "03:41~03:51 솔로 클라이맥스 (03:46부터 2마디 텐션 업)", type: "warn" },
-          { bar: "21~22", code: "Am7 (Theme B)", sub: "03:51~03:56 메인 테마 1회 ('소리 질러!')", type: "normal" },
-          { bar: "23~24", code: "Am7 (Theme B)", sub: "03:56~04:01 메인 테마 1회 후 Theme C 진입", type: "normal" }
-        ],
+        chords: makeBars(182.3, 240.8, [
+          { bar: "1 (Theme A)", code: "A5 (Theme A)", sub: "03:02 파워코드 리프 1" },
+          { bar: "2 (Theme A)", code: "A5 (Theme A)", sub: "파워코드 리프 2" },
+          { bar: "3 (Theme A)", code: "A5 (Theme A)", sub: "파워코드 리프 3" },
+          { bar: "4 (Theme A)", code: "A5 (Theme A)", sub: "리프 4 (끝에 'Hey!')" },
+          { bar: "5 (Solo 1)", code: "Am7", sub: "03:12 와우 & 블루스 솔로" },
+          { bar: "6 (Solo 2)", code: "Am7", sub: "블루스 록 솔로" },
+          { bar: "7 (Solo 3)", code: "Am7", sub: "블루스 록 솔로" },
+          { bar: "8 (Solo 4)", code: "Am7", sub: "솔로 프레이즈 전환" },
+          { bar: "9 (Solo 5)", code: "Am7", sub: "03:21 하이 벤딩 & 속주" },
+          { bar: "10 (Solo 6)", code: "Am7", sub: "속주 진행" },
+          { bar: "11 (Solo 7)", code: "Am7", sub: "하이라이트 벤딩" },
+          { bar: "12 (Solo 8)", code: "Am7", sub: "후반부 전환 필인" },
+          { bar: "13 (Solo 9)", code: "Am7 (Open)", sub: "03:31 오픈 코드 백킹 시작", type: "warn" },
+          { bar: "14 (Solo 10)", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "15 (Solo 11)", code: "Am7", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "16 (Solo 12)", code: "Am7 / G", sub: "리드미컬 솔로 백킹", type: "warn" },
+          { bar: "17 (Solo 13)", code: "Am7", sub: "03:41 솔로 클라이맥스", type: "warn" },
+          { bar: "18 (Solo 14)", code: "Am7 / G", sub: "솔로 클라이맥스", type: "warn" },
+          { bar: "19 (Solo 15)", code: "D7 / F", sub: "03:46 텐션 빌드업 1", type: "stop" },
+          { bar: "20 (Solo 16)", code: "E7", sub: "텐션 빌드업 2 (솔로 피니시)", type: "stop" },
+          { bar: "21 (Theme B)", code: "Am7 (Theme B)", sub: "03:51 메인 테마 1 (전반)" },
+          { bar: "22 (Theme B)", code: "Am7 (Theme B)", sub: "03:54 '소리 질러!'" },
+          { bar: "23 (Theme B)", code: "Am7 (Theme B)", sub: "메인 테마 2 (전반)" },
+          { bar: "24 (Theme B)", code: "Am7 (Theme B)", sub: "끝 박 Theme C 진입", type: "warn" }
+        ]),
         cues: [
-          "🎸 03:02 ~ 03:12 (4마디): Theme A (파워코드 리프) 4마디로 솔로 판을 깔아줍니다 (03:11 윤하 'Hey!' 샤우팅).",
-          "🎸 03:12 ~ 03:31 (8마디): Am 원코드 하드록 백킹 위 기타 솔로 전반부.",
-          "🎸🎹 03:31 ~ 03:51 (8마디): 세컨기타/건반/베이스가 오픈 코드 리듬으로 받쳐주며 솔로 후반부 클라이맥스 진행 후 03:46부터 2마디 빌드업.",
-          "🎤 03:51 ~ 04:01 (4마디): Theme B (메인 테마) 2회 연주 중 03:54에 보컬 '소리 질러!' 큐 후 마지막 Theme C 진입."
+          "🎸 1~4마디 (03:02~03:12): Theme A (파워코드 리프) 4마디로 솔로 판을 깔아줍니다 (4마디 끝 윤하 'Hey!').",
+          "🎸 5~12마디 (03:12~03:31): Am7 원코드 하드록 백킹 위 기타 솔로 전반부 8마디.",
+          "🎸🎹 13~20마디 (03:31~03:51): 오픈 코드 리듬 백킹 위 솔로 후반부 8마디 (19~20마디 텐션 빌드업).",
+          "🎤 21~24마디 (03:51~04:01): Theme B (메인 테마) 4마디 복귀 (22마디 '소리 질러!' 큐)."
         ]
       },
       {
@@ -376,23 +478,22 @@
         bars: "11마디 (8 + ⚠️3)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
         summary: "Theme C = Chorus 3 (8마디: F C E F | D C E F) + Post-Chorus 3 (⚠️ 3마디: F6 C6 | G | D (4박 C) + 카운트)",
-        subSeek: { time: 260.4, label: "▶ 04:20 Post-Chorus 3 (3마디) 바로가기" },
-        chords: [
-          { bar: "Chorus 1", code: "F", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 2", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 3", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 4", code: "F", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 5", code: "D", sub: "모두 사~", type: "normal" },
-          { bar: "Chorus 6", code: "C", sub: "~랑하네", type: "normal" },
-          { bar: "Chorus 7", code: "E", sub: "나도 사~", type: "normal" },
-          { bar: "Chorus 8", code: "F", sub: "~랑하네 Yeah~", type: "normal" },
-          { bar: "Post 1 (04:20)", code: "F6   C6", sub: "Post-Chorus 첫 마디", type: "warn" },
-          { bar: "Post 2", code: "G", sub: "Post-Chorus 둘째 마디", type: "warn" },
-          { bar: "Post 3 (⚠️3마디 끝)", code: "D (4박 C)", sub: "04:26 'One, Two, Three!'", type: "warn" }
-        ],
+        chords: makeBars(240.8, 267.7, [
+          { bar: "1 (Chorus)", code: "F", sub: "모두 사~" },
+          { bar: "2", code: "C", sub: "~랑하네" },
+          { bar: "3", code: "E", sub: "나도 사~" },
+          { bar: "4", code: "F", sub: "~랑하네" },
+          { bar: "5", code: "D", sub: "모두 사~" },
+          { bar: "6", code: "C", sub: "~랑하네" },
+          { bar: "7", code: "E", sub: "나도 사~" },
+          { bar: "8", code: "F", sub: "~랑하네 Yeah~" },
+          { bar: "9 (Post 1)", code: "F6   C6", sub: "04:20 Post-Chorus 1", type: "warn" },
+          { bar: "10 (Post 2)", code: "G", sub: "Post-Chorus 2", type: "warn" },
+          { bar: "11 (⚠️3마디 끝)", code: "D (4박 C)", sub: "04:26 'One, Two, Three!'", type: "warn" }
+        ]),
         cues: [
           "🎵 Chorus 3 (1~8마디, 04:01~04:20): | F | C | E | F | D | C | E | F |",
-          "🎤🥁 Post-Chorus 3 (9~11마디, 04:20~04:28): | F6  C6 | G | D (4박 C) | 끝(04:26~04:27)에 'One, Two, Three!' 기합과 함께 아우트로 Theme B로 직행!"
+          "🎤🥁 Post-Chorus 3 (9~11마디, 04:20~04:28): | F6  C6 | G | D (4박 C) | 끝(04:26~04:27)에 'One, Two, Three!' 기합과 함께 아우트로 직행!"
         ]
       },
       {
@@ -400,27 +501,44 @@
         name: "Outro & Ending",
         koName: "아우트로 (Theme B 변주 & 엔딩)",
         start: 267.7,
-        end: 290.0,
+        end: 289.5,
         timeLabel: "04:28 ~ 04:50",
         bars: "8마디 + 엔딩",
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
         summary: "Theme B + 보컬 추임새 2회 → Theme B 1마디 후 브레이크('세번 보고 네번 보고~') → 액센트 히트 → Am 롱톤 피니시!",
         chords: [
-          { bar: "1~2", code: "Am7 (Theme B)", sub: "04:28 메인 테마 후 끝 박 '한 번 보고!'", type: "normal" },
-          { bar: "3~4", code: "Am7 (Theme B)", sub: "04:32 메인 테마 후 끝 박 '두 번 보고!'", type: "normal" },
-          { bar: "5", code: "Am7 (Theme B 전반)", sub: "04:37 메인 테마 전반 1마디만!", type: "warn" },
-          { bar: "6", code: "Am7 (Stop!)", sub: "04:40 '세번 보고 네번 보고 자꾸 보고 자꾸 보고!'", type: "stop" },
-          { bar: "7", code: "Am7 (Accent Hit)", sub: "04:42 '자꾸만 보고~' (브레이크 액센트)", type: "warn" },
-          { bar: "8~End", code: "Am (Tremolo End)", sub: "04:45 '싶네~~~!' 롱톤 & 04:48.5 일제히 컷!", type: "stop" }
+          { bar: "1", code: "Am7 (Theme B)", sub: "04:28 메인 테마 (전반)", type: "normal", start: 267.7, end: 270.1 },
+          { bar: "2", code: "Am7 (Theme B)", sub: "끝 박 '한 번 보고!'", type: "normal", start: 270.1, end: 272.5 },
+          { bar: "3", code: "Am7 (Theme B)", sub: "04:32 메인 테마 (전반)", type: "normal", start: 272.5, end: 275.0 },
+          { bar: "4", code: "Am7 (Theme B)", sub: "끝 박 '두 번 보고!'", type: "normal", start: 275.0, end: 277.4 },
+          { bar: "5", code: "Am7 (Theme B 전반)", sub: "04:37 전반 1마디만 연주!", type: "warn", start: 277.4, end: 279.8 },
+          { bar: "6", code: "Am7 (Stop!)", sub: "04:40 '세번 보고 네번 보고 자꾸 보고 자꾸 보고!'", type: "stop", start: 279.8, end: 282.2 },
+          { bar: "7", code: "Am7 (Accent Hit)", sub: "04:42 '자꾸만 보고~' 브레이크 히트", type: "warn", start: 282.2, end: 285.0 },
+          { bar: "8 (End)", code: "Am (Tremolo End)", sub: "04:45 '싶네~~~!' 롱톤 & 04:48.5 컷!", type: "stop", start: 285.0, end: 289.5 }
         ],
         cues: [
           "🎤🎸 1~2마디(04:28~04:32): Theme B 2마디 치고 마지막 박에 '한 번 보고!'",
           "🎤🎸 3~4마디(04:32~04:37): Theme B 2마디 치고 마지막 박에 '두 번 보고!'",
-          "🛑 5~6마디(04:37~04:42): 세 번째 Theme B는 1마디만 치고 6마디 첫 박(04:40)에서 딱 멈춤! 보컬이 무반주로 '세 번 보고 네 번 보고 자꾸 보고 자꾸 보고!' 속사포 가사",
-          "💥 7~8마디(04:42~04:49): '자꾸만 보고~' 브레이크 히트 후 04:45 Am 트레몰로 & 보컬 초고음 샤우팅('싶네~~~!') → 04:48.5 드럼 심벌 컷으로 엔딩!"
+          "🛑 5~6마디(04:37~04:42): 세 번째 Theme B는 1마디만 치고 6마디 첫 박(04:40)에서 딱 멈춤! 보컬 무반주로 '세 번 보고 네 번 보고 자꾸 보고 자꾸 보고!'",
+          "💥 7~8마디(04:42~04:49): '자꾸만 보고~' 브레이크 히트 후 04:45 Am 트레몰로 & 보컬 초고음 샤우팅('싶네~~~!') → 04:48.5 일제히 컷!"
         ]
       }
     ];
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function toggleAutoScroll() {
+      autoScroll = !autoScroll;
+      const btn = document.getElementById("autoscroll-btn");
+      btn.textContent = `🎯 자동 스크롤: ${autoScroll ? "ON" : "OFF"}`;
+      btn.className = autoScroll
+        ? "rounded-lg border border-amber-300/60 bg-amber-300/15 px-3 py-1.5 text-xs font-black text-amber-200 hover:bg-amber-300/25"
+        : "rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-400 hover:bg-[#172238]";
+    }
 
     function renderFlowBar() {
       const flowBar = document.getElementById("flow-bar");
@@ -450,23 +568,35 @@
               <span class="rounded-md px-2.5 py-1 text-xs font-black ${sec.badgeClass}">${sec.bars}</span>
               <h3 class="text-lg font-black text-white">${idx + 1}. ${sec.name} <span class="text-sm font-bold text-slate-400">· ${sec.koName}</span></h3>
             </div>
-            <div class="no-print flex items-center gap-2">
-              ${sec.subSeek ? `<button type="button" onclick="event.stopPropagation(); seekToRawTime(${sec.subSeek.time}, '${sec.id}')" class="mono rounded-md border border-orange-400/50 bg-orange-500/10 px-2.5 py-1 text-[11px] font-bold text-orange-200 hover:bg-orange-500/20">${sec.subSeek.label}</button>` : ""}
-              <span class="text-[11px] font-bold text-slate-400">클릭하여 구간 재생</span>
-            </div>
+            <span class="no-print text-[11px] font-bold text-slate-400">마디 클릭 시 개별 마디 이동</span>
           </div>
 
           <p class="mt-2 text-xs font-medium text-slate-300">${sec.summary}</p>
 
-          <!-- Chord Grid -->
+          <!-- Bar-by-Bar Chord Grid -->
           <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-            ${sec.chords.map(c => `
-              <div class="bar-box ${c.type === 'warn' ? 'warn' : c.type === 'stop' ? 'stop' : ''} flex flex-col justify-between rounded-lg p-2.5">
-                <div class="flex items-center justify-between gap-1">
+            ${sec.chords.map((c, bIdx) => `
+              <div
+                id="bar-${sec.id}-${bIdx}"
+                onclick="event.stopPropagation(); seekToRawTime(${c.start}, '${sec.id}', ${bIdx})"
+                class="bar-box ${c.type === 'warn' ? 'warn' : c.type === 'stop' ? 'stop' : ''} flex flex-col justify-between rounded-lg p-2.5"
+              >
+                <div id="fill-${sec.id}-${bIdx}" class="bar-fill-overlay"></div>
+                <div class="relative z-10 flex items-center justify-between gap-1">
                   <span class="mono text-[10px] font-bold text-slate-400">Bar ${c.bar}</span>
+                  <div class="flex items-center gap-1">
+                    <span class="mono text-[9px] text-slate-500">${formatTime(c.start)}</span>
+                    <div class="no-print flex gap-0.5">
+                      <span id="dot-${sec.id}-${bIdx}-1" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-2" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-3" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-4" class="beat-dot"></span>
+                    </div>
+                  </div>
                 </div>
-                <p class="mono mt-1 text-sm font-extrabold text-white">${c.code}</p>
-                <p class="mt-1 text-[11px] leading-tight text-slate-300">${c.sub}</p>
+                <p class="mono relative z-10 mt-1 text-sm font-extrabold text-white">${c.code}</p>
+                <p class="relative z-10 mt-1 text-[11px] leading-tight text-slate-300">${c.sub}</p>
+                <div id="prog-${sec.id}-${bIdx}" class="bar-progress"></div>
               </div>
             `).join("")}
           </div>
@@ -486,6 +616,8 @@
     let player = null;
     let playerReady = false;
     let syncTimer = null;
+    let lastActiveSectionId = null;
+    let lastActiveBarKey = null;
 
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
@@ -511,39 +643,100 @@
     function seekToSection(sectionId) {
       const sec = sections.find(s => s.id === sectionId);
       if (!sec) return;
-      highlightSection(sec.id);
+      updateActiveState(sec.start, true);
       if (playerReady && player && typeof player.seekTo === "function") {
         player.seekTo(sec.start, true);
         player.playVideo();
       }
     }
 
-    function seekToRawTime(seconds, sectionId) {
-      if (sectionId) highlightSection(sectionId);
+    function seekToRawTime(seconds, sectionId, barIdx) {
+      updateActiveState(seconds, true);
       if (playerReady && player && typeof player.seekTo === "function") {
         player.seekTo(seconds, true);
         player.playVideo();
       }
     }
 
-    function formatTime(sec) {
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    function updateHudBeats(activeBeat) {
+      for (let b = 1; b <= 4; b++) {
+        const el = document.getElementById(`hud-beat-${b}`);
+        if (!el) continue;
+        if (b === activeBeat) {
+          el.className = "mono flex h-6 w-6 items-center justify-center rounded bg-amber-300 text-xs font-black text-slate-950 shadow";
+        } else {
+          el.className = "mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400";
+        }
+      }
     }
 
-    function highlightSection(activeId) {
+    function updateActiveState(currentTime, manualSeek = false) {
+      document.getElementById("current-time-label").textContent = formatTime(currentTime);
+
+      const currentSec = sections.find(s => currentTime >= s.start && currentTime < s.end);
+      const activeSecId = currentSec ? currentSec.id : null;
+
+      // Update section & flow pill highlights
       sections.forEach(sec => {
         const card = document.getElementById(`card-${sec.id}`);
         const pill = document.getElementById(`pill-${sec.id}`);
-        const isActive = sec.id === activeId;
-        if (card) card.classList.toggle("active-section", isActive);
-        if (pill) pill.classList.toggle("active-pill", isActive);
+        const isSecActive = sec.id === activeSecId;
+        if (card) card.classList.toggle("active-section", isSecActive);
+        if (pill) pill.classList.toggle("active-pill", isSecActive);
+
+        sec.chords.forEach((c, bIdx) => {
+          const barEl = document.getElementById(`bar-${sec.id}-${bIdx}`);
+          const progEl = document.getElementById(`prog-${sec.id}-${bIdx}`);
+          const fillEl = document.getElementById(`fill-${sec.id}-${bIdx}`);
+          if (!barEl) return;
+
+          const isBarActive = isSecActive && currentTime >= c.start && currentTime < c.end;
+          const isBarPassed = isSecActive && currentTime >= c.end;
+
+          barEl.classList.toggle("active-bar", isBarActive);
+          barEl.classList.toggle("passed-bar", isBarPassed);
+
+          if (isBarActive) {
+            const ratio = Math.max(0, Math.min(1, (currentTime - c.start) / (c.end - c.start)));
+            const pct = (ratio * 100).toFixed(1) + "%";
+            if (progEl) progEl.style.width = pct;
+            if (fillEl) fillEl.style.width = pct;
+
+            const beat = Math.min(4, Math.floor(ratio * 4) + 1);
+            for (let d = 1; d <= 4; d++) {
+              const dot = document.getElementById(`dot-${sec.id}-${bIdx}-${d}`);
+              if (dot) dot.classList.toggle("on", d <= beat);
+            }
+            updateHudBeats(beat);
+
+            document.getElementById("current-bar-label").textContent = `Bar ${c.bar} · ${c.code}`;
+            document.getElementById("current-cue-label").textContent = c.sub || sec.summary;
+
+            const barKey = `${sec.id}-${bIdx}`;
+            if (barKey !== lastActiveBarKey) {
+              lastActiveBarKey = barKey;
+              if (autoScroll && !manualSeek) {
+                barEl.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+          } else {
+            if (progEl) progEl.style.width = isBarPassed ? "100%" : "0%";
+            if (fillEl) fillEl.style.width = "0%";
+            for (let d = 1; d <= 4; d++) {
+              const dot = document.getElementById(`dot-${sec.id}-${bIdx}-${d}`);
+              if (dot) dot.classList.remove("on");
+            }
+          }
+        });
       });
-      const activeSec = sections.find(s => s.id === activeId);
-      if (activeSec) {
-        document.getElementById("current-section-label").textContent = `${activeSec.name} · ${activeSec.koName} (${activeSec.bars})`;
-        document.getElementById("current-cue-label").textContent = activeSec.summary;
+
+      if (currentSec) {
+        if (lastActiveSectionId !== currentSec.id) {
+          lastActiveSectionId = currentSec.id;
+          document.getElementById("current-section-label").textContent = `${currentSec.name} (${currentSec.bars})`;
+        }
+      } else {
+        updateHudBeats(0);
       }
     }
 
@@ -551,13 +744,12 @@
       if (syncTimer) clearInterval(syncTimer);
       syncTimer = setInterval(() => {
         if (!playerReady || !player || typeof player.getCurrentTime !== "function") return;
-        const currentTime = player.getCurrentTime() || 0;
-        document.getElementById("current-time-label").textContent = formatTime(currentTime);
-        const currentSec = sections.find(s => currentTime >= s.start && currentTime < s.end);
-        if (currentSec) {
-          highlightSection(currentSec.id);
+        const state = typeof player.getPlayerState === "function" ? player.getPlayerState() : 1;
+        if (state === 1 || state === 2) {
+          const currentTime = player.getCurrentTime() || 0;
+          updateActiveState(currentTime, false);
         }
-      }, 250);
+      }, 80);
     }
   </script>
 </body>
