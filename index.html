@@ -346,17 +346,20 @@
     // Built-in HTML Songform registry (matched by YouTube Video ID or Song Title)
     const builtInSheets = {
       byVideoId: {
-        "QNKGhkJU8-M": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" }
+        "QNKGhkJU8-M": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" },
+        "CuUefy9bT9U": { url: "sheets/livin-on-a-prayer.html", key: "Em → Gm", label: "송폼/악보" }
       },
       byTitle: {
-        "미인": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" }
+        "미인": { url: "sheets/miin.html", key: "Am", label: "송폼/악보" },
+        "livin' on a prayer": { url: "sheets/livin-on-a-prayer.html", key: "Em → Gm", label: "송폼/악보" },
+        "livin on a prayer": { url: "sheets/livin-on-a-prayer.html", key: "Em → Gm", label: "송폼/악보" }
       }
     };
 
     function getBuiltInSheet(song) {
       const videoId = extractYouTubeId(song["영상"] || "");
       if (videoId && builtInSheets.byVideoId[videoId]) return builtInSheets.byVideoId[videoId];
-      const title = (song["제목"] || "").trim();
+      const title = (song["제목"] || "").trim().toLowerCase();
       if (title && builtInSheets.byTitle[title]) return builtInSheets.byTitle[title];
       return null;
     }

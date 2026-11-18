@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Livin' On A Prayer (Bon Jovi) - 송폼 & 코드 악보 | 슬기로운 밴드생활</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700;800&family=Noto+Sans+KR:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * { font-family: "Noto Sans KR", system-ui, sans-serif; }
+    .mono { font-family: "JetBrains Mono", monospace; }
+    body { background: #0b1020; color: #e8edf8; }
+    .section-card { transition: border-color .15s ease, background-color .15s ease; }
+    .section-card:hover { border-color: #f6c95b66; }
+    .section-card.active-section {
+      border-color: #f6c95b !important;
+      background: #131d36 !important;
+      box-shadow: 0 0 0 1px #f6c95b44, 0 10px 25px -5px rgba(246, 201, 91, 0.12);
+    }
+    .bar-box {
+      position: relative;
+      overflow: hidden;
+      background: #0b1221;
+      border: 1px solid #253149;
+      min-height: 64px;
+      transition: transform .1s ease, border-color .1s ease, background-color .1s ease, box-shadow .1s ease;
+    }
+    .bar-box:hover {
+      border-color: #f6c95b88;
+    }
+    .bar-box.warn {
+      background: #2b1608;
+      border-color: #d97706;
+    }
+    .bar-box.stop {
+      background: #2a121f;
+      border-color: #e11d48;
+    }
+    .bar-box.passed-bar {
+      opacity: 0.55;
+    }
+    .bar-box.active-bar {
+      border-color: #f6c95b !important;
+      background: #26200d !important;
+      transform: scale(1.02);
+      box-shadow: 0 0 0 2px #f6c95b, 0 8px 20px -4px rgba(246, 201, 91, 0.35);
+      z-index: 10;
+      opacity: 1 !important;
+    }
+    .bar-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #f59e0b, #fde047);
+      width: 0%;
+      pointer-events: none;
+    }
+    .bar-fill-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(246, 201, 91, 0.16), rgba(246, 201, 91, 0.04));
+      width: 0%;
+      pointer-events: none;
+    }
+    .beat-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 9999px;
+      background: #33415f;
+    }
+    .beat-dot.on {
+      background: #f6c95b;
+      box-shadow: 0 0 6px #f6c95b;
+    }
+    .flow-pill { transition: all .15s ease; }
+    .flow-pill:hover { border-color: #f6c95b; color: #f6c95b; }
+    .flow-pill.active-pill { background: #f6c95b; color: #0b1020; border-color: #f6c95b; font-weight: 900; }
+    @media print {
+      body { background: #ffffff; color: #111827; }
+      .no-print { display: none !important; }
+      .section-card { break-inside: avoid; border-color: #d1d5db !important; background: #ffffff !important; color: #111827 !important; }
+      .bar-box { background: #f9fafb !important; border-color: #9ca3af !important; color: #111827 !important; opacity: 1 !important; transform: none !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24">
+  <!-- Top Nav -->
+  <nav class="no-print sticky top-0 z-30 border-b border-[#1f2a44] bg-[#070b15]/95 px-4 py-3 backdrop-blur">
+    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="rounded-lg border border-[#2b3955] bg-[#111a2d] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#18233a]">← 정모 홈</a>
+        <div>
+          <p class="text-sm font-black tracking-tight text-white">Livin' On A Prayer — Bon Jovi</p>
+          <p class="text-[11px] font-medium text-slate-400">마디(Bar)별 실시간 자동 추적 악보</p>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="autoscroll-btn" type="button" onclick="toggleAutoScroll()" class="rounded-lg border border-amber-300/60 bg-amber-300/15 px-3 py-1.5 text-xs font-black text-amber-200 hover:bg-amber-300/25">🎯 자동 스크롤: ON</button>
+        <a href="https://www.youtube.com/watch?v=CuUefy9bT9U" target="_blank" rel="noreferrer" class="rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-200 hover:bg-[#172238]">▶ 원본 유튜브</a>
+        <button onclick="window.print()" class="rounded-lg bg-amber-300 px-3 py-1.5 text-xs font-black text-slate-950 hover:bg-amber-200">🖨️ 인쇄 / PDF</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="mx-auto max-w-6xl px-4 pt-6">
+    <!-- Song Header & Metadata -->
+    <header class="rounded-xl border border-[#253149] bg-[#10182a] p-6 shadow-xl">
+      <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded-full border border-amber-300/40 bg-amber-300/10 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-amber-200">Real-time Bar Tracker</span>
+            <span class="rounded-md bg-emerald-400/15 px-2.5 py-1 text-xs font-black text-emerald-300">Key: Em → Gm (+3키 전조)</span>
+            <span class="rounded-md bg-sky-400/15 px-2.5 py-1 text-xs font-black text-sky-300">Tempo: ~122.5 BPM</span>
+            <span class="rounded-md bg-purple-400/15 px-2.5 py-1 text-xs font-black text-purple-300">4/4 박자</span>
+          </div>
+          <h1 class="mt-3 text-3xl font-black tracking-tight text-white md:text-4xl">Livin' On A Prayer — Bon Jovi</h1>
+          <p class="mt-1 text-sm text-slate-300">Slippery When Wet (1986) · 원곡 스튜디오 버전 (YouTube: CuUefy9bT9U)</p>
+        </div>
+        <div class="rounded-lg border border-amber-300/30 bg-amber-300/5 p-3.5 text-xs leading-5 text-amber-100 lg:max-w-md">
+          <p class="font-black text-amber-300">💡 합주 핵심 주의 포인트 4가지</p>
+          <ul class="mt-1 list-disc space-y-0.5 pl-4 text-slate-200">
+            <li><strong class="text-amber-200">1절 후 간주(Theme A):</strong> 4마디가 아니라 <strong>⚠️ 2마디</strong>만 연주 후 바로 2절 진입!</li>
+            <li><strong class="text-amber-200">Chorus 2 (솔로 직전):</strong> 8마디 끝에 <code class="mono text-amber-200">C - D</code> <strong>⚠️ 1마디가 추가(총 9마디)</strong>됩니다.</li>
+            <li><strong class="text-amber-200">솔로 직후 Bridge:</strong> 8마디가 아니라 <strong>⚠️ 6마디</strong> 빌드업 후 전조됩니다.</li>
+            <li><strong class="text-amber-200">마지막 후렴 전조:</strong> <code class="mono text-amber-200">03:23</code>부터 <strong>+3키 (<code class="mono text-amber-200">Em → Gm</code>)</strong>로 올라갑니다.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Flow Map -->
+      <div class="mt-5 border-t border-[#253149] pt-4">
+        <p class="text-[11px] font-black uppercase tracking-widest text-slate-400">전체 송폼 플로우 (클릭 시 해당 섹션 이동)</p>
+        <div id="flow-bar" class="mt-2.5 flex flex-wrap gap-1.5"></div>
+      </div>
+    </header>
+
+    <!-- Main Grid: Sticky Video Player + Interactive Sections -->
+    <div class="mt-6 grid gap-6 lg:grid-cols-[360px_1fr] lg:items-start">
+      <!-- Left Column: Video & Quick Summary -->
+      <aside class="no-print space-y-4 lg:sticky lg:top-16">
+        <div class="overflow-hidden rounded-xl border border-[#253149] bg-[#10182a] shadow-xl">
+          <div class="aspect-video w-full bg-black">
+            <div id="yt-player" class="h-full w-full"></div>
+          </div>
+          <div class="p-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-slate-400">현재 재생 마디 & 박자</span>
+              <span id="current-time-label" class="mono rounded bg-[#0b1221] px-2 py-0.5 text-xs font-bold text-amber-300">00:00</span>
+            </div>
+            <p id="current-section-label" class="mt-1.5 text-base font-black text-white">대기 중 (영상을 재생하세요)</p>
+            <div class="mt-2 flex items-center justify-between rounded-lg border border-[#253149] bg-[#0b1221] px-3 py-2">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Current Bar</span>
+                <p id="current-bar-label" class="mono text-sm font-black text-amber-300">-</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span id="hud-beat-1" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">1</span>
+                <span id="hud-beat-2" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">2</span>
+                <span id="hud-beat-3" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">3</span>
+                <span id="hud-beat-4" class="mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400">4</span>
+              </div>
+            </div>
+            <p id="current-cue-label" class="mt-2 text-xs text-slate-300">어느 마디든 클릭하면 해당 마디부터 재생됩니다.</p>
+          </div>
+        </div>
+
+        <!-- Core Riff Cheat Sheet -->
+        <div class="rounded-xl border border-[#253149] bg-[#10182a] p-4 space-y-3">
+          <h2 class="text-sm font-black text-white">🎸 핵심 테마 & 전조 코드표</h2>
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
+            <p class="font-black text-amber-300">Theme A — 베이스 & 토크박스 리프</p>
+            <p class="mono text-[11px] text-slate-200">Bass: E - E - D - E - G - A - E (Em 오스티나토)</p>
+            <p class="text-slate-400">기타 토크박스(또는 와우 페달) + 베이스 16비트 리프</p>
+          </div>
+          <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
+            <p class="font-black text-sky-300">Pre-Chorus (8마디)</p>
+            <p class="mono text-[11px] text-slate-200">| C  D | G  C | C  D | Em |</p>
+            <p class="mono text-[11px] text-slate-200">| C  D | G  C | D    | D (Stop!) |</p>
+          </div>
+          <div class="rounded-lg border border-emerald-500/40 bg-[#0b211d] p-3 text-xs space-y-1.5">
+            <p class="font-black text-emerald-300">Chorus 원키 (Em) vs 전조 후 (Gm)</p>
+            <p class="mono text-[11px] text-slate-100">• 1·2절 (Em): | Em C | D G | C D | Em |</p>
+            <p class="mono text-[11px] text-amber-200">• 전조 (Gm): | Gm Eb | F Bb | Eb F | Gm |</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right Column: Detailed Section Cards -->
+      <section id="sections-container" class="space-y-4"></section>
+    </div>
+  </main>
+
+  <script>
+    const VIDEO_ID = "CuUefy9bT9U";
+    let autoScroll = true;
+
+    function makeBars(start, end, items) {
+      const count = items.length;
+      const dur = (end - start) / count;
+      return items.map((item, idx) => ({
+        bar: item.bar || String(idx + 1),
+        code: item.code,
+        sub: item.sub || "",
+        type: item.type || "normal",
+        start: item.start !== undefined ? item.start : +(start + idx * dur).toFixed(2),
+        end: item.end !== undefined ? item.end : +(start + (idx + 1) * dur).toFixed(2)
+      }));
+    }
+
+    // All timings calibrated to 122.5 BPM (~1.959s/bar) with 1-beat (-0.5s) lead feel
+    const sections = [
+      {
+        id: "intro-pad",
+        name: "Intro Pad",
+        koName: "신스 패드 인트로 (페이드인)",
+        start: 0,
+        end: 13.2,
+        timeLabel: "00:00 ~ 00:13",
+        bars: "7마디 (3+4)",
+        badgeClass: "bg-slate-700 text-slate-200",
+        summary: "몽환적인 Em 신스 스트링 패드 페이드인 → 7마디 끝에 베이스 슬라이드 픽업",
+        chords: makeBars(0, 13.2, [
+          { bar: "1", code: "N.C. (Fade-in)", sub: "신스 패드 페이드인 시작" },
+          { bar: "2", code: "Em (Pad)", sub: "신스 패드 볼륨 업" },
+          { bar: "3", code: "Em (Pad)", sub: "신스 패드 서스테인" },
+          { bar: "4", code: "Em (Pad)", sub: "00:05 하이 신스 보이스 추가" },
+          { bar: "5", code: "Em (Pad)", sub: "신스 패드 홀드" },
+          { bar: "6", code: "Em (Pad)", sub: "신스 패드 홀드" },
+          { bar: "7", code: "Em (Bass Pick-up)", sub: "끝 박 베이스 슬라이드 진입!", type: "warn" }
+        ]),
+        cues: [
+          "🎹 건반: Em 신스 패드로 분위기 빌드업 (라이브 합주 시 4마디로 축약하거나 건반 카운트로 시작 가능)",
+          "🎸 베이스 & 🥁 드럼: 7번째 마디 마지막 박 슬라이드와 함께 Theme A 리프 진입"
+        ]
+      },
+      {
+        id: "theme-a-intro",
+        name: "Theme A (Intro Riff)",
+        koName: "베이스 & 토크박스 메인 리프 (16마디)",
+        start: 13.2,
+        end: 44.5,
+        timeLabel: "00:13 ~ 00:44",
+        bars: "16마디 (4×4)",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "베이스+림샷(4마디) → 토크박스 진입(4마디) → C-D 브라스 히트(4마디) → 보컬 내레이션(4마디)",
+        chords: makeBars(13.2, 44.5, [
+          { bar: "1", code: "Em (Bass Riff)", sub: "00:13 베이스 + 드럼 림샷" },
+          { bar: "2", code: "Em (Bass Riff)", sub: "베이스 오스티나토" },
+          { bar: "3", code: "Em (Bass Riff)", sub: "베이스 오스티나토" },
+          { bar: "4", code: "Em (Drum Fill)", sub: "00:20 스네어 필인!", type: "warn" },
+          { bar: "5", code: "Em (Talk Box)", sub: "00:21 기타 토크박스 리프 진입" },
+          { bar: "6", code: "Em (Talk Box)", sub: "Whoa-oh-oh 토크박스" },
+          { bar: "7", code: "Em (Talk Box)", sub: "토크박스 + 풀 드럼 비트" },
+          { bar: "8", code: "Em", sub: "코드 체인지 준비" },
+          { bar: "9", code: "C       D", sub: "00:29 신스 브라스 & 파워코드 히트!", type: "warn" },
+          { bar: "10", code: "Em", sub: "토크박스 리프 복귀" },
+          { bar: "11", code: "C       D", sub: "00:33 C (2박) - D (2박) 히트!", type: "warn" },
+          { bar: "12", code: "Em", sub: "토크박스 리프 복귀" },
+          { bar: "13", code: "Em", sub: "00:37 내레이션 준비" },
+          { bar: "14", code: "Em (Spoken)", sub: "'Once upon a time...'" },
+          { bar: "15", code: "Em (Spoken)", sub: "'...not so long ago'" },
+          { bar: "16", code: "Em", sub: "끝 박 'Tommy~' 1절 픽업", type: "warn" }
+        ]),
+        cues: [
+          "🎸 베이스: 전 구간 시그니처 16비트 리프 (E - E - D - E - G - A - E) 유지",
+          "🎸 기타: 5마디(00:21)부터 토크박스(또는 와우 페달) 리프 진입 / 9, 11마디 C - D 코드 히트",
+          "🎤 보컬: 14~15마디(00:39~) 'Once upon a time, not so long ago' 멘트 후 16마디 끝 'Tommy~' 진입"
+        ]
+      },
+      {
+        id: "verse-1",
+        name: "Verse 1",
+        koName: "1절 (Tommy & Gina — 16마디)",
+        start: 44.5,
+        end: 75.9,
+        timeLabel: "00:44 ~ 01:16",
+        bars: "16마디 (8+8)",
+        badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
+        summary: "[Em 베이스 리프 4마디 + (C-D | Em) × 2회 4마디] × 2세트 (Tommy 파트 8마디 + Gina 파트 8마디)",
+        chords: makeBars(44.5, 75.9, [
+          { bar: "1", code: "Em", sub: "Tommy used to work on the docks" },
+          { bar: "2", code: "Em", sub: "(베이스 & 드럼 타이트 그루브)" },
+          { bar: "3", code: "Em", sub: "Union's been on strike" },
+          { bar: "4", code: "Em", sub: "He's down on his luck..." },
+          { bar: "5", code: "C       D", sub: "...it's tough (C 2박 - D 2박)", type: "warn" },
+          { bar: "6", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "7", code: "C       D", sub: "So tough (C 2박 - D 2박)", type: "warn" },
+          { bar: "8", code: "Em", sub: "1절 전반 마무리" },
+          { bar: "9", code: "Em", sub: "Gina works the diner all day" },
+          { bar: "10", code: "Em", sub: "(베이스 & 드럼 그루브)" },
+          { bar: "11", code: "Em", sub: "Working for her man" },
+          { bar: "12", code: "Em", sub: "She brings home her pay..." },
+          { bar: "13", code: "C       D", sub: "...for love (C 2박 - D 2박)", type: "warn" },
+          { bar: "14", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "15", code: "C       D", sub: "Mmm, for love (C 2박 - D 2박)", type: "warn" },
+          { bar: "16", code: "Em", sub: "끝에 'She says, we've gotta...' 픽업", type: "warn" }
+        ]),
+        cues: [
+          "🎸🎹 1~4마디, 9~12마디: 기타/건반을 절제하고 베이스 리프와 보컬이 돋보이게 공간 유지",
+          "🎸🎹 5~8마디, 13~16마디: 'it's tough', 'for love' 구간에서 C - D 코드 패드 및 토크박스 백킹"
+        ]
+      },
+      {
+        id: "pre-chorus-1",
+        name: "Pre-Chorus 1",
+        koName: "프리코러스 1 (We've gotta hold on — 8마디)",
+        start: 75.9,
+        end: 91.6,
+        timeLabel: "01:16 ~ 01:31",
+        bars: "8마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "C - D 중심의 8비트 드라이브 빌드업 → 8번째 마디 첫 박 D 스탑('shot!') 후 후렴 폭발",
+        chords: makeBars(75.9, 91.6, [
+          { bar: "1", code: "C       D", sub: "...hold on, to what we've" },
+          { bar: "2", code: "G       C", sub: "got (또는 Em 유지)" },
+          { bar: "3", code: "C       D", sub: "It doesn't make a difference if we make it or" },
+          { bar: "4", code: "Em", sub: "not" },
+          { bar: "5", code: "C       D", sub: "We've got each other and that's a" },
+          { bar: "6", code: "G       C", sub: "lot for love" },
+          { bar: "7", code: "D (Build-up)", sub: "We'll give it a... (8분음표 빌드업)", type: "warn" },
+          { bar: "8", code: "D (Stop & Fill!)", sub: "01:29 '...shot!' 강박 스탑 + 필인!", type: "stop" }
+        ]),
+        cues: [
+          "🎸🥁 7마디(01:27): D 코드로 8분음표 크레센도 빌드업",
+          "🛑 8마디(01:29): 첫 박 'shot!'에서 전 파트 D 브레이크 스탑 후 드럼 필인으로 후렴 진입!"
+        ]
+      },
+      {
+        id: "chorus-1",
+        name: "Chorus 1",
+        koName: "후렴 1 (Whoa, we're halfway there — 8마디)",
+        start: 91.6,
+        end: 107.2,
+        timeLabel: "01:31 ~ 01:47",
+        bars: "8마디",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "| Em  C | D  G | C  D | Em | × 2회 반복 (당김음 코드 리듬 주의)",
+        chords: makeBars(91.6, 107.2, [
+          { bar: "1", code: "Em      C", sub: "Whoa, we're half-" },
+          { bar: "2", code: "D       G", sub: "-way there" },
+          { bar: "3", code: "C       D", sub: "Whoa-oh, (고음 코러스!)" },
+          { bar: "4", code: "Em", sub: "livin' on a prayer" },
+          { bar: "5", code: "Em      C", sub: "Take my hand, we'll" },
+          { bar: "6", code: "D       G", sub: "make it I swear" },
+          { bar: "7", code: "C       D", sub: "Whoa-oh, (고음 코러스!)" },
+          { bar: "8", code: "Em", sub: "livin' on a prayer" }
+        ]),
+        cues: [
+          "🎤 보컬 & 서브보컬: 3마디, 7마디 'Whoa-oh!' 구간 강력한 하이노트 하모니",
+          "🎸🥁 당김음 포인트: Em(1박) - C(2박앤) / D(1박) - G(4박) 리듬 호흡 맞추기"
+        ]
+      },
+      {
+        id: "theme-a-short",
+        name: "Theme A (2 Bars)",
+        koName: "베이스 & 토크박스 간주 (⚠️ 2마디 주의!)",
+        start: 107.2,
+        end: 111.1,
+        timeLabel: "01:47 ~ 01:51",
+        bars: "⚠️ 2마디",
+        badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
+        summary: "⚠️ 4마디가 아니라 딱 2마디만 Em 토크박스/베이스 리프 연주 후 바로 2절 보컬 진입!",
+        chords: makeBars(107.2, 111.1, [
+          { bar: "1", code: "Em (Theme A)", sub: "01:47 토크박스 & 베이스 리프 1", type: "warn" },
+          { bar: "2 (⚠️2마디 끝)", code: "Em (Theme A)", sub: "리프 2 + 끝 박 'Tommy's got...' 픽업!", type: "warn" }
+        ]),
+        cues: [
+          "⚠️ 합주 단골 실수 구간: 1절 후 간주는 4마디가 아니라 2마디(약 4초)뿐입니다! 2마디 끝에 바로 2절 가사가 들어옵니다."
+        ]
+      },
+      {
+        id: "verse-2",
+        name: "Verse 2",
+        koName: "2절 (16마디)",
+        start: 111.1,
+        end: 142.5,
+        timeLabel: "01:51 ~ 02:22",
+        bars: "16마디 (8+8)",
+        badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
+        summary: "1절과 동일한 16마디 코드 구성 (6~8마디 리드기타 클린/하모닉스 필인 추가)",
+        chords: makeBars(111.1, 142.5, [
+          { bar: "1", code: "Em", sub: "Tommy's got his six-string in hock" },
+          { bar: "2", code: "Em", sub: "(베이스 & 드럼 그루브)" },
+          { bar: "3", code: "Em", sub: "Now he's holding in..." },
+          { bar: "4", code: "Em", sub: "...what he used to make it talk" },
+          { bar: "5", code: "C       D", sub: "So tough (C 2박 - D 2박)", type: "warn" },
+          { bar: "6", code: "Em", sub: "+ 기타 필인" },
+          { bar: "7", code: "C       D", sub: "Ooh, it's tough", type: "warn" },
+          { bar: "8", code: "Em", sub: "기타 아밍/피크스크래치 필인" },
+          { bar: "9", code: "Em", sub: "Gina dreams of running away" },
+          { bar: "10", code: "Em", sub: "(베이스 & 드럼 그루브)" },
+          { bar: "11", code: "Em", sub: "When she cries in the night, Tommy whispers" },
+          { bar: "12", code: "Em", sub: "'Baby, it's...'" },
+          { bar: "13", code: "C       D", sub: "...okay (C 2박 - D 2박)", type: "warn" },
+          { bar: "14", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "15", code: "C       D", sub: "Someday...", type: "warn" },
+          { bar: "16", code: "Em", sub: "끝에 'We've gotta...' 픽업", type: "warn" }
+        ]),
+        cues: [
+          "🎸 리드기타: 6~8마디(02:01~02:06) 구간에서 애절한 벤딩 필인으로 1절과 차별화"
+        ]
+      },
+      {
+        id: "pre-chorus-2",
+        name: "Pre-Chorus 2",
+        koName: "프리코러스 2 (We've gotta hold on — 8마디)",
+        start: 142.5,
+        end: 158.2,
+        timeLabel: "02:22 ~ 02:38",
+        bars: "8마디",
+        badgeClass: "bg-purple-400/20 text-purple-300 border border-purple-400/40",
+        summary: "프리코러스 1과 동일 (7마디 D 빌드업 → 8마디 첫 박 'shot!' 스탑)",
+        chords: makeBars(142.5, 158.2, [
+          { bar: "1", code: "C       D", sub: "...hold on, to what we've" },
+          { bar: "2", code: "G       C", sub: "got" },
+          { bar: "3", code: "C       D", sub: "It doesn't make a difference if we make it or" },
+          { bar: "4", code: "Em", sub: "not" },
+          { bar: "5", code: "C       D", sub: "We've got each other and that's a" },
+          { bar: "6", code: "G       C", sub: "lot for love" },
+          { bar: "7", code: "D (Build-up)", sub: "We'll give it a... (8분음표 빌드업)", type: "warn" },
+          { bar: "8", code: "D (Stop & Fill!)", sub: "02:36 '...shot!' 강박 스탑 + 필인!", type: "stop" }
+        ]),
+        cues: [
+          "🛑 8마디(02:36): 첫 박 'shot!' 브레이크 후 드럼 필인으로 Chorus 2 진입"
+        ]
+      },
+      {
+        id: "chorus-2",
+        name: "Chorus 2 (9 Bars)",
+        koName: "후렴 2 (⚠️ 8마디 + 1마디 연장 = 총 9마디!)",
+        start: 158.2,
+        end: 175.8,
+        timeLabel: "02:38 ~ 02:55",
+        bars: "⚠️ 9마디 (8+1)",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "기본 후렴 8마디 직후, 9번째 마디에 C - D ('Livin' on a prayer~!') 1마디가 추가된 뒤 기타 솔로로 진입!",
+        chords: makeBars(158.2, 175.8, [
+          { bar: "1", code: "Em      C", sub: "Whoa, we're half-" },
+          { bar: "2", code: "D       G", sub: "-way there" },
+          { bar: "3", code: "C       D", sub: "Whoa-oh," },
+          { bar: "4", code: "Em", sub: "livin' on a prayer" },
+          { bar: "5", code: "Em      C", sub: "Take my hand, we'll" },
+          { bar: "6", code: "D       G", sub: "make it I swear" },
+          { bar: "7", code: "C       D", sub: "Whoa-oh," },
+          { bar: "8", code: "Em      D/F#", sub: "livin' on a prayer (연장 연결!)", type: "warn" },
+          { bar: "9 (⚠️추가 1마디)", code: "C       D", sub: "02:54 'Livin' on a prayer~!' → 솔로 진입", type: "stop" }
+        ]),
+        cues: [
+          "⚠️ 핵심 주의 (9번째 마디, 02:54~02:56): 8마디로 끝나지 않고 'Livin' on a prayer'를 한 번 더 부르며 | C  D | 1마디가 추가된 후 기타 솔로 첫 마디(Em)로 들어갑니다!"
+        ]
+      },
+      {
+        id: "guitar-solo",
+        name: "Guitar Solo",
+        koName: "기타 솔로 (8마디)",
+        start: 175.8,
+        end: 191.5,
+        timeLabel: "02:55 ~ 03:11",
+        bars: "8마디",
+        badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
+        summary: "후렴과 동일한 코드 진행(| Em C | D G | C D | Em | × 2) 위에서 펼쳐지는 멜로딕 기타 솔로 8마디",
+        chords: makeBars(175.8, 191.5, [
+          { bar: "1", code: "Em      C", sub: "02:56 기타 솔로 시작" },
+          { bar: "2", code: "D       G", sub: "멜로딕 솔로 라인" },
+          { bar: "3", code: "C       D", sub: "옥타브/벤딩 프레이즈" },
+          { bar: "4", code: "Em", sub: "전반 4마디 마무리" },
+          { bar: "5", code: "Em      C", sub: "03:03 후반 속주 & 하이 벤딩" },
+          { bar: "6", code: "D       G", sub: "하이라이트 상승 라인" },
+          { bar: "7", code: "C       D", sub: "솔로 클라이맥스" },
+          { bar: "8", code: "Em", sub: "03:09 하이노트 피니시 → C 연결", type: "warn" }
+        ]),
+        cues: [
+          "🎸 리드기타: 토크박스 해제 후 일반 디스토션 톤으로 8마디 멜로딕 솔로 연주",
+          "🎸🎹🥁 백킹 파트: 후렴(Chorus)과 완전히 동일한 8마디 코드 리듬 유지"
+        ]
+      },
+      {
+        id: "bridge-keychange",
+        name: "Bridge (Key Up Build-up)",
+        koName: "브릿지 & +3키 전조 빌드업 (⚠️ 6마디)",
+        start: 191.5,
+        end: 203.3,
+        timeLabel: "03:11 ~ 03:23",
+        bars: "⚠️ 6마디",
+        badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
+        summary: "C(1마디) - D(1마디) - Em/D(1마디) - C(2마디) - D/F(1마디 전조 필인) 총 6마디 후 Gm(+3키)로 전조!",
+        chords: makeBars(191.5, 203.3, [
+          { bar: "1", code: "C", sub: "03:11 'Ooooh~' (서스테인)" },
+          { bar: "2", code: "D", sub: "'...we've got to'" },
+          { bar: "3", code: "Em      D", sub: "'hold on, ready or'" },
+          { bar: "4", code: "C", sub: "'not...'" },
+          { bar: "5", code: "C (Build-up)", sub: "'You live for the fight when it's'", type: "warn" },
+          { bar: "6 (⚠️전조 필인!)", code: "D   →   F7 (Key Up!)", sub: "03:21 'all that you've got!' → Gm 전조!", type: "stop" }
+        ]),
+        cues: [
+          "⚠️ 마디 수 주의: 8마디가 아니라 총 6마디입니다!",
+          "🔥 전조 포인트 (6번째 마디, 03:21~03:23): 'all that you've got!'에서 D 코드 히트 후 드럼 스네어 필인과 함께 +3키(단3도 위)인 Gm 키로 전조됩니다!"
+        ]
+      },
+      {
+        id: "chorus-3-gm",
+        name: "Chorus 3 (Key: Gm)",
+        koName: "전조 후렴 1회차 (+3키 상승: Gm — 8마디)",
+        start: 203.3,
+        end: 219.0,
+        timeLabel: "03:23 ~ 03:39",
+        bars: "8마디 (Key Gm)",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "🔥 +3키 전조 (Em → Gm): | Gm  Eb | F  Bb | Eb  F | Gm | × 2회 반복",
+        chords: makeBars(203.3, 219.0, [
+          { bar: "1 (Key Gm!)", code: "Gm      Eb", sub: "03:23 Whoa, we're half-", type: "warn" },
+          { bar: "2", code: "F       Bb", sub: "-way there" },
+          { bar: "3", code: "Eb      F", sub: "Whoa-oh, (전조 초고음!)" },
+          { bar: "4", code: "Gm", sub: "livin' on a prayer" },
+          { bar: "5", code: "Gm      Eb", sub: "Take my hand and we'll" },
+          { bar: "6", code: "F       Bb", sub: "make it I swear" },
+          { bar: "7", code: "Eb      F", sub: "Whoa-oh," },
+          { bar: "8", code: "Gm", sub: "livin' on a prayer" }
+        ]),
+        cues: [
+          "🎸🎹 전 파트 코드 변환: Em→Gm, C→Eb, D→F, G→Bb (모든 포지션 3프렛 위로 이동!)"
+        ]
+      },
+      {
+        id: "chorus-4-gm",
+        name: "Chorus 4 (Key: Gm)",
+        koName: "전조 후렴 2회차 (Gm — 8마디)",
+        start: 219.0,
+        end: 234.7,
+        timeLabel: "03:39 ~ 03:54",
+        bars: "8마디 (Key Gm)",
+        badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
+        summary: "| Gm  Eb | F  Bb | Eb  F | Gm | × 2회 연속 반복",
+        chords: makeBars(219.0, 234.7, [
+          { bar: "1", code: "Gm      Eb", sub: "03:39 Whoa, we're half-" },
+          { bar: "2", code: "F       Bb", sub: "-way there" },
+          { bar: "3", code: "Eb      F", sub: "Whoa-oh," },
+          { bar: "4", code: "Gm", sub: "livin' on a prayer" },
+          { bar: "5", code: "Gm      Eb", sub: "Take my hand and we'll" },
+          { bar: "6", code: "F       Bb", sub: "make it I swear" },
+          { bar: "7", code: "Eb      F", sub: "Whoa-oh," },
+          { bar: "8", code: "Gm", sub: "livin' on a prayer" }
+        ]),
+        cues: [
+          "🎤🎸 에너지 최고조 유지! 라이브 합주 시 이 2회차 끝(8마디 Gm)에서 엔딩하거나, 아래 아우트로 후렴까지 진행 후 마무리할 수 있습니다."
+        ]
+      },
+      {
+        id: "outro-fade",
+        name: "Outro Chorus (Fade Out)",
+        koName: "아우트로 후렴 & 페이드아웃 (Gm — 7~8마디)",
+        start: 234.7,
+        end: 248.5,
+        timeLabel: "03:54 ~ 04:08",
+        bars: "7~8마디 (End)",
+        badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
+        summary: "원곡 음원은 전조 후렴 3회차 진행 중 페이드아웃 (라이브 합주 시 8마디 끝 Gm 강박 컷 추천!)",
+        chords: makeBars(234.7, 248.5, [
+          { bar: "1", code: "Gm      Eb", sub: "03:55 Whoa, we're half-" },
+          { bar: "2", code: "F       Bb", sub: "-way there" },
+          { bar: "3", code: "Eb      F", sub: "Whoa-oh," },
+          { bar: "4", code: "Gm", sub: "livin' on a prayer (Fade 시작)" },
+          { bar: "5", code: "Gm      Eb", sub: "Take my hand and we'll" },
+          { bar: "6", code: "F       Bb", sub: "make it I swear" },
+          { bar: "7~8 (End)", code: "Eb  F  →  Gm (End!)", sub: "합주 시 8마디 첫 박 Gm 강박 엔딩!", type: "stop" }
+        ]),
+        cues: [
+          "🏁 합주 엔딩 팁: 원곡 영상은 04:00부터 페이드아웃되므로, 합주에서는 이 마지막 후렴의 7마디(Eb - F) 후 8마디 첫 박 Gm에서 다 함께 트레몰로/강박 컷으로 끝내면 깔끔합니다!"
+        ]
+      }
+    ];
+
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function toggleAutoScroll() {
+      autoScroll = !autoScroll;
+      const btn = document.getElementById("autoscroll-btn");
+      btn.textContent = `🎯 자동 스크롤: ${autoScroll ? "ON" : "OFF"}`;
+      btn.className = autoScroll
+        ? "rounded-lg border border-amber-300/60 bg-amber-300/15 px-3 py-1.5 text-xs font-black text-amber-200 hover:bg-amber-300/25"
+        : "rounded-lg border border-[#33415f] bg-[#0b1221] px-3 py-1.5 text-xs font-bold text-slate-400 hover:bg-[#172238]";
+    }
+
+    function renderFlowBar() {
+      const flowBar = document.getElementById("flow-bar");
+      flowBar.innerHTML = sections.map(sec => `
+        <button
+          id="pill-${sec.id}"
+          onclick="seekToSection('${sec.id}')"
+          class="flow-pill rounded-lg border border-[#33415f] bg-[#0b1221] px-2.5 py-1.5 text-left text-xs font-bold text-slate-200"
+        >
+          <span class="block text-[10px] text-slate-400 mono">${sec.timeLabel.split(" ~ ")[0]} · ${sec.bars}</span>
+          <span>${sec.name}</span>
+        </button>
+      `).join("");
+    }
+
+    function renderSections() {
+      const container = document.getElementById("sections-container");
+      container.innerHTML = sections.map((sec, idx) => `
+        <article
+          id="card-${sec.id}"
+          onclick="seekToSection('${sec.id}')"
+          class="section-card cursor-pointer rounded-xl border border-[#253149] bg-[#10182a] p-5"
+        >
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span class="mono rounded-md bg-[#0b1221] px-2.5 py-1 text-xs font-black text-amber-300 border border-[#253149]">▶ ${sec.timeLabel}</span>
+              <span class="rounded-md px-2.5 py-1 text-xs font-black ${sec.badgeClass}">${sec.bars}</span>
+              <h3 class="text-lg font-black text-white">${idx + 1}. ${sec.name} <span class="text-sm font-bold text-slate-400">· ${sec.koName}</span></h3>
+            </div>
+            <span class="no-print text-[11px] font-bold text-slate-400">마디 클릭 시 개별 마디 이동</span>
+          </div>
+
+          <p class="mt-2 text-xs font-medium text-slate-300">${sec.summary}</p>
+
+          <!-- Bar-by-Bar Chord Grid -->
+          <div class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
+            ${sec.chords.map((c, bIdx) => `
+              <div
+                id="bar-${sec.id}-${bIdx}"
+                onclick="event.stopPropagation(); seekToRawTime(${c.start}, '${sec.id}', ${bIdx})"
+                class="bar-box ${c.type === 'warn' ? 'warn' : c.type === 'stop' ? 'stop' : ''} flex flex-col justify-between rounded-lg p-2.5"
+              >
+                <div id="fill-${sec.id}-${bIdx}" class="bar-fill-overlay"></div>
+                <div class="relative z-10 flex items-center justify-between gap-1">
+                  <span class="mono text-[10px] font-bold text-slate-400">Bar ${c.bar}</span>
+                  <div class="flex items-center gap-1">
+                    <span class="mono text-[9px] text-slate-500">${formatTime(c.start)}</span>
+                    <div class="no-print flex gap-0.5">
+                      <span id="dot-${sec.id}-${bIdx}-1" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-2" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-3" class="beat-dot"></span>
+                      <span id="dot-${sec.id}-${bIdx}-4" class="beat-dot"></span>
+                    </div>
+                  </div>
+                </div>
+                <p class="mono relative z-10 mt-1 text-sm font-extrabold text-white">${c.code}</p>
+                <p class="relative z-10 mt-1 text-[11px] leading-tight text-slate-300">${c.sub}</p>
+                <div id="prog-${sec.id}-${bIdx}" class="bar-progress"></div>
+              </div>
+            `).join("")}
+          </div>
+
+          <!-- Cues -->
+          <ul class="mt-3 space-y-1 border-t border-[#253149]/80 pt-2.5 text-xs leading-5 text-slate-200">
+            ${sec.cues.map(cue => `<li>${cue}</li>`).join("")}
+          </ul>
+        </article>
+      `).join("");
+    }
+
+    renderFlowBar();
+    renderSections();
+
+    // YouTube IFrame API Integration
+    let player = null;
+    let playerReady = false;
+    let syncTimer = null;
+    let lastActiveSectionId = null;
+    let lastActiveBarKey = null;
+
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+
+    window.onYouTubeIframeAPIReady = function () {
+      player = new YT.Player("yt-player", {
+        videoId: VIDEO_ID,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onReady: () => {
+            playerReady = true;
+            startSyncLoop();
+          }
+        }
+      });
+    };
+
+    function seekToSection(sectionId) {
+      const sec = sections.find(s => s.id === sectionId);
+      if (!sec) return;
+      updateActiveState(sec.start, true);
+      if (playerReady && player && typeof player.seekTo === "function") {
+        player.seekTo(sec.start, true);
+        player.playVideo();
+      }
+    }
+
+    function seekToRawTime(seconds, sectionId, barIdx) {
+      updateActiveState(seconds, true);
+      if (playerReady && player && typeof player.seekTo === "function") {
+        player.seekTo(seconds, true);
+        player.playVideo();
+      }
+    }
+
+    function updateHudBeats(activeBeat) {
+      for (let b = 1; b <= 4; b++) {
+        const el = document.getElementById(`hud-beat-${b}`);
+        if (!el) continue;
+        if (b === activeBeat) {
+          el.className = "mono flex h-6 w-6 items-center justify-center rounded bg-amber-300 text-xs font-black text-slate-950 shadow";
+        } else {
+          el.className = "mono flex h-6 w-6 items-center justify-center rounded bg-[#162038] text-xs font-black text-slate-400";
+        }
+      }
+    }
+
+    function updateActiveState(currentTime, manualSeek = false) {
+      document.getElementById("current-time-label").textContent = formatTime(currentTime);
+
+      const currentSec = sections.find(s => currentTime >= s.start && currentTime < s.end);
+      const activeSecId = currentSec ? currentSec.id : null;
+
+      sections.forEach(sec => {
+        const card = document.getElementById(`card-${sec.id}`);
+        const pill = document.getElementById(`pill-${sec.id}`);
+        const isSecActive = sec.id === activeSecId;
+        if (card) card.classList.toggle("active-section", isSecActive);
+        if (pill) pill.classList.toggle("active-pill", isSecActive);
+
+        sec.chords.forEach((c, bIdx) => {
+          const barEl = document.getElementById(`bar-${sec.id}-${bIdx}`);
+          const progEl = document.getElementById(`prog-${sec.id}-${bIdx}`);
+          const fillEl = document.getElementById(`fill-${sec.id}-${bIdx}`);
+          if (!barEl) return;
+
+          const isBarActive = isSecActive && currentTime >= c.start && currentTime < c.end;
+          const isBarPassed = isSecActive && currentTime >= c.end;
+
+          barEl.classList.toggle("active-bar", isBarActive);
+          barEl.classList.toggle("passed-bar", isBarPassed);
+
+          if (isBarActive) {
+            const ratio = Math.max(0, Math.min(1, (currentTime - c.start) / (c.end - c.start)));
+            const pct = (ratio * 100).toFixed(1) + "%";
+            if (progEl) progEl.style.width = pct;
+            if (fillEl) fillEl.style.width = pct;
+
+            const beat = Math.min(4, Math.floor(ratio * 4) + 1);
+            for (let d = 1; d <= 4; d++) {
+              const dot = document.getElementById(`dot-${sec.id}-${bIdx}-${d}`);
+              if (dot) dot.classList.toggle("on", d <= beat);
+            }
+            updateHudBeats(beat);
+
+            document.getElementById("current-bar-label").textContent = `Bar ${c.bar} · ${c.code}`;
+            document.getElementById("current-cue-label").textContent = c.sub || sec.summary;
+
+            const barKey = `${sec.id}-${bIdx}`;
+            if (barKey !== lastActiveBarKey) {
+              lastActiveBarKey = barKey;
+              if (autoScroll && !manualSeek) {
+                barEl.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+            }
+          } else {
+            if (progEl) progEl.style.width = isBarPassed ? "100%" : "0%";
+            if (fillEl) fillEl.style.width = "0%";
+            for (let d = 1; d <= 4; d++) {
+              const dot = document.getElementById(`dot-${sec.id}-${bIdx}-${d}`);
+              if (dot) dot.classList.remove("on");
+            }
+          }
+        });
+      });
+
+      if (currentSec) {
+        if (lastActiveSectionId !== currentSec.id) {
+          lastActiveSectionId = currentSec.id;
+          document.getElementById("current-section-label").textContent = `${currentSec.name} · ${currentSec.koName} (${currentSec.bars})`;
+        }
+      } else {
+        updateHudBeats(0);
+      }
+    }
+
+    function startSyncLoop() {
+      if (syncTimer) clearInterval(syncTimer);
+      syncTimer = setInterval(() => {
+        if (!playerReady || !player || typeof player.getCurrentTime !== "function") return;
+        const state = typeof player.getPlayerState === "function" ? player.getPlayerState() : 1;
+        if (state === 1 || state === 2) {
+          const currentTime = player.getCurrentTime() || 0;
+          updateActiveState(currentTime, false);
+        }
+      }, 80);
+    }
+  </script>
+</body>
+</html>
