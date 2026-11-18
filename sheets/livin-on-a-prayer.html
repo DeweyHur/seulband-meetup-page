@@ -123,8 +123,8 @@
           <p class="font-black text-amber-300">💡 합주 핵심 주의 포인트 4가지</p>
           <ul class="mt-1 list-disc space-y-0.5 pl-4 text-slate-200">
             <li><strong class="text-amber-200">1절 후 간주(Theme A):</strong> 4마디가 아니라 <strong>⚠️ 2마디</strong>만 연주 후 바로 2절 진입!</li>
-            <li><strong class="text-amber-200">Chorus 2 (솔로 직전):</strong> 8마디 끝에 <code class="mono text-amber-200">C - D</code> <strong>⚠️ 1마디가 추가(총 9마디)</strong>됩니다.</li>
-            <li><strong class="text-amber-200">솔로 직후 Bridge:</strong> 8마디가 아니라 <strong>⚠️ 6마디</strong> 빌드업 후 전조됩니다.</li>
+            <li><strong class="text-amber-200">Chorus 2 (솔로 직전):</strong> 8마디 끝에 <code class="mono text-amber-200">C G | C</code> <strong>⚠️ 2마디가 추가(총 10마디)</strong>됩니다.</li>
+            <li><strong class="text-amber-200">Guitar Solo & Bridge:</strong> 솔로 <strong>⚠️ 9마디</strong>(8~9마디 <code class="mono text-amber-200">Em</code>) 직후 브릿지 <strong>⚠️ 4마디</strong> 진행!</li>
             <li><strong class="text-amber-200">마지막 후렴 전조:</strong> <code class="mono text-amber-200">03:23</code>부터 <strong>+3키 (<code class="mono text-amber-200">Em → Gm</code>)</strong>로 올라갑니다.</li>
           </ul>
         </div>
@@ -169,16 +169,15 @@
 
         <!-- Core Riff Cheat Sheet -->
         <div class="rounded-xl border border-[#253149] bg-[#10182a] p-4 space-y-3">
-          <h2 class="text-sm font-black text-white">🎸 핵심 테마 & 전조 코드표</h2>
+          <h2 class="text-sm font-black text-white">🎸 핵심 구간별 코드 요약</h2>
           <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
-            <p class="font-black text-amber-300">Theme A — 베이스 & 토크박스 리프</p>
-            <p class="mono text-[11px] text-slate-200">Bass: E - E - D - E - G - A - E (Em 오스티나토)</p>
-            <p class="text-slate-400">기타 토크박스(또는 와우 페달) + 베이스 16비트 리프</p>
+            <p class="font-black text-amber-300">Verse (16마디)</p>
+            <p class="mono text-[11px] text-slate-200">| Em | Em | Em | Em | C | D | Em | Em | (×2)</p>
           </div>
           <div class="rounded-lg border border-[#253149] bg-[#0b1221] p-3 text-xs space-y-1.5">
-            <p class="font-black text-sky-300">Pre-Chorus (8마디)</p>
-            <p class="mono text-[11px] text-slate-200">| C  D | D  Em | C  D | D  Em |</p>
-            <p class="mono text-[11px] text-slate-200">| C  D | D  Em | C    | D (Stop!) |</p>
+            <p class="font-black text-sky-300">Pre-Chorus (8마디) & Bridge (4마디)</p>
+            <p class="mono text-[11px] text-slate-200">• Pre: | C D | D Em | (×3) → | C | D |</p>
+            <p class="mono text-[11px] text-slate-200">• Bridge: | C D | D Em | C | D → F7 |</p>
           </div>
           <div class="rounded-lg border border-emerald-500/40 bg-[#0b211d] p-3 text-xs space-y-1.5">
             <p class="font-black text-emerald-300">Chorus 원키 (Em) vs 전조 후 (Gm)</p>
@@ -210,7 +209,6 @@
       }));
     }
 
-    // Calibrated: Theme A starts at 14.20s (+2 beats later than before) and 1 bar = 1.945s (~123.4 BPM)
     const sections = [
       {
         id: "intro-pad",
@@ -245,7 +243,7 @@
         timeLabel: "00:14 ~ 00:45",
         bars: "16마디 (4×4)",
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
-        summary: "베이스+림샷(4마디) → 토크박스 진입(4마디) → C-D 브라스 히트(4마디) → 보컬 내레이션(4마디)",
+        summary: "베이스+림샷(4마디) → 토크박스 진입(4마디) → | C D | Em | C D | Em | (4마디) → | C D | Em | C D | Em | + 내레이션(4마디)",
         chords: makeBars(14.2, 45.32, [
           { bar: "1", code: "Em (Bass Riff)", sub: "00:14 베이스 + 드럼 림샷" },
           { bar: "2", code: "Em (Bass Riff)", sub: "베이스 오스티나토" },
@@ -256,18 +254,17 @@
           { bar: "7", code: "Em (Talk Box)", sub: "토크박스 + 풀 드럼 비트" },
           { bar: "8", code: "Em", sub: "코드 체인지 준비" },
           { bar: "9", code: "C       D", sub: "00:30 신스 브라스 & 파워코드 히트!", type: "warn" },
-          { bar: "10", code: "Em", sub: "토크박스 리프 복귀" },
-          { bar: "11", code: "C       D", sub: "00:33 C (2박) - D (2박) 히트!", type: "warn" },
-          { bar: "12", code: "Em", sub: "토크박스 리프 복귀" },
-          { bar: "13", code: "Em", sub: "00:37 내레이션 준비" },
+          { bar: "10", code: "Em", sub: "토크박스 리프" },
+          { bar: "11", code: "C       D", sub: "00:33 C - D 히트!", type: "warn" },
+          { bar: "12", code: "Em", sub: "토크박스 리프" },
+          { bar: "13", code: "C       D", sub: "00:37 C - D 히트!", type: "warn" },
           { bar: "14", code: "Em (Spoken)", sub: "'Once upon a time...'" },
-          { bar: "15", code: "Em (Spoken)", sub: "'...not so long ago'" },
-          { bar: "16", code: "Em", sub: "끝 박 'Tommy~' 1절 픽업", type: "warn" }
+          { bar: "15", code: "C       D", sub: "'...not so long ago'", type: "warn" },
+          { bar: "16", code: "Em", sub: "끝 박 'Tommy~' 1절 픽업" }
         ]),
         cues: [
-          "🎸 베이스: 전 구간 시그니처 16비트 리프 (E - E - D - E - G - A - E) 유지",
-          "🎸 기타: 5마디(00:22)부터 토크박스(또는 와우 페달) 리프 진입 / 9, 11마디 C - D 코드 히트",
-          "🎤 보컬: 14~15마디(00:39~) 'Once upon a time, not so long ago' 멘트 후 16마디 끝 'Tommy~' 진입"
+          "🎸 베이스: 1~8마디 Em 시그니처 16비트 리프 → 9~16마디 | C  D | Em | × 4회 코드 진행",
+          "🎤 보컬: 14~15마디(00:39~) 'Once upon a time, not so long ago' 내레이션 후 16마디 끝 'Tommy~' 픽업"
         ]
       },
       {
@@ -279,28 +276,27 @@
         timeLabel: "00:45 ~ 01:16",
         bars: "16마디 (8+8)",
         badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
-        summary: "[Em 베이스 리프 4마디 + (C-D | Em) × 2회 4마디] × 2세트 (Tommy 파트 8마디 + Gina 파트 8마디)",
+        summary: "| Em | Em | Em | Em | C | D | Em | Em | × 2세트 (Tommy 파트 8마디 + Gina 파트 8마디)",
         chords: makeBars(45.32, 76.44, [
           { bar: "1", code: "Em", sub: "Tommy used to work on the docks" },
-          { bar: "2", code: "Em", sub: "(베이스 & 드럼 타이트 그루브)" },
+          { bar: "2", code: "Em", sub: "(베이스 & 드럼 그루브)" },
           { bar: "3", code: "Em", sub: "Union's been on strike" },
           { bar: "4", code: "Em", sub: "He's down on his luck..." },
-          { bar: "5", code: "C       D", sub: "...it's tough (C 2박 - D 2박)", type: "warn" },
-          { bar: "6", code: "Em", sub: "토크박스/건반 필인" },
-          { bar: "7", code: "C       D", sub: "So tough (C 2박 - D 2박)", type: "warn" },
-          { bar: "8", code: "Em", sub: "1절 전반 마무리" },
+          { bar: "5", code: "C", sub: "...it's tough", type: "warn" },
+          { bar: "6", code: "D", sub: "So tough", type: "warn" },
+          { bar: "7", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "8", code: "Em", sub: "전반 8마디 마무리" },
           { bar: "9", code: "Em", sub: "Gina works the diner all day" },
           { bar: "10", code: "Em", sub: "(베이스 & 드럼 그루브)" },
           { bar: "11", code: "Em", sub: "Working for her man" },
           { bar: "12", code: "Em", sub: "She brings home her pay..." },
-          { bar: "13", code: "C       D", sub: "...for love (C 2박 - D 2박)", type: "warn" },
-          { bar: "14", code: "Em", sub: "토크박스/건반 필인" },
-          { bar: "15", code: "C       D", sub: "Mmm, for love (C 2박 - D 2박)", type: "warn" },
-          { bar: "16", code: "Em", sub: "끝에 'She says, we've gotta...' 픽업", type: "warn" }
+          { bar: "13", code: "C", sub: "...for love", type: "warn" },
+          { bar: "14", code: "D", sub: "Mmm, for love", type: "warn" },
+          { bar: "15", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "16", code: "Em", sub: "끝에 'She says, we've gotta...' 픽업" }
         ]),
         cues: [
-          "🎸🎹 1~4마디, 9~12마디: 기타/건반을 절제하고 베이스 리프와 보컬이 돋보이게 공간 유지",
-          "🎸🎹 5~8마디, 13~16마디: 'it's tough', 'for love' 구간에서 C - D 코드 패드 및 토크박스 백킹"
+          "🎸🎹 코드 진행: Em 4마디 → C (1마디) → D (1마디) → Em (2마디) × 2회 반복"
         ]
       },
       {
@@ -380,27 +376,27 @@
         timeLabel: "01:51 ~ 02:22",
         bars: "16마디 (8+8)",
         badgeClass: "bg-sky-400/20 text-sky-300 border border-sky-400/40",
-        summary: "1절과 동일한 16마디 코드 구성 (6~8마디 리드기타 필인 추가)",
+        summary: "| Em | Em | Em | Em | C | D | Em | Em | × 2세트 (1절과 동일 코드 구성)",
         chords: makeBars(111.45, 142.57, [
           { bar: "1", code: "Em", sub: "Tommy's got his six-string in hock" },
           { bar: "2", code: "Em", sub: "(베이스 & 드럼 그루브)" },
           { bar: "3", code: "Em", sub: "Now he's holding in..." },
           { bar: "4", code: "Em", sub: "...what he used to make it talk" },
-          { bar: "5", code: "C       D", sub: "So tough (C 2박 - D 2박)", type: "warn" },
-          { bar: "6", code: "Em", sub: "+ 기타 필인" },
-          { bar: "7", code: "C       D", sub: "Ooh, it's tough", type: "warn" },
+          { bar: "5", code: "C", sub: "So tough", type: "warn" },
+          { bar: "6", code: "D", sub: "Ooh, it's tough", type: "warn" },
+          { bar: "7", code: "Em", sub: "+ 기타 필인" },
           { bar: "8", code: "Em", sub: "기타 아밍/피크스크래치 필인" },
           { bar: "9", code: "Em", sub: "Gina dreams of running away" },
           { bar: "10", code: "Em", sub: "(베이스 & 드럼 그루브)" },
           { bar: "11", code: "Em", sub: "When she cries in the night, Tommy whispers" },
           { bar: "12", code: "Em", sub: "'Baby, it's...'" },
-          { bar: "13", code: "C       D", sub: "...okay (C 2박 - D 2박)", type: "warn" },
-          { bar: "14", code: "Em", sub: "토크박스/건반 필인" },
-          { bar: "15", code: "C       D", sub: "Someday...", type: "warn" },
-          { bar: "16", code: "Em", sub: "끝에 'We've gotta...' 픽업", type: "warn" }
+          { bar: "13", code: "C", sub: "...okay", type: "warn" },
+          { bar: "14", code: "D", sub: "Someday...", type: "warn" },
+          { bar: "15", code: "Em", sub: "토크박스/건반 필인" },
+          { bar: "16", code: "Em", sub: "끝에 'We've gotta...' 픽업" }
         ]),
         cues: [
-          "🎸 리드기타: 6~8마디(02:01~02:06) 구간에서 애절한 벤딩 필인으로 1절과 차별화"
+          "🎸 코드 진행: 1절과 동일하게 Em 4마디 → C (1마디) → D (1마디) → Em (2마디) × 2회 반복"
         ]
       },
       {
@@ -429,15 +425,15 @@
       },
       {
         id: "chorus-2",
-        name: "Chorus 2 (9 Bars)",
-        koName: "후렴 2 (⚠️ 8마디 + 1마디 연장 = 총 9마디!)",
+        name: "Chorus 2 (10 Bars)",
+        koName: "후렴 2 (⚠️ 8마디 + 2마디 연장 = 총 10마디!)",
         start: 158.13,
-        end: 175.63,
-        timeLabel: "02:38 ~ 02:55",
-        bars: "⚠️ 9마디 (8+1)",
+        end: 178.80,
+        timeLabel: "02:38 ~ 02:59",
+        bars: "⚠️ 10마디 (8+2)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
-        summary: "| Em C | D | G C | D | × 2회(8마디) 직후, 9번째 마디('Livin' on a prayer~!') 1마디 추가 후 기타 솔로 진입!",
-        chords: makeBars(158.13, 175.63, [
+        summary: "| Em C | D | G C | D | × 2회(8마디) 직후, Bar 9~10에 | C  G | C | 2마디 추가 후 02:59 기타 솔로 진입!",
+        chords: makeBars(158.13, 178.80, [
           { bar: "1", code: "Em      C", sub: "Whoa, we're half-" },
           { bar: "2", code: "D", sub: "-way there" },
           { bar: "3", code: "G       C", sub: "Whoa-oh," },
@@ -445,72 +441,71 @@
           { bar: "5", code: "Em      C", sub: "Take my hand, we'll" },
           { bar: "6", code: "D", sub: "make it I swear" },
           { bar: "7", code: "G       C", sub: "Whoa-oh," },
-          { bar: "8", code: "D", sub: "livin' on a prayer (연장 연결!)", type: "warn" },
-          { bar: "9 (⚠️추가 1마디)", code: "C       D", sub: "02:54 'Livin' on a prayer~!' → 솔로 진입", type: "stop" }
+          { bar: "8", code: "D", sub: "livin' on a prayer" },
+          { bar: "9 (⚠️연장 1)", code: "C       G", sub: "02:54 'Livin' on a...'", type: "warn" },
+          { bar: "10 (⚠️연장 2)", code: "C", sub: "02:56 '...prayer~!' → 02:59 솔로 진입", type: "stop" }
         ]),
         cues: [
-          "⚠️ 핵심 주의 (9번째 마디, 02:54~02:55): 8마디로 끝나지 않고 'Livin' on a prayer'를 한 번 더 부르며 1마디가 추가된 후 기타 솔로 첫 마디(Em C)로 들어갑니다!"
+          "⚠️ 핵심 주의 (Bar 9~10, 02:54~02:59): 기본 후렴 8마디 끝에 | C  G | C | 2마디('Livin' on a prayer~!')가 추가되어 총 10마디 진행 후 02:59에 기타 솔로로 들어갑니다!"
         ]
       },
       {
         id: "guitar-solo",
-        name: "Guitar Solo",
-        koName: "기타 솔로 (8마디)",
-        start: 175.63,
-        end: 191.19,
-        timeLabel: "02:55 ~ 03:11",
-        bars: "8마디",
+        name: "Guitar Solo (9 Bars)",
+        koName: "기타 솔로 (02:59 시작 — ⚠️ 총 9마디)",
+        start: 178.80,
+        end: 195.20,
+        timeLabel: "02:59 ~ 03:15",
+        bars: "⚠️ 9마디 (7+2)",
         badgeClass: "bg-rose-500/25 text-rose-300 border border-rose-400/50",
-        summary: "후렴과 동일한 코드 진행(| Em  C | D | G  C | D | × 2) 위에서 펼쳐지는 멜로딕 기타 솔로 8마디",
-        chords: makeBars(175.63, 191.19, [
-          { bar: "1", code: "Em      C", sub: "02:55 기타 솔로 시작" },
+        summary: "02:59 시작 · Bar 1~7 후렴 코드 진행 후 Bar 8~9는 Em 2마디 유지 (총 9마디)",
+        chords: makeBars(178.80, 195.20, [
+          { bar: "1", code: "Em      C", sub: "02:59 기타 솔로 시작" },
           { bar: "2", code: "D", sub: "멜로딕 솔로 라인" },
           { bar: "3", code: "G       C", sub: "옥타브/벤딩 프레이즈" },
           { bar: "4", code: "D", sub: "전반 4마디 마무리" },
-          { bar: "5", code: "Em      C", sub: "03:03 후반 속주 & 하이 벤딩" },
+          { bar: "5", code: "Em      C", sub: "03:06 후반 속주 & 하이 벤딩" },
           { bar: "6", code: "D", sub: "하이라이트 상승 라인" },
           { bar: "7", code: "G       C", sub: "솔로 클라이맥스" },
-          { bar: "8", code: "D", sub: "03:09 하이노트 피니시 → Bridge 연결", type: "warn" }
+          { bar: "8 (⚠️Em)", code: "Em", sub: "03:12 솔로 하이노트 피니시", type: "warn" },
+          { bar: "9 (⚠️Em)", code: "Em", sub: "03:13 'Ooooh~' 브릿지 픽업", type: "warn" }
         ]),
         cues: [
-          "🎸 리드기타: 토크박스 해제 후 일반 디스토션 톤으로 8마디 멜로딕 솔로 연주",
-          "🎸🎹🥁 백킹 파트: 후렴(Chorus)과 완전히 동일한 | Em  C | D | G  C | D | × 2 리듬 유지"
+          "🎸 리드기타 & 백킹: 1~7마디는 후렴 코드(| Em C | D | G C | D | Em C | D | G C |) 진행 후, 8~9마디는 Em 코드로 2마디를 유지합니다!"
         ]
       },
       {
         id: "bridge-keychange",
         name: "Bridge (Key Up Build-up)",
-        koName: "브릿지 & +3키 전조 빌드업 (⚠️ 6마디)",
-        start: 191.19,
-        end: 202.86,
-        timeLabel: "03:11 ~ 03:22",
-        bars: "⚠️ 6마디",
+        koName: "브릿지 & +3키 전조 빌드업 (⚠️ 총 4마디)",
+        start: 195.20,
+        end: 203.00,
+        timeLabel: "03:15 ~ 03:23",
+        bars: "⚠️ 4마디",
         badgeClass: "bg-orange-500/30 text-orange-200 border border-orange-400",
-        summary: "C(1마디) - D(1마디) - Em/D(1마디) - C(2마디) - D/F(1마디 전조 필인) 총 6마디 후 Gm(+3키)로 전조!",
-        chords: makeBars(191.19, 202.86, [
-          { bar: "1", code: "C", sub: "03:11 'Ooooh~' (서스테인)" },
-          { bar: "2", code: "D", sub: "'...we've got to'" },
-          { bar: "3", code: "Em      D", sub: "'hold on, ready or'" },
-          { bar: "4", code: "C", sub: "'not...'" },
-          { bar: "5", code: "C (Build-up)", sub: "'You live for the fight when it's'", type: "warn" },
-          { bar: "6 (⚠️전조 필인!)", code: "D   →   F7 (Key Up!)", sub: "03:21 'all that you've got!' → Gm 전조!", type: "stop" }
+        summary: "| C  D | D  Em | C | D → F7 (Key Up!) | 총 4마디 후 Gm(+3키)로 전조!",
+        chords: makeBars(195.20, 203.00, [
+          { bar: "1", code: "C       D", sub: "'...we've got to hold on'" },
+          { bar: "2", code: "D       Em", sub: "'ready or not'" },
+          { bar: "3", code: "C (Build-up)", sub: "'You live for the fight when it's'", type: "warn" },
+          { bar: "4 (⚠️전조 필인!)", code: "D   →   F7 (Key Up!)", sub: "'all that you've got!' → Gm 전조!", type: "stop" }
         ]),
         cues: [
-          "⚠️ 마디 수 주의: 8마디가 아니라 총 6마디입니다!",
-          "🔥 전조 포인트 (6번째 마디, 03:21~03:22): 'all that you've got!'에서 D 코드 히트 후 드럼 스네어 필인과 함께 +3키(단3도 위)인 Gm 키로 전조됩니다!"
+          "⚠️ 브릿지 4마디: | C  D | D  Em | C | D → F7 |",
+          "🔥 전조 포인트 (4번째 마디 끝, 03:21~03:23): 'all that you've got!'에서 D → F7 필인과 함께 +3키(단3도 위)인 Gm 키로 전조됩니다!"
         ]
       },
       {
         id: "chorus-3-gm",
         name: "Chorus 3 (Key: Gm)",
         koName: "전조 후렴 1회차 (+3키 상승: Gm — 8마디)",
-        start: 202.86,
-        end: 218.42,
-        timeLabel: "03:22 ~ 03:38",
+        start: 203.00,
+        end: 218.56,
+        timeLabel: "03:23 ~ 03:38",
         bars: "8마디 (Key Gm)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
         summary: "🔥 +3키 전조 (Em C | D | G C | D → Gm Eb | F | Bb Eb | F) × 2회 반복",
-        chords: makeBars(202.86, 218.42, [
+        chords: makeBars(203.00, 218.56, [
           { bar: "1 (Key Gm!)", code: "Gm      Eb", sub: "03:23 Whoa, we're half-", type: "warn" },
           { bar: "2", code: "F", sub: "-way there" },
           { bar: "3", code: "Bb      Eb", sub: "Whoa-oh, (전조 초고음!)" },
@@ -528,13 +523,13 @@
         id: "chorus-4-gm",
         name: "Chorus 4 (Key: Gm)",
         koName: "전조 후렴 2회차 (Gm — 8마디)",
-        start: 218.42,
-        end: 233.98,
+        start: 218.56,
+        end: 234.12,
         timeLabel: "03:38 ~ 03:54",
         bars: "8마디 (Key Gm)",
         badgeClass: "bg-emerald-400/20 text-emerald-300 border border-emerald-400/40",
         summary: "| Gm  Eb | F | Bb  Eb | F | × 2회 연속 반복",
-        chords: makeBars(218.42, 233.98, [
+        chords: makeBars(218.56, 234.12, [
           { bar: "1", code: "Gm      Eb", sub: "03:38 Whoa, we're half-" },
           { bar: "2", code: "F", sub: "-way there" },
           { bar: "3", code: "Bb      Eb", sub: "Whoa-oh," },
@@ -552,13 +547,13 @@
         id: "outro-fade",
         name: "Outro Chorus (Fade Out)",
         koName: "아우트로 후렴 & 페이드아웃 (Gm — 7~8마디)",
-        start: 233.98,
-        end: 247.60,
+        start: 234.12,
+        end: 247.70,
         timeLabel: "03:54 ~ 04:07",
         bars: "7~8마디 (End)",
         badgeClass: "bg-amber-400/20 text-amber-300 border border-amber-400/40",
         summary: "원곡 음원은 전조 후렴 3회차 진행 중 페이드아웃 (라이브 합주 시 8마디 끝 Gm 강박 컷 추천!)",
-        chords: makeBars(233.98, 247.60, [
+        chords: makeBars(234.12, 247.70, [
           { bar: "1", code: "Gm      Eb", sub: "03:54 Whoa, we're half-" },
           { bar: "2", code: "F", sub: "-way there" },
           { bar: "3", code: "Bb      Eb", sub: "Whoa-oh," },
